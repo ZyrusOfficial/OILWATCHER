@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base app theme for splash screen -->
+    <style name="Theme.OilWatcher" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <!-- Splash screen theme -->
+    <style name="Theme.OilWatcher.Splash" parent="Theme.OilWatcher">
+        <item name="android:windowBackground">@color/splash_background</item>
+    </style>
+</resources>

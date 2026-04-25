@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>Leaderboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="js/bridge.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Epilogue', sans-serif; background: #f9f9f7; color: #1a1c1b; -webkit-user-select: none; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; line-height: 1; }
+
+        .header { position: sticky; top: 0; background: rgba(249,249,247,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 50; border-bottom: 1px solid #e2e3e1; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; }
+        .header-top h1 { font-weight: 700; font-size: 20px; }
+        .icon-btn { width: 40px; height: 40px; border-radius: 50%; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .icon-btn .material-symbols-outlined { color: #ff5e00; }
+        .segment { display: flex; background: #e8e8e6; border-radius: 999px; padding: 4px; margin: 0 24px 16px; }
+        .segment button { flex: 1; padding: 8px; font-size: 14px; font-weight: 700; border: none; border-radius: 999px; cursor: pointer; font-family: 'Epilogue'; background: transparent; color: #5b4137; }
+        .segment button.active { background: #fff; color: #1a1c1b; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+        .content { padding-top: 130px; padding-bottom: 24px; }
+
+        /* User rank card */
+        .user-rank { background: linear-gradient(135deg, #ff5e00, #a63b00); border-radius: 20px; padding: 32px; margin: 0 24px 24px; color: #fff; position: relative; overflow: hidden; }
+        .user-rank .blur { position: absolute; top: -80px; right: -80px; width: 256px; height: 256px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(48px); }
+        .user-rank-inner { position: relative; z-index: 1; }
+        .user-rank .avatar { width: 80px; height: 80px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.2); overflow: hidden; background: #f4f4f2; position: relative; }
+        .user-rank .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-rank .rank-badge { position: absolute; bottom: -8px; right: -8px; background: #fff; color: #ff5e00; font-weight: 900; padding: 4px 12px; border-radius: 999px; font-size: 13px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .user-rank .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 700; margin-bottom: 4px; }
+        .user-rank .name { font-size: 24px; font-weight: 700; }
+        .user-rank-stats { display: flex; gap: 32px; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.2); }
+        .user-rank-stats .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; font-weight: 700; }
+        .user-rank-stats .stat-value { font-size: 22px; font-weight: 900; }
+        .trend-up { color: #4ade80; }
+
+        /* Podium */
+        .podium { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; padding: 0 24px; margin-bottom: 24px; }
+        .podium-item { background: #f4f4f2; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .podium-item.first { background: #fff; box-shadow: 0 24px 48px rgba(26,28,27,0.06); padding: 32px; border-bottom: 4px solid #facc15; }
+        .podium-item.second { border-bottom: 4px solid #cbd5e1; }
+        .podium-item.third { border-bottom: 4px solid #d97706; }
+        .podium-avatar { width: 64px; height: 64px; border-radius: 50%; background: #e8e8e6; overflow: hidden; margin-bottom: 16px; }
+        .podium-item.first .podium-avatar { width: 96px; height: 96px; border: 4px solid rgba(250,204,21,0.3); padding: 4px; }
+        .podium-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .podium-name { font-weight: 700; font-size: 16px; }
+        .podium-item.first .podium-name { font-size: 20px; font-weight: 900; }
+        .podium-pts { font-weight: 700; font-size: 14px; color: #5f5e5e; margin-bottom: 16px; }
+        .podium-item.first .podium-pts { color: #ff5e00; font-weight: 900; font-size: 18px; }
+        .podium-badge { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 16px; border-radius: 999px; }
+        .badge-gold { background: #fef9c3; color: #a16207; }
+        .badge-silver { background: #e2e8f0; color: #475569; }
+        .badge-bronze { background: #fef3c7; color: #92400e; }
+
+        /* List */
+        .list-section { background: #f4f4f2; border-radius: 20px; margin: 0 24px; overflow: hidden; }
+        .list-header { display: flex; justify-content: space-between; align-items: center; padding: 24px; border-bottom: 1px solid rgba(226,227,225,0.3); }
+        .list-header h4 { font-weight: 700; font-size: 18px; }
+        .filter-btns { display: flex; gap: 8px; }
+        .filter-btn { padding: 6px 16px; border-radius: 999px; border: none; font-family: 'Epilogue'; font-weight: 700; font-size: 12px; cursor: pointer; background: transparent; color: rgba(26,28,27,0.4); }
+        .filter-btn.active { background: #fff; color: #1a1c1b; }
+        .rank-row { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; transition: background 0.15s; }
+        .rank-row:active { background: #e8e8e6; }
+        .rank-row .rank-num { font-weight: 900; font-size: 20px; color: rgba(26,28,27,0.3); width: 32px; }
+        .rank-row .rank-avatar { width: 48px; height: 48px; border-radius: 50%; background: #e8e8e6; overflow: hidden; margin: 0 16px; }
+        .rank-row .rank-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .rank-row .rank-name { font-weight: 700; }
+        .rank-row .rank-pts { font-size: 12px; font-weight: 700; color: #5f5e5e; }
+        .trend { display: flex; align-items: center; gap: 4px; font-weight: 900; font-size: 12px; }
+        .trend.up { color: #4ade80; }
+        .trend.down { color: #f87171; }
+        .trend.same { color: rgba(95,94,94,0.4); }
+        .load-more { width: 100%; padding: 16px; background: #e8e8e6; border: none; font-family: 'Epilogue'; font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; color: #1a1c1b; }
+        .load-more:active { background: #dadad8; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-top">
+        <div style="display:flex;align-items:center;gap:16px;">
+            <button class="icon-btn" onclick="goBack()"><span class="material-symbols-outlined">arrow_back</span></button>
+            <h1>Leaderboard</h1>
+        </div>
+    </div>
+    <div class="segment">
+        <button onclick="switchTab('history')">History</button>
+        <button class="active">Leaderboard</button>
+    </div>
+</div>
+<div class="content">
+    <div class="user-rank" id="user-rank-card">
+        <div class="blur"></div>
+        <div class="user-rank-inner">
+            <div style="display:flex;align-items:center;gap:24px;">
+                <div style="position:relative;">
+                    <div class="avatar"><div style="width:80px;height:80px;background:#e8e8e6;border-radius:50%;"></div></div>
+                    <div class="rank-badge" id="user-rank-num">#—</div>
+                </div>
+                <div>
+                    <div class="label">Your Standing</div>
+                    <div class="name" id="user-name">Loading...</div>
+                </div>
+            </div>
+            <div class="user-rank-stats">
+                <div><div class="stat-label">Total Points</div><div class="stat-value" id="user-points">—</div></div>
+                <div><div class="stat-label">Weekly Rank</div><div class="stat-value trend-up" id="user-weekly">—</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="podium" id="podium">
+        <div style="text-align:center;padding:40px;color:#8e8e8b;grid-column:1/-1;">Loading leaderboard...</div>
+    </div>
+    <div class="list-section">
+        <div class="list-header">
+            <h4>Top Contributors</h4>
+            <div class="filter-btns">
+                <button class="filter-btn active" onclick="filterPeriod('monthly')">Monthly</button>
+                <button class="filter-btn" onclick="filterPeriod('alltime')">All Time</button>
+            </div>
+        </div>
+        <div id="rank-list"></div>
+        <button class="load-more" onclick="loadMore('leaderboard')">Load More Contributor Rankings</button>
+    </div>
+</div>
+<script>
+    function onDataReceived(data) {
+        if (data.user) {
+            document.getElementById('user-name').textContent = data.user.name || 'You';
+            document.getElementById('user-rank-num').textContent = '#' + (data.user.rank || '—');
+            document.getElementById('user-points').textContent = (data.user.points || 0).toLocaleString();
+            document.getElementById('user-weekly').textContent = '+' + (data.user.weeklyChange || 0);
+        }
+        if (data.top3) { renderPodium(data.top3); }
+        if (data.rankings) { renderRankings(data.rankings); }
+    }
+
+    function renderPodium(top3) {
+        var p = document.getElementById('podium');
+        if (!top3 || top3.length < 3) return;
+        var classes = ['second', 'first', 'third'];
+        var badges = [['badge-silver','Silver'], ['badge-gold','Grand Contributor'], ['badge-bronze','Bronze']];
+        var order = [top3[1], top3[0], top3[2]]; // Display order: 2, 1, 3
+        p.innerHTML = order.map(function(u, i) {
+            return '<div class="podium-item ' + classes[i] + '">' +
+                '<div class="podium-avatar"><div style="width:100%;height:100%;background:#ddd;border-radius:50%;"></div></div>' +
+                '<div class="podium-name">' + u.name + '</div>' +
+                '<div class="podium-pts">' + u.points.toLocaleString() + ' pts</div>' +
+                '<div class="podium-badge ' + badges[i][0] + '">' + badges[i][1] + '</div></div>';
+        }).join('');
+    }
+
+    function renderRankings(rankings) {
+        var list = document.getElementById('rank-list');
+        list.innerHTML = rankings.map(function(r) {
+            var trendClass = r.change > 0 ? 'up' : (r.change < 0 ? 'down' : 'same');
+            var trendIcon = r.change > 0 ? 'expand_less' : (r.change < 0 ? 'expand_more' : 'remove');
+            return '<div class="rank-row">' +
+                '<div style="display:flex;align-items:center;">' +
+                '<span class="rank-num">' + String(r.rank).padStart(2, '0') + '</span>' +
+                '<div class="rank-avatar"><div style="width:100%;height:100%;background:#ddd;border-radius:50%;"></div></div>' +
+                '<div><div class="rank-name">' + r.name + '</div><div class="rank-pts">' + r.points.toLocaleString() + ' pts</div></div></div>' +
+                '<div class="trend ' + trendClass + '"><span class="material-symbols-outlined" style="font-size:16px;">' + trendIcon + '</span>' + Math.abs(r.change) + '</div></div>';
+        }).join('');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Oil Watcher</string>
+    <string name="app_brand">FuelTrack</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_map">Map</string>
+    <string name="nav_contribute">Contribute</string>
+    <string name="nav_community">Community</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Camera Screen -->
+    <string name="camera_title">FuelTrack Capture</string>
+    <string name="camera_helper">Align prices in the frame</string>
+    <string name="camera_capture">Capture Photo</string>
+    <string name="camera_flash">Toggle Flash</string>
+    <string name="camera_switch">Switch Camera</string>
+
+    <!-- Analyze Screen -->
+    <string name="analyze_title">Verify Prices</string>
+    <string name="analyze_subtitle">Tap any price to correct scanning errors.</string>
+    <string name="analyze_confirm">Confirm &amp; Upload</string>
+    <string name="analyze_detected">Detected</string>
+    <string name="analyze_optional">Optional</string>
+
+    <!-- Fuel Grades -->
+    <string name="fuel_regular">Regular</string>
+    <string name="fuel_midgrade">Midgrade</string>
+    <string name="fuel_premium">Premium</string>
+    <string name="fuel_diesel">Diesel</string>
+
+    <!-- Map Screen -->
+    <string name="map_search_hint">Search area</string>
+    <string name="map_navigate">Navigate Now</string>
+
+    <!-- Station Details -->
+    <string name="station_updated">Updated %1$s ago by</string>
+    <string name="station_distance">%1$s mi away</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_contributions">Contributions</string>
+    <string name="profile_accuracy">Accuracy</string>
+    <string name="profile_rank">Local Rank</string>
+
+    <!-- General -->
+    <string name="go_back">Go back</string>
+    <string name="close">Close</string>
+    <string name="loading">Loading…</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_network">No internet connection.</string>
+    <string name="error_camera">Camera is not available.</string>
+    <string name="error_location">Location is not available.</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_back_button">Navigate back</string>
+    <string name="cd_camera_fab">Open camera to contribute a price</string>
+    <string name="cd_user_location">Your current location</string>
+    <string name="cd_price_marker">Gas station price marker showing %1$s</string>
+</resources>

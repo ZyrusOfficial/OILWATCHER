@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Colors -->
+    <color name="primary">#FFA63B00</color>
+    <color name="primary_container">#FFFF5E00</color>
+    <color name="on_primary">#FFFFFFFF</color>
+    <color name="surface">#FFF9F9F7</color>
+    <color name="on_surface">#FF1A1C1B</color>
+    <color name="splash_background">#FFF9F9F7</color>
+
+    <!-- Price Marker Colors -->
+    <color name="price_cheap">#FF00C853</color>
+    <color name="price_average">#FF1A1A1A</color>
+    <color name="price_expensive">#FFFFFFFF</color>
+</resources>

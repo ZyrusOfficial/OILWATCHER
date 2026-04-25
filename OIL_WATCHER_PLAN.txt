@@ -1,0 +1,962 @@
+================================================================================
+                    OIL WATCHER — FULL PROJECT PLAN & DOCUMENTATION
+================================================================================
+                    Community-Driven Fuel Price Monitoring Android App
+                    Document Version: 1.0
+                    Date: April 11, 2026
+================================================================================
+
+
+TABLE OF CONTENTS
+─────────────────
+  1.  PROJECT OVERVIEW & VISION
+  2.  ANALYSIS OF EXISTING UI MOCKUPS
+  3.  CORE USER FLOW
+  4.  FEATURE LIST (COMPLETE)
+  5.  TECHNOLOGY STACK & JUSTIFICATION
+  6.  ML KIT OCR — DETAILED INTEGRATION PLAN
+  7.  APP ARCHITECTURE
+  8.  DATA MODELS
+  9.  SCREEN-BY-SCREEN SPECIFICATIONS
+  10. NAVIGATION MAP
+  11. GAMIFICATION SYSTEM
+  12. DESIGN SYSTEM TOKENS
+  13. DEVELOPMENT PHASES & TIMELINE
+  14. API & THIRD-PARTY SERVICES
+  15. SECURITY & PRIVACY CONSIDERATIONS
+  16. TESTING STRATEGY
+  17. DEPLOYMENT & DISTRIBUTION
+  18. FUTURE ENHANCEMENTS
+  19. OPEN QUESTIONS & DECISIONS NEEDED
+
+
+================================================================================
+1. PROJECT OVERVIEW & VISION
+================================================================================
+
+PURPOSE:
+Oil Watcher is a community-powered Android application that enables users to
+report and discover real-time fuel prices at gas stations. The app leverages
+on-device machine learning (Google ML Kit) to extract prices from photos of
+gas station price boards, eliminating the need for manual data entry.
+
+VISION:
+"Crowdsourced gas prices, powered by your camera."
+
+Users simply snap a photo of a gas station's price sign. The ML model running
+locally on their device reads the prices, the user confirms them, and the data
+is instantly available to the entire community on an interactive map.
+
+VALUE PROPOSITION:
+  • For Contributors: Earn points, climb leaderboards, unlock "Pro Status"
+  • For Consumers: Find the cheapest gas nearby before driving there
+  • For the Community: Collectively save money through shared price intelligence
+
+DIFFERENTIATORS:
+  • On-device OCR — no cloud dependency for scanning, fast & private
+  • One-tap contribution — photo → extract → confirm → done
+  • Gamification keeps the data fresh through sustained community engagement
+  • Premium editorial UI design (not generic material look)
+
+
+================================================================================
+2. ANALYSIS OF EXISTING UI MOCKUPS
+================================================================================
+
+The project contains 8 HTML/TailwindCSS mockup screens located in:
+  stitch_accessible_modern_utility_prd/stitch_accessible_modern_utility_prd/
+
+Each screen is a fully styled, interactive prototype. Here is the analysis:
+
+SCREEN 1: MAP VIEW (map_view_interactive/code.html)
+──────────────────────────────────────────────────────
+  • Full-screen map background (simulated with image)
+  • Floating search bar at top with glassmorphism effect
+  • Price markers on map:
+    - Green (#00C853) = Below average / cheap
+    - Charcoal (#1A1A1A) = Average price
+    - White with border = Above average / expensive
+  • Each marker shows price (e.g., "$3.25") with tooltip pointer
+  • Blue pulsing dot for user location (center of map)
+  • Camera FAB (orange, bottom-right) to start contribution
+  • Bottom navigation: Map | Contribute | Profile | Settings
+  • Markers are clickable → navigate to Station Details
+
+SCREEN 2: CAMERA CAPTURE (camera_capture_final/code.html)
+──────────────────────────────────────────────────────────
+  • Full-screen camera viewfinder (edge-to-edge)
+  • Header overlay: Close button (X), "FuelTrack Capture" branding, Switch Camera
+  • Center alignment guide:
+    - Four corner brackets (orange #FF5E00) forming target frame
+    - Horizontal level line
+    - Animated scan line
+  • Helper text: "Align prices in the frame"
+  • Bottom controls:
+    - Gallery preview thumbnail (left)
+    - Large shutter button with outer ring (center)
+    - Flash toggle button (right)
+  • Session ID display at very bottom
+  • Status bar simulation (mobile notch)
+  • Dark overlay on camera feed for contrast
+
+SCREEN 3: ANALYZE & PREVIEW (analyze_preview_interactive/code.html)
+───────────────────────────────────────────────────────────────────
+  • Split layout: Image preview (top 40%) + Form (bottom 60%)
+  • Image preview shows captured price board with scan animation overlay
+  • Price verification form with 4 fuel grade rows:
+    - Regular: Pre-filled $3.45, "Detected" badge (green)
+    - Midgrade: Pre-filled $3.89, "Optional" label (grey)
+    - Premium: Empty field, "Optional" label
+    - Diesel: Pre-filled $4.15, "Detected" badge (green)
+  • Each row: Label (left), Dollar sign prefix, large numeric input (right)
+  • Editable fields — user can tap to correct OCR errors
+  • "Confirm & Upload" button (orange, bottom, full-width)
+  • Back button returns to camera
+
+SCREEN 4: STATION DETAILS (station_details_interactive/code.html)
+────────────────────────────────────────────────────────────────
+  • Bottom sheet overlay on blurred map background
+  • Drag handle (mobile) for dismiss gesture
+  • Station header: Name ("Chevron"), distance ("0.8 mi away")
+  • Price list:
+    - Regular 87 Octane: $3.45 (large, emphasized) + trending_down icon (green)
+    - Premium: $3.89 (smaller, less emphasis)
+    - Diesel: $4.15 (smaller, less emphasis)
+  • "Updated 2h ago by @FastDriver" attribution
+  • "Navigate Now" CTA button (orange, full-width, with navigation icon)
+  • Close button visible on tablet
+
+SCREEN 5: COMMUNITY HISTORY (community_history_final/code.html)
+──────────────────────────────────────────────────────────────
+  • Top app bar: "History" title, filter and search buttons
+  • Segmented control: History (active) | Leaderboard toggle
+  • Editorial summary cards:
+    - Left card: "Total Contributions" = 128, savings estimate
+    - Right card: "Lifetime Points" = 2,450 (orange, with stars icon)
+  • Recent Activity list (4 items):
+    - Shell V-Power: $4.85 Regular, +25 pts, 2h ago
+    - Tesla Supercharger: $0.32/kWh Electric, +15 pts
+    - 7-Eleven Fuel: $5.12 Diesel, +25 pts
+    - Chevron: $5.45 Premium, +30 pts
+  • Each item: Station icon, name, address, fuel type badge, time, price, points
+  • Dark CTA card at bottom: "Your contributions keep the community fueling efficiently"
+  • Bottom nav: Map | Contribute | Community (active) | Settings
+
+SCREEN 6: COMMUNITY LEADERBOARD (community_leaderboard_final/code.html)
+──────────────────────────────────────────────────────────────────────
+  • Same header as History with Leaderboard tab active
+  • User rank highlight card (orange gradient):
+    - Profile photo, rank #12, name "Alex Rivera"
+    - Total Points: 12,450 | Weekly Rank: +4 (trending up)
+  • Top 3 Podium (bento grid layout):
+    - #1 Marcus Volt: 28,940 pts, "Grand Contributor" gold badge
+    - #2 Sarah J.: 24,102 pts, "Silver" badge
+    - #3 Leo Chen: 22,890 pts, "Bronze" badge
+  • Contributors list (ranks 4-8):
+    - Shows rank number, avatar, name, points, weekly trend (up/down/same)
+    - Current user highlighted with orange background
+  • "Load More" button at bottom
+  • Monthly / All Time filter toggle
+
+SCREEN 7: PROFILE (profile_interactive/code.html)
+──────────────────────────────────────────────────
+  • Profile header: Large avatar (132px), verified badge (green check)
+  • User info: "Alex Driver", "Verified Contributor"
+  • Stats grid (3 columns):
+    - 238 Contributions | 99% Accuracy | #12 Local Rank
+  • Action list:
+    - Contribution History → chevron
+    - Community Leaderboard → chevron
+    - Account Settings → chevron (with spacing)
+  • "Unlock Pro Status" reward card:
+    - Progress bar at 47% (238 of 500)
+    - "262 left" counter
+    - Large faded star background decoration
+  • Bottom navigation with Profile active
+
+SCREEN 8: SETTINGS (settings_interactive/code.html)
+───────────────────────────────────────────────────
+  • Header: Back arrow, "Settings" title, "GAS.UI" brand mark
+  • Profile mini-header: Avatar (96px) with edit button, name, email
+  • Account section:
+    - Personal Information → chevron
+    - Login & Security → chevron
+    - Payment Methods → chevron
+  • Preferences section:
+    - Push Notifications → toggle (on)
+    - Location Services → toggle (on)
+    - Appearance → "System" label
+  • Support section:
+    - Help Center → external link icon
+    - Privacy Policy → chevron
+  • Sign Out button (text only, orange)
+  • Bottom navigation with Settings active
+
+DESIGN SYSTEM (vivid_utility/DESIGN.md)
+────────────────────────────────────────
+  • Creative direction: "The Tactile Architect" — editorial + utility
+  • No-Line Rule: No 1px borders; use tonal shifts instead
+  • Glass & Gradient Rule: backdrop-blur on floating elements
+  • Colors: Vivid Kinetic Orange (#FF5E00/#A63B00) on Paper (#F9F9F7)
+  • Typography: Clash Display (bold/headlines) + Manrope/DM Sans (body)
+  • Corner radius: 20px standard, pill for buttons
+  • Shadows: "Whisper Shadow" only on top-most floating elements
+  • M3 color tokens fully defined
+
+
+================================================================================
+3. CORE USER FLOW
+================================================================================
+
+    ┌─────────────┐
+    │  App Launch  │
+    └──────┬──────┘
+           │
+    ┌──────▼──────┐     Tap marker     ┌─────────────────┐
+    │  MAP VIEW   │ ──────────────────► │ STATION DETAILS │
+    │  (Home)     │                     │ (Bottom Sheet)  │
+    └──────┬──────┘                     └────────┬────────┘
+           │                                     │
+     Tap Camera FAB                        "Navigate Now"
+           │                                     │
+    ┌──────▼──────┐                     ┌────────▼────────┐
+    │   CAMERA    │                     │  External Maps  │
+    │   CAPTURE   │                     │  (Google Maps)  │
+    └──────┬──────┘                     └─────────────────┘
+           │
+     Tap Shutter
+           │
+    ┌──────▼──────────┐
+    │ ANALYZE/PREVIEW  │
+    │ (OCR Results)    │
+    └──────┬──────────┘
+           │
+     "Confirm & Upload"
+           │
+    ┌──────▼──────┐
+    │  MAP VIEW   │ ◄── New price marker appears
+    │  (Updated)  │
+    └─────────────┘
+
+    Side flows:
+    • Bottom Nav → Community → History / Leaderboard
+    • Bottom Nav → Profile → Stats, Progress
+    • Bottom Nav → Settings → Account, Preferences
+
+
+================================================================================
+4. FEATURE LIST (COMPLETE)
+================================================================================
+
+CORE FEATURES:
+──────────────
+  F1. Interactive Map with Gas Station Price Markers
+      - Color-coded markers (green=cheap, dark=average, white=expensive)
+      - User location with GPS
+      - Search by area/address
+      - Marker clustering at zoom levels
+      - Tap marker to see station details
+
+  F2. Camera-Based Price Capture
+      - Full-screen camera viewfinder
+      - Alignment guide overlay (corner brackets)
+      - Front/rear camera switching
+      - Flash control (on/off/auto)
+      - Gallery picker for existing photos
+      - Session tracking
+
+  F3. On-Device OCR Price Extraction (Google ML Kit)
+      - Real-time text recognition from captured image
+      - Price pattern detection ($X.XX format)
+      - Fuel grade mapping (Regular, Midgrade, Premium, Diesel)
+      - Confidence indicators ("Detected" vs "Optional")
+      - Runs 100% on-device — no cloud dependency
+
+  F4. Price Verification & Upload
+      - Pre-filled price fields from OCR
+      - Manual editing/correction capability
+      - Auto-detect nearest station via GPS + Places API
+      - Photo evidence upload
+      - One-tap confirm and submit
+
+  F5. Station Details View
+      - Station name and brand
+      - Distance from user
+      - All fuel grade prices with trend indicators
+      - Last updated time and contributor attribution
+      - Direct navigation to station (opens Google Maps)
+
+COMMUNITY FEATURES:
+───────────────────
+  F6. Contribution History
+      - Chronological log of all user price reports
+      - Station name, address, fuel type, reported price
+      - Points earned per contribution
+      - Total contributions count and savings estimate
+      - Filter and search capabilities
+
+  F7. Community Leaderboard
+      - Top 3 contributors with podium layout
+      - Ranked list of all contributors
+      - Weekly trend indicators (up/down/same)
+      - Monthly vs All-Time filters
+      - Current user's rank highlighted
+
+  F8. User Profile
+      - Avatar and verified status
+      - Key stats: contributions, accuracy rate, local rank
+      - Quick navigation to history and leaderboard
+      - Pro Status unlock progress
+
+GAMIFICATION:
+─────────────
+  F9. Points System
+      - +25 points for gas price report
+      - +15 points for EV charger price report
+      - +30 points for premium/diesel report
+      - Bonus multipliers for streaks/first-of-day
+      - Deductions for inaccurate reports (after community flag)
+
+  F10. Rank & Badges
+      - Grand Contributor (top 1)
+      - Silver, Bronze tiers
+      - "Active Scout" status for consistent contributors
+      - "Verified Contributor" badge for 99%+ accuracy
+      - Pro Status unlock at 500 accurate contributions
+
+UTILITY FEATURES:
+─────────────────
+  F11. Settings & Preferences
+      - Account management (personal info, security, payment)
+      - Push notification toggle
+      - Location services toggle
+      - Appearance (light/dark/system)
+      - Help center and privacy policy
+
+  F12. Push Notifications
+      - Price drop alerts for favorited stations
+      - Weekly summary of savings
+      - Leaderboard position changes
+      - Community milestones
+
+  F13. Offline Support
+      - Cached map tiles and recent prices
+      - Offline photo capture (queue upload for when online)
+      - Local Room database for contribution history
+
+
+================================================================================
+5. TECHNOLOGY STACK & JUSTIFICATION
+================================================================================
+
+ANDROID APP:
+────────────
+  Language:        Kotlin 2.0+
+  Min SDK:         26 (Android 8.0, covers 95%+ of devices)
+  Target SDK:      35 (Android 15)
+  UI Framework:    Jetpack Compose with Material 3
+  Camera:          CameraX (1.4.x)
+  ML/OCR:          Google ML Kit Text Recognition v2 (on-device)
+  Maps:            Google Maps SDK for Android + Maps Compose
+  Navigation:      Jetpack Navigation Compose (type-safe)
+  DI:              Hilt (Dagger-based)
+  Networking:      Retrofit + OkHttp (for any REST APIs)
+  Image Loading:   Coil for Compose
+  Local Storage:   Room + DataStore (preferences)
+  Async:           Kotlin Coroutines + Flow
+  Build:           Gradle with Version Catalogs
+
+WHY THESE CHOICES:
+  • Jetpack Compose: The UI mockups use Material Design 3 tokens directly.
+    Compose's M3 theme system maps 1:1 to the design tokens in DESIGN.md.
+  • CameraX: Simplifies camera lifecycle, integrates directly with ML Kit's
+    ImageAnalysis use case. No need for deprecated Camera2 boilerplate.
+  • ML Kit (on-device): The bundled model is ~4MB. Processes frames in <100ms.
+    No network call. No privacy concern. No cost per API call. Perfect for
+    the "just click the camera" UX.
+  • Google Maps: The mockups clearly show a map-centric home screen. Maps SDK
+    supports custom markers, clustering, and styling out of the box.
+
+BACKEND (FIREBASE):
+───────────────────
+  Authentication:  Firebase Auth (Google Sign-In + Email/Password)
+  Database:        Cloud Firestore (real-time sync, offline caching)
+  File Storage:    Cloud Storage for Firebase (price board photos)
+  Serverless:      Cloud Functions (points calc, leaderboard aggregation)
+  Messaging:       Firebase Cloud Messaging (push notifications)
+  Analytics:       Firebase Analytics + Crashlytics
+
+WHY FIREBASE:
+  • Real-time updates: When a user submits a price, it appears on everyone's
+    map immediately via Firestore listeners.
+  • Offline-first: Firestore has built-in offline persistence. Users can browse
+    cached prices without internet.
+  • Serverless: No backend server to deploy/maintain. Cloud Functions handle
+    business logic (points, validation) on triggers.
+  • Scales automatically with user base.
+
+
+================================================================================
+6. ML KIT OCR — DETAILED INTEGRATION PLAN
+================================================================================
+
+OVERVIEW:
+─────────
+Google ML Kit Text Recognition v2 runs entirely on the device. The model ships
+bundled with the APK (~4MB additional size). It can process images in ~50-100ms
+on modern phones.
+
+DEPENDENCY:
+───────────
+  implementation("com.google.mlkit:text-recognition:16.0.1")
+
+PIPELINE:
+─────────
+
+  Step 1: CAPTURE
+  ───────────────
+  CameraX ImageCapture use case captures a high-resolution JPEG.
+  Alternative: ImageAnalysis for real-time preview scanning.
+
+  Step 2: CONVERT
+  ───────────────
+  val inputImage = InputImage.fromFilePath(context, imageUri)
+  // or
+  val inputImage = InputImage.fromMediaImage(mediaImage, rotationDegrees)
+
+  Step 3: RECOGNIZE
+  ─────────────────
+  val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+  recognizer.process(inputImage)
+      .addOnSuccessListener { text -> extractPrices(text) }
+      .addOnFailureListener { e -> handleError(e) }
+
+  Step 4: EXTRACT PRICES
+  ──────────────────────
+  fun extractPrices(text: Text): List<FuelPrice> {
+      val priceRegex = Regex("""\$?\d{1,2}\.\d{2}""")
+      val prices = mutableListOf<PriceCandidate>()
+
+      for (block in text.textBlocks) {
+          for (line in block.lines) {
+              val match = priceRegex.find(line.text)
+              if (match != null) {
+                  prices.add(PriceCandidate(
+                      value = match.value.removePrefix("$").toDouble(),
+                      boundingBox = line.boundingBox,
+                      confidence = line.confidence ?: 0f,
+                      rawText = line.text
+                  ))
+              }
+          }
+      }
+
+      // Sort by vertical position (top to bottom on price board)
+      prices.sortBy { it.boundingBox?.top ?: 0 }
+
+      // Map to fuel grades based on position
+      return mapToFuelGrades(prices)
+  }
+
+  Step 5: MAP TO FUEL GRADES
+  ──────────────────────────
+  Gas station price boards typically display prices top-to-bottom:
+    Position 1 (top)    → Regular (87 octane)
+    Position 2          → Midgrade (89 octane)  — sometimes absent
+    Position 3          → Premium (91/93 octane)
+    Position 4 (bottom) → Diesel
+
+  Additionally, look for label keywords near the price:
+    "REGULAR", "REG", "UNLEADED" → Regular
+    "MID", "PLUS", "MIDGRADE"    → Midgrade
+    "PREMIUM", "PREM", "SUPER"   → Premium
+    "DIESEL"                      → Diesel
+
+  Step 6: CONFIDENCE SCORING
+  ──────────────────────────
+  - ML Kit confidence > 0.8 → "Detected" (show green badge)
+  - ML Kit confidence 0.5-0.8 → "Low Confidence" (show yellow, user should verify)
+  - ML Kit confidence < 0.5 → Don't pre-fill, mark as "Optional"
+  - No detection → Empty field, user enters manually
+
+EDGE CASES & HANDLING:
+──────────────────────
+  • LED price boards at night  → ML Kit handles well with high contrast
+  • Sun glare / reflections    → Prompt user to retake or adjust angle
+  • Partially visible prices   → Extract what's visible, leave rest blank
+  • Non-standard formats       → Some stations use X.XX9 (9/10ths); strip trailing digit
+  • Multiple boards in frame   → Use the largest/most centered text block
+  • Blurry photos             → Check image sharpness before OCR, prompt retake
+
+
+================================================================================
+7. APP ARCHITECTURE
+================================================================================
+
+PATTERN: MVVM + Clean Architecture
+
+  ┌─────────────────────────────────────────────────┐
+  │                 PRESENTATION LAYER               │
+  │  Jetpack Compose UI + ViewModels + UI State      │
+  ├─────────────────────────────────────────────────┤
+  │                  DOMAIN LAYER                    │
+  │  Use Cases + Repository Interfaces + Models      │
+  ├─────────────────────────────────────────────────┤
+  │                   DATA LAYER                     │
+  │  Repository Impl + Firebase + Room + ML Kit      │
+  └─────────────────────────────────────────────────┘
+
+PACKAGE STRUCTURE:
+──────────────────
+  com.oilwatcher.app/
+  ├── di/                      # Hilt modules
+  ├── data/
+  │   ├── remote/              # Firebase Firestore, Storage, Auth
+  │   ├── local/               # Room database, DataStore
+  │   ├── ml/                  # ML Kit text recognition wrapper
+  │   └── repository/          # Repository implementations
+  ├── domain/
+  │   ├── model/               # Data classes (Station, Price, User, Contribution)
+  │   ├── repository/          # Repository interfaces
+  │   └── usecase/             # Business logic (ExtractPrices, SubmitPrice, etc.)
+  ├── presentation/
+  │   ├── theme/               # M3 theme, colors, typography from DESIGN.md
+  │   ├── navigation/          # NavHost, routes, bottom nav
+  │   ├── map/                 # MapScreen, MapViewModel
+  │   ├── camera/              # CameraScreen, CameraViewModel
+  │   ├── analyze/             # AnalyzeScreen, AnalyzeViewModel
+  │   ├── station/             # StationDetailsSheet, StationViewModel
+  │   ├── community/           # HistoryScreen, LeaderboardScreen, CommunityViewModel
+  │   ├── profile/             # ProfileScreen, ProfileViewModel
+  │   ├── settings/            # SettingsScreen, SettingsViewModel
+  │   └── components/          # Reusable composables (BottomNavBar, PriceMarker, etc.)
+  └── util/                    # Extensions, constants, helpers
+
+
+================================================================================
+8. DATA MODELS
+================================================================================
+
+STATION:
+────────
+  data class Station(
+      val id: String,
+      val name: String,
+      val brand: String,               // "chevron", "shell", "bp", etc.
+      val location: GeoPoint,
+      val address: String,
+      val latestPrices: FuelPrices,
+      val lastUpdated: Timestamp,
+      val lastUpdatedBy: String,        // userId
+      val lastUpdatedByName: String,    // display name
+  )
+
+FUEL PRICES:
+────────────
+  data class FuelPrices(
+      val regular: Double?,             // nullable = not reported
+      val midgrade: Double?,
+      val premium: Double?,
+      val diesel: Double?,
+  )
+
+CONTRIBUTION:
+─────────────
+  data class Contribution(
+      val id: String,
+      val userId: String,
+      val stationId: String,
+      val stationName: String,
+      val stationAddress: String,
+      val prices: FuelPrices,
+      val fuelType: FuelType,           // enum: REGULAR, MIDGRADE, PREMIUM, DIESEL, ELECTRIC
+      val photoUrl: String?,
+      val timestamp: Timestamp,
+      val pointsEarned: Int,
+      val verified: Boolean,
+  )
+
+USER PROFILE:
+─────────────
+  data class UserProfile(
+      val id: String,
+      val displayName: String,
+      val email: String,
+      val avatarUrl: String?,
+      val totalContributions: Int,
+      val accuracyRate: Float,          // 0.0 to 1.0
+      val lifetimePoints: Int,
+      val currentRank: Int,
+      val weeklyRankChange: Int,        // positive = moved up
+      val proStatus: Boolean,
+      val createdAt: Timestamp,
+  )
+
+PRICE CANDIDATE (internal, from OCR):
+──────────────────────────────────────
+  data class PriceCandidate(
+      val value: Double,
+      val boundingBox: Rect?,
+      val confidence: Float,
+      val rawText: String,
+      val fuelGrade: FuelType?,         // mapped grade, null if unmapped
+  )
+
+
+================================================================================
+9. SCREEN-BY-SCREEN SPECIFICATIONS
+================================================================================
+
+Each screen maps to a Compose destination in the NavHost:
+
+  ROUTE                  COMPOSABLE              VIEWMODEL
+  ─────                  ──────────              ─────────
+  /map                   MapScreen               MapViewModel
+  /camera                CameraScreen            CameraViewModel
+  /analyze               AnalyzeScreen           AnalyzeViewModel
+  /station/{id}          StationDetailsSheet     StationViewModel
+  /community/history     HistoryScreen           CommunityViewModel
+  /community/leaderboard LeaderboardScreen       CommunityViewModel
+  /profile               ProfileScreen           ProfileViewModel
+  /settings              SettingsScreen           SettingsViewModel
+
+SHARED COMPONENTS:
+  • BottomNavBar (4 items: Map, Contribute, Community/Profile, Settings)
+  • PriceMarker (custom map marker composable)
+  • FuelPriceRow (reusable price input/display row)
+  • StatCard (stats grid item)
+  • ContributionListItem (history entry)
+  • LeaderboardEntry (ranked user row)
+
+
+================================================================================
+10. NAVIGATION MAP
+================================================================================
+
+  BottomNav Tab 1: MAP
+    └── MapScreen
+          ├── Tap marker → StationDetailsSheet (bottom sheet)
+          │     └── "Navigate Now" → external Google Maps intent
+          └── Tap camera FAB → CameraScreen
+                └── Tap shutter → AnalyzeScreen
+                      └── "Confirm & Upload" → back to MapScreen
+
+  BottomNav Tab 2: CONTRIBUTE
+    └── CameraScreen (same as above)
+
+  BottomNav Tab 3: COMMUNITY (or PROFILE)
+    └── ProfileScreen
+          ├── "Contribution History" → HistoryScreen
+          ├── "Community Leaderboard" → LeaderboardScreen
+          └── "Account Settings" → SettingsScreen
+
+  BottomNav Tab 4: SETTINGS
+    └── SettingsScreen
+
+
+================================================================================
+11. GAMIFICATION SYSTEM
+================================================================================
+
+POINTS TABLE:
+─────────────
+  Action                              Points
+  ────────────────────────────────    ──────
+  Report Regular gas price            +25
+  Report Midgrade gas price           +25
+  Report Premium gas price            +30
+  Report Diesel price                 +25
+  Report EV charger price             +15
+  First report of the day bonus       +10
+  Streak bonus (7 consecutive days)   +50
+  Report flagged as inaccurate        -10
+
+RANK TIERS:
+───────────
+  Points Range      Tier
+  ──────────────    ────────────────
+  0 – 999           Newcomer
+  1,000 – 4,999     Active Scout
+  5,000 – 14,999    Fuel Expert
+  15,000 – 24,999   Top Contributor
+  25,000+           Grand Contributor
+
+BADGES:
+───────
+  • "Verified Contributor" — 99%+ accuracy over 50+ reports
+  • "Night Owl" — 10+ reports after 9 PM
+  • "Early Bird" — 10+ reports before 7 AM
+  • "Diesel Detective" — 50+ diesel price reports
+  • "Pro Status" — 500+ accurate contributions (unlocks ad-free, custom map icons)
+
+LEADERBOARD:
+────────────
+  • Monthly leaderboard resets on the 1st of each month
+  • All-Time leaderboard is cumulative
+  • Weekly rank change tracked (displayed as +/- trend arrows)
+  • Top 3 get podium display (gold/silver/bronze)
+
+
+================================================================================
+12. DESIGN SYSTEM TOKENS (FROM DESIGN.md)
+================================================================================
+
+COLORS (Material Design 3 tokens):
+───────────────────────────────────
+  Primary:                   #A63B00
+  Primary Container:         #FF5E00
+  On Primary:                #FFFFFF
+  On Primary Container:      #531900
+  Surface:                   #F9F9F7
+  On Surface:                #1A1C1B
+  Surface Container Lowest:  #FFFFFF
+  Surface Container Low:     #F4F4F2
+  Surface Container:         #EEEEEC
+  Surface Container High:    #E8E8E6
+  Surface Container Highest: #E2E3E1
+  Secondary:                 #5F5E5E
+  Tertiary:                  #0061A4
+  Error:                     #BA1A1A
+  Outline:                   #8F7065
+  Outline Variant:           #E4BFB1
+
+TYPOGRAPHY:
+───────────
+  Headlines:    Clash Display (600, 700 weight)
+  Body Text:    Manrope (400, 500, 600 weight)
+  Alternative:  DM Sans (400, 500, 700 weight)
+  Labels:       Manrope or Epilogue (bold, uppercase, tracking-widest)
+
+CORNER RADIUS:
+──────────────
+  Default:  20px (1.25rem)
+  Large:    32px (2rem)
+  Full:     9999px (pill shape)
+
+ELEVATION:
+──────────
+  Whisper Shadow: 0px 24px 48px rgba(26, 28, 27, 0.06)
+  Sheet Shadow:   0 -4px 20px rgba(0, 0, 0, 0.1)
+
+RULES:
+──────
+  1. NO visible borders for sectioning — use tonal background shifts
+  2. Glassmorphism on floating elements (80% opacity + backdrop-blur)
+  3. Orange is used sparingly — only for CTAs and active states
+  4. All interactive elements minimum 48dp touch target
+
+
+================================================================================
+13. DEVELOPMENT PHASES & TIMELINE
+================================================================================
+
+PHASE 1: FOUNDATION (Weeks 1-2)
+────────────────────────────────
+  • Create Android project with Kotlin + Compose
+  • Configure Hilt DI, Navigation, build variants
+  • Implement M3 theme from design tokens
+  • Set up Firebase project (Auth, Firestore, Storage)
+  • Build BottomNavBar and navigation scaffold
+  • Create placeholder screens for all 8 routes
+  • Firebase Auth (Google Sign-In + Email)
+
+PHASE 2: MAP & STATIONS (Weeks 3-4)
+────────────────────────────────────
+  • Google Maps integration with Maps Compose library
+  • Custom PriceMarker composable (green/dark/white variants)
+  • Marker data loading from Firestore
+  • User location with permissions (ACCESS_FINE_LOCATION)
+  • Search bar with Google Places Autocomplete
+  • StationDetailsSheet bottom sheet composable
+  • "Navigate Now" intent to Google Maps
+  • Marker clustering for performance
+
+PHASE 3: CAMERA & OCR (Weeks 5-6)
+──────────────────────────────────
+  • CameraX integration with preview + image capture
+  • Camera permission handling (CAMERA)
+  • Viewfinder overlay (alignment corners, scan line animation)
+  • Flash toggle and camera switch
+  • ML Kit Text Recognition integration
+  • Price extraction algorithm (regex + position mapping)
+  • AnalyzeScreen with pre-filled editable fields
+  • Photo upload to Cloud Storage
+  • Price submission to Firestore
+  • Auto-detect nearest station via Places API
+
+PHASE 4: COMMUNITY & GAMIFICATION (Weeks 7-8)
+──────────────────────────────────────────────
+  • HistoryScreen with Firestore query (user's contributions)
+  • LeaderboardScreen with aggregated rankings
+  • Segmented control (History/Leaderboard toggle)
+  • Points calculation Cloud Function
+  • ProfileScreen with stats display
+  • Pro Status progress tracking
+  • Badges system
+
+PHASE 5: SETTINGS & POLISH (Weeks 9-10)
+────────────────────────────────────────
+  • SettingsScreen with all sections
+  • Push notification toggle + FCM setup
+  • Dark mode theme variant
+  • Micro-animations and transitions
+  • Error handling (no network, OCR failure, GPS unavailable)
+  • Loading states and empty states
+  • Accessibility (content descriptions, touch targets)
+  • Performance optimization (map, camera, Firestore)
+
+PHASE 6: TESTING & LAUNCH (Weeks 11-12)
+────────────────────────────────────────
+  • Unit tests: OCR pipeline, price extraction, ViewModels
+  • UI tests: All screens with Compose testing
+  • Integration tests: Firebase operations
+  • Real-world OCR testing (50+ gas station photos)
+  • Beta release on Google Play (internal testing track)
+  • Play Store listing (screenshots, description, icon)
+  • Privacy policy and terms of service
+
+
+================================================================================
+14. API & THIRD-PARTY SERVICES
+================================================================================
+
+  Service                      Purpose                         Cost
+  ───────────────────────────  ─────────────────────────────   ────────────
+  Google Maps SDK Android      Interactive map                 Free tier: 28K loads/mo
+  Google Places API            Station search & autocomplete   Free tier: limited
+  Google ML Kit (on-device)    OCR text recognition            FREE (bundled)
+  Firebase Auth                User authentication             FREE (unlimited)
+  Cloud Firestore              Real-time database              Free tier: 50K reads/day
+  Cloud Storage                Photo storage                   Free tier: 5GB
+  Cloud Functions              Serverless backend logic        Free tier: 2M invocations/mo
+  Firebase Cloud Messaging     Push notifications              FREE (unlimited)
+  Firebase Crashlytics         Crash reporting                 FREE
+  Firebase Analytics           Usage analytics                 FREE
+
+
+================================================================================
+15. SECURITY & PRIVACY CONSIDERATIONS
+================================================================================
+
+  DATA PRIVACY:
+  • OCR runs entirely on-device — no images sent for text extraction
+  • Uploaded photos stored in Firebase Storage with security rules
+  • User location data used only for nearest-station detection
+  • Users can delete their data and account
+
+  AUTHENTICATION:
+  • Firebase Auth handles secure token management
+  • Google Sign-In for trusted identity
+  • Optional email/password with email verification
+
+  FIRESTORE SECURITY RULES:
+  • Users can only write their own contributions
+  • Users can only read/write their own profile
+  • Station prices readable by all authenticated users
+  • Leaderboard data is read-only (aggregated by Cloud Functions)
+
+  RATE LIMITING:
+  • Cloud Functions enforce max submissions per user per hour
+  • Prevents spam/abuse of the points system
+
+
+================================================================================
+16. TESTING STRATEGY
+================================================================================
+
+  UNIT TESTS:
+  • PriceExtractor: Regex matching, grade mapping, edge cases
+  • PointsCalculator: All point scenarios
+  • ViewModels: State management, Firestore interactions (mocked)
+
+  INTEGRATION TESTS:
+  • CameraX → ML Kit → PriceExtractor end-to-end
+  • Firestore read/write operations
+  • Auth flow
+
+  UI TESTS:
+  • Compose UI tests for each screen
+  • Navigation tests (all routes accessible)
+  • Bottom sheet expand/collapse
+  • Form validation on AnalyzeScreen
+
+  REAL-WORLD OCR TESTING:
+  • Collect 50+ photos of gas station price boards
+  • Test across conditions: day, night, rain, different fonts, LED vs painted
+  • Measure extraction accuracy rate
+  • Goal: >85% accurate extraction before user correction
+
+  PERFORMANCE TARGETS:
+  • Map: 60fps scrolling with 100+ markers
+  • Camera: <200ms from shutter to preview
+  • OCR: <500ms from image to extracted prices
+  • Contribution upload: <3 seconds end-to-end
+
+
+================================================================================
+17. DEPLOYMENT & DISTRIBUTION
+================================================================================
+
+  BUILD VARIANTS:
+  • debug: Local Firebase emulator, verbose logging
+  • staging: Staging Firebase project, test ads
+  • release: Production Firebase, ProGuard minification, signing
+
+  PLAY STORE:
+  • Internal testing → Closed beta → Open beta → Production
+  • Target: Android 8.0+ (API 26)
+  • App size: ~25MB (including ML Kit model)
+  • Category: Maps & Navigation or Auto & Vehicles
+
+  CI/CD:
+  • GitHub Actions for automated builds
+  • Automated unit test runs on PR
+  • APK/AAB generation on merge to main
+
+
+================================================================================
+18. FUTURE ENHANCEMENTS (POST V1)
+================================================================================
+
+  • Price trend charts per station (7-day, 30-day graphs)
+  • Favorite stations with alerts
+  • Route planning (cheapest gas along a route)
+  • EV charger support (Tesla, ChargePoint, etc.)
+  • Widget showing nearby cheapest prices
+  • Wear OS companion app
+  • iOS version (shared Firestore backend)
+  • Branded station partnerships (verified prices, promotions)
+  • Community comments/reviews on stations
+  • Fuel efficiency calculator
+  • Multi-language support
+  • Fuel price predictions (ML-based forecasting)
+
+
+================================================================================
+19. OPEN QUESTIONS & DECISIONS NEEDED
+================================================================================
+
+  1. CURRENCY: Is this US-only ($) or multi-currency? Affects price formatting
+     and validation regex.
+
+  2. REGION: Any specific geographic focus for the initial launch? (LA area
+     shown in mockups)
+
+  3. BACKEND: Firebase proposed — is a custom backend preferred instead?
+
+  4. MONETIZATION: Ads? Premium subscriptions? The "Payment Methods" in
+     settings suggests in-app purchases or premium features.
+
+  5. MVP SCOPE: Build all 8 screens for v1, or start with core MVP
+     (Map + Camera + Upload)?
+
+  6. APP NAME: "Oil Watcher" is the project name. The mockups use "FuelTrack"
+     and "GAS.UI" as branding. What's the final app name?
+
+  7. STORE LISTING: Filipino market? International? Affects language and
+     currency defaults.
+
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================

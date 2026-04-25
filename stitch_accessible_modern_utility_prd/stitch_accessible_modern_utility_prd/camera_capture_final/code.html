@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&amp;family=Manrope:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "on-primary-fixed-variant": "#7f2b00",
+                    "surface-bright": "#f9f9f7",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#e4bfb1",
+                    "on-primary-fixed": "#370e00",
+                    "surface-container": "#eeeeec",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#001d36",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "outline": "#8f7065",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "secondary": "#5f5e5e",
+                    "tertiary-fixed-dim": "#9fcaff",
+                    "primary-container": "#ff5e00",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#5b4137",
+                    "on-tertiary-container": "#002d51",
+                    "on-surface": "#1a1c1b",
+                    "surface-tint": "#a63b00",
+                    "primary-fixed-dim": "#ffb599",
+                    "primary-fixed": "#ffdbce",
+                    "surface-dim": "#dadad8",
+                    "on-background": "#1a1c1b",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed": "#e5e2e1",
+                    "on-secondary-container": "#636262",
+                    "tertiary": "#0061a4",
+                    "primary": "#a63b00",
+                    "surface-container-high": "#e8e8e6",
+                    "on-primary-container": "#531900",
+                    "surface-container-highest": "#e2e3e1",
+                    "surface-variant": "#e2e3e1",
+                    "on-tertiary-fixed-variant": "#00497d",
+                    "tertiary-fixed": "#d1e4ff",
+                    "inverse-primary": "#ffb599",
+                    "background": "#f9f9f7",
+                    "inverse-surface": "#2f3130",
+                    "surface": "#f9f9f7",
+                    "surface-container-low": "#f4f4f2",
+                    "inverse-on-surface": "#f1f1ef",
+                    "secondary-container": "#e2dfde",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#0097fb",
+                    "on-secondary-fixed-variant": "#474746"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Epilogue"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .viewfinder-mask {
+            background: radial-gradient(circle, transparent 150px, rgba(26, 28, 27, 0.4) 150px);
+        }
+        .scan-line {
+            background: linear-gradient(to right, transparent, #ff5e00, transparent);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-on-surface font-body selection:bg-primary-container selection:text-white overflow-hidden">
+<!-- Edge-to-edge Viewfinder Background -->
+<div class="fixed inset-0 z-0">
+<img class="w-full h-full object-cover grayscale-[0.2]" data-alt="Close-up POV through a camera lens of a gas station price display board with digital orange numbers during daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIAIG-gGUFUoLJl344FQGtNXQdy5EnGnlBLOGRa5K_kZSENI42upvW1qFBW3YkfzQc1oHZowFCi667EzSYGYwn1Vtjg4Tqc6Vrkz6VV_sWI89xekOibfHFZeQe2oV4OELuEZi--dlrSRTkJRz0mWYVQWdMIGMHEehCE247REQhJKLEC8qbXPlsnFa-Y-HZkUjecfpWNMk2Rpl_OlTIHBFhDTRJXj2QbLlZQ3Bk6Ld5cp3CCOS8LwoJk_uPgl1g_1SP7q24Sha3pbJS"/>
+<div class="absolute inset-0 bg-on-surface/20"></div>
+</div>
+<!-- Header Overlay -->
+<header class="fixed top-0 left-0 w-full z-20 px-6 py-8 flex justify-between items-center">
+<!-- Close Button (Frosted Glass) -->
+<button class="w-12 h-12 flex items-center justify-center rounded-full bg-surface-container-lowest/20 backdrop-blur-md text-surface-container-lowest active:scale-90 transition-transform duration-100">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<!-- Brand Indicator (Minimalist) -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="local_gas_station" style="font-variation-settings: 'FILL' 1;">local_gas_station</span>
+<span class="font-headline font-bold text-surface-container-lowest tracking-tight">FuelTrack Capture</span>
+</div>
+<!-- Switch Camera Button -->
+<button class="w-12 h-12 flex items-center justify-center rounded-full bg-surface-container-lowest/10 backdrop-blur-md text-surface-container-lowest active:scale-90 transition-transform duration-100">
+<span class="material-symbols-outlined" data-icon="switch_camera">switch_camera</span>
+</button>
+</header>
+<!-- Center Alignment Guides -->
+<div class="fixed inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
+<!-- Main Framing Box -->
+<div class="relative w-72 h-48 sm:w-80 sm:h-56">
+<!-- Top Left Corner -->
+<div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-primary-container rounded-tl-lg shadow-sm"></div>
+<!-- Top Right Corner -->
+<div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary-container rounded-tr-lg shadow-sm"></div>
+<!-- Bottom Left Corner -->
+<div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary-container rounded-bl-lg shadow-sm"></div>
+<!-- Bottom Right Corner -->
+<div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary-container rounded-br-lg shadow-sm"></div>
+<!-- Horizontal Level Line -->
+<div class="absolute top-1/2 left-[-20px] right-[-20px] h-[1px] bg-surface-container-lowest/30"></div>
+<!-- Scanning Line Visual -->
+<div class="scan-line absolute top-1/2 left-0 w-full h-[2px] opacity-60"></div>
+</div>
+<!-- Helper Text -->
+<div class="mt-8 px-6 py-2 bg-on-surface/40 backdrop-blur-lg rounded-full">
+<p class="text-surface-container-lowest font-medium tracking-wide text-sm">Align prices in the frame</p>
+</div>
+</div>
+<!-- Bottom Controls -->
+<div class="fixed bottom-0 left-0 w-full z-20 pb-16 pt-10 px-10 flex items-center justify-between">
+<!-- Gallery Preview -->
+<div class="w-14 h-14 rounded-lg overflow-hidden border-2 border-surface-container-lowest/30 shadow-lg">
+<img class="w-full h-full object-cover" data-alt="Thumbnail preview of previous photo showing a car at a gas station pump at sunset" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD91absPZRDxTIK5a22kttlb93LWjT-yQglDQ9o5aROi27x8g60VHhBImsepqJDNX0i3AHXlNNiod86vzDwUf7cOnGLA9G-EoGxMCjGo2j-f5hmBxdOnm467DuO2PlUcJ8iVpFmTGdY0w3eIH15gtqQMXorjeYYPe5w3E5rEKnZP_lNZx0ztjmxjs4pGYfbZY0yE5hp6w0opvextOSF4ELgUDZr-jWMfUX0lmPXD7jNmE3URqZW2F_jQNhlsJr2YH-uW0tMCzlTsA2B"/>
+</div>
+<!-- Large Shutter Button -->
+<div class="relative flex items-center justify-center">
+<!-- Outer Ring -->
+<div class="absolute w-24 h-24 border-4 border-surface-container-lowest/40 rounded-full"></div>
+<!-- Main Button -->
+<button class="w-20 h-20 bg-surface-container-lowest rounded-full shadow-2xl active:scale-95 transition-transform duration-100 ring-4 ring-transparent active:ring-primary-container/30">
+<span class="sr-only">Capture Photo</span>
+</button>
+</div>
+<!-- Flash Toggle -->
+<button class="w-14 h-14 flex items-center justify-center rounded-full bg-surface-container-lowest/10 backdrop-blur-sm text-surface-container-lowest">
+<span class="material-symbols-outlined" data-icon="flash_off">flash_off</span>
+</button>
+</div>
+<!-- Secondary Task Instructions (Editorial Style) -->
+<div class="fixed bottom-4 left-0 w-full z-30 flex justify-center pointer-events-none">
+<div class="bg-surface-container-lowest/5 backdrop-blur-sm px-4 py-1.5 rounded-full">
+<span class="text-[10px] uppercase font-bold tracking-[0.2em] text-surface-container-lowest/60">Session ID: FT-8829-PX</span>
+</div>
+</div>
+<!-- Status Bar Area (Hidden on Web usually, but mimicking for realism) -->
+<div class="fixed top-2 left-0 w-full h-6 flex justify-center z-50 md:hidden">
+<div class="w-32 h-6 bg-on-surface rounded-full"></div>
+</div>
+</body></html>

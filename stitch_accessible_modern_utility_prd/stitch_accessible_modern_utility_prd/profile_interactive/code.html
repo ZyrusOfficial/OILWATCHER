@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile &amp; Impact</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@600;700&amp;family=DM+Sans:wght@500&amp;family=Epilogue:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#FF5E00",
+          "background": "#F7F7F5",
+          "surface": "#FFFFFF",
+          "text": "#1A1A1A",
+          "muted": "#8E8E8B",
+          "accent": "#00C853",
+        },
+        fontFamily: {
+          "heading": ["Clash Display", "sans-serif"],
+          "body": ["DM Sans", "sans-serif"],
+        },
+        borderRadius: {
+          "sm": "12px",
+          "md": "20px",
+          "lg": "32px",
+        },
+        spacing: {
+          "sm": "12px",
+          "md": "24px",
+          "lg": "32px",
+          "xl": "48px",
+          "touch": "64px",
+        }
+      },
+    },
+  }
+</script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-text font-body min-h-screen antialiased selection:bg-primary selection:text-white">
+<div class="max-w-md mx-auto bg-background min-h-screen relative overflow-hidden flex flex-col">
+<!-- Header / Back Button -->
+<header class="flex items-center justify-between p-md pt-12 z-10 sticky top-0 bg-background/90 backdrop-blur-md">
+<a aria-label="Go back" class="w-12 h-12 flex items-center justify-center rounded-full bg-surface shadow-sm active:scale-95 transition-transform" href="{{DATA:SCREEN:SCREEN_16}}">
+<span class="material-symbols-outlined text-text" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</a>
+<h1 class="font-heading font-bold text-2xl text-text text-center flex-1 pr-12">Profile</h1>
+</header>
+<main class="flex-1 overflow-y-auto pb-32">
+<!-- User Info Header -->
+<section class="flex flex-col items-center px-md py-lg gap-sm">
+<div class="relative">
+<div class="w-32 h-32 rounded-full bg-surface shadow-md border-4 border-surface overflow-hidden bg-center bg-cover" data-alt="close-up portrait of young professional smiling outdoors softly blurred background warm lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB2gd_HGaPuKkGOpex4NzTs-9G0ZrfM6DiUcG8hUQm3e2uiOyNtwUj_zbLl0TPTYBhEZWlpQvCclRRsdClDzcBq_Tm2DLJR1sRUgHgalAew8_w55FXk9om5iO_URzL-mH3n6wd2M0_JGkQwKU5zJwsEZytlvfOyjxHtbRQFF9SnJfCDkyBoS7FsHs_Th_3ojN9oBJ1qjRm0J2H4fLH4lUjva9vIH4uR6VF1oLW-zvUQ3RwZ2p19qA-b0BWezKwr1qRQ_bVzZ53xjmO6');"></div>
+<div class="absolute bottom-0 right-0 w-8 h-8 bg-accent rounded-full border-2 border-background flex items-center justify-center">
+<span class="material-symbols-outlined text-surface text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="text-center mt-2">
+<h2 class="font-heading font-bold text-2xl text-text leading-tight">Alex Driver</h2>
+<p class="font-body font-medium text-muted text-base mt-1">Verified Contributor</p>
+</div>
+</section>
+<!-- Stats Grid -->
+<section class="px-md py-sm">
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-surface rounded-md p-4 flex flex-col items-center text-center shadow-sm">
+<p class="font-heading font-bold text-3xl text-text">238</p>
+<p class="font-body text-sm text-muted mt-1">Contributions</p>
+</div>
+<div class="bg-surface rounded-md p-4 flex flex-col items-center text-center shadow-sm">
+<p class="font-heading font-bold text-3xl text-text">99%</p>
+<p class="font-body text-sm text-muted mt-1">Accuracy</p>
+</div>
+<div class="bg-surface rounded-md p-4 flex flex-col items-center text-center shadow-sm">
+<p class="font-heading font-bold text-3xl text-text">#12</p>
+<p class="font-body text-sm text-muted mt-1">Local Rank</p>
+</div>
+</div>
+</section>
+<!-- Action List -->
+<section class="px-md py-lg flex flex-col gap-sm">
+<button class="w-full flex items-center justify-between bg-surface p-4 rounded-md shadow-sm active:scale-[0.98] transition-transform">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-background flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 0;">history</span>
+</div>
+<span class="font-body font-medium text-text text-lg">Contribution History</span>
+</div>
+<span class="material-symbols-outlined text-muted" style="font-variation-settings: 'FILL' 0;">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between bg-surface p-4 rounded-md shadow-sm active:scale-[0.98] transition-transform">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-background flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 0;">leaderboard</span>
+</div>
+<span class="font-body font-medium text-text text-lg">Community Leaderboard</span>
+</div>
+<span class="material-symbols-outlined text-muted" style="font-variation-settings: 'FILL' 0;">chevron_right</span>
+</button>
+<a class="w-full flex items-center justify-between bg-surface p-4 rounded-md shadow-sm active:scale-[0.98] transition-transform mt-4" href="{{DATA:SCREEN:SCREEN_19}}">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-background flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-muted" style="font-variation-settings: 'FILL' 0;">settings</span>
+</div>
+<span class="font-body font-medium text-text text-lg">Account Settings</span>
+</div>
+<span class="material-symbols-outlined text-muted" style="font-variation-settings: 'FILL' 0;">chevron_right</span>
+</a>
+</section>
+<!-- Reward Prompt -->
+<section class="px-md mt-4 pb-12">
+<div class="bg-primary/10 border border-primary/20 rounded-md p-6 relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-heading font-bold text-xl text-text mb-2">Unlock Pro Status</h3>
+<p class="font-body text-text/80 text-sm mb-4 leading-relaxed">Reach 500 accurate contributions to unlock exclusive map icons and ad-free browsing.</p>
+<div class="w-full bg-surface rounded-full h-3 mb-2 overflow-hidden">
+<div class="bg-primary h-3 rounded-full" style="width: 47%"></div>
+</div>
+<p class="font-body text-xs text-muted text-right font-medium">262 left</p>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-primary/20" style="font-size: 120px; font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 bg-white/80 backdrop-blur-md z-50 shadow-[0px_-24px_48px_rgba(26,28,27,0.06)]">
+<a class="flex flex-col items-center justify-center text-zinc-500 hover:bg-zinc-100 transition-colors scale-95 active:scale-90 transition-transform" href="{{DATA:SCREEN:SCREEN_16}}">
+<span class="material-symbols-outlined">map</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 hover:bg-zinc-100 transition-colors scale-95 active:scale-90 transition-transform" href="{{DATA:SCREEN:SCREEN_5}}">
+<span class="material-symbols-outlined">photo_camera</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Contribute</span>
+</a>
+<a class="flex flex-col items-center justify-center text-orange-600 after:content-[''] after:w-1 after:h-1 after:bg-orange-500 after:rounded-full after:mt-1 hover:bg-zinc-100 transition-colors scale-95 active:scale-90 transition-transform" href="{{DATA:SCREEN:SCREEN_7}}">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 hover:bg-zinc-100 transition-colors scale-95 active:scale-90 transition-transform" href="{{DATA:SCREEN:SCREEN_19}}">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Settings</span>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analyze &amp; Preview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#f95f06",
+          "background-light": "#f8f6f5",
+          "background-dark": "#23160f",
+        },
+        fontFamily: {
+          "display": ["Manrope"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  body { font-family: 'Manrope', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  
+  /* Custom scrollbar for webkit */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light text-gray-900 h-screen w-full overflow-hidden flex justify-center selection:bg-primary selection:text-white">
+<main class="w-full h-full max-w-5xl mx-auto flex flex-col md:flex-row relative bg-white shadow-2xl overflow-hidden">
+<!-- Shared Component Exception: Simple Header for Focused View -->
+<header class="absolute top-0 left-0 w-full z-50 flex items-center justify-between p-4 md:hidden">
+<button aria-label="Go back" class="size-12 flex items-center justify-center bg-black/40 backdrop-blur-md rounded-full text-white transition-transform active:scale-95" onclick="window.location.href='{{DATA:SCREEN:SCREEN_5}}'">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+</header>
+<!-- Photo Preview Area (Top 40% Mobile / Left 50% Tablet) -->
+<section class="relative w-full h-[353px] md:h-full md:w-1/2 bg-background-dark shrink-0 flex items-center justify-center overflow-hidden">
+<!-- Tablet Header Overlay -->
+<header class="absolute top-0 left-0 w-full z-50 hidden md:flex items-center justify-between p-6">
+<button aria-label="Go back" class="size-12 flex items-center justify-center bg-black/40 backdrop-blur-md rounded-full text-white hover:bg-black/60 transition-colors" onclick="window.location.href='{{DATA:SCREEN:SCREEN_5}}'">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+</header>
+<div class="w-full h-full p-0 md:p-8 flex items-center justify-center">
+<div class="relative w-full h-full md:h-auto md:aspect-[3/4] md:max-h-full md:rounded-xl overflow-hidden bg-black/50 shadow-inner">
+<!-- Captured Image -->
+<img alt="Close-up of a brightly lit gas station pricing pylon at night showing regular and diesel prices in red LED numbers" class="w-full h-full object-cover object-center opacity-90 mix-blend-lighten pointer-events-none" data-alt="Close-up of a brightly lit gas station pricing pylon at night showing regular and diesel prices in red LED numbers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBopGgnNXdpi8XF5nuvAoKhlgGZOzJgp0mgEcBQAINPD8h8aXKfhRLjRiV7xLkahp-rZK9APFWBjlwO50jHjCWN9-4KMfLmriviOKZPmXagCEmhK1DOt5Xpbse5TqhXCLiHYw5UlmtSwRdw-zLgiH76dj2cc72RlNH_A49lv_NLVtnkNT0G-_6bjgWZW1-n0ZixD1loZkC77-hjb3R-qMEHu8J-er7_XJpoq4-15MUjCi9ZjXjdU5MqBzqZEsnrVpQBY4F2QNhSKaM"/>
+<!-- Scanning Overlay (Simulated AI Scan Effect) -->
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/20 to-transparent translate-y-[-100%] animate-[scan_3s_ease-in-out_infinite]"></div>
+</div>
+</div>
+</section>
+<!-- Input Form Area (Bottom 60% Mobile / Right 50% Tablet) -->
+<section class="flex-1 w-full flex flex-col bg-white h-[530px] md:h-full z-10 rounded-t-3xl md:rounded-none -mt-6 md:mt-0 shadow-[0_-8px_30px_rgba(0,0,0,0.05)] md:shadow-none overflow-hidden">
+<div class="flex-1 overflow-y-auto px-6 pt-8 pb-32 md:px-12 md:py-16 scroll-smooth">
+<div class="max-w-md mx-auto w-full">
+<h2 class="text-3xl font-bold tracking-tight text-gray-900 mb-2">Verify Prices</h2>
+<p class="text-gray-500 mb-8 font-medium">Tap any price to correct scanning errors.</p>
+<form class="space-y-4" onsubmit="event.preventDefault();">
+<!-- Input Row: Regular -->
+<div class="group relative flex items-center justify-between h-[88px] border-b border-gray-100 px-2 transition-colors focus-within:border-primary focus-within:bg-primary/5 rounded-t-lg">
+<label class="flex flex-col justify-center h-full w-1/3 shrink-0 cursor-text" for="price-regular">
+<span class="text-lg font-bold text-gray-800">Regular</span>
+<span class="text-sm font-medium text-green-600 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Detected
+              </span>
+</label>
+<div class="relative w-2/3 h-full flex items-center justify-end">
+<span class="text-3xl font-bold text-gray-400 absolute left-4 pointer-events-none">$</span>
+<input class="w-full h-full bg-transparent border-none text-right text-4xl font-black text-gray-900 focus:ring-0 pl-10 pr-2 placeholder-gray-300 transition-colors" id="price-regular" name="regular" placeholder="0.00" step="0.01" type="number" value="3.45"/>
+</div>
+</div>
+<!-- Input Row: Midgrade -->
+<div class="group relative flex items-center justify-between h-[88px] border-b border-gray-100 px-2 transition-colors focus-within:border-primary focus-within:bg-primary/5">
+<label class="flex flex-col justify-center h-full w-1/3 shrink-0 cursor-text" for="price-midgrade">
+<span class="text-lg font-bold text-gray-800">Midgrade</span>
+<span class="text-sm font-medium text-gray-400">Optional</span>
+</label>
+<div class="relative w-2/3 h-full flex items-center justify-end">
+<span class="text-3xl font-bold text-gray-400 absolute left-4 pointer-events-none">$</span>
+<input class="w-full h-full bg-transparent border-none text-right text-4xl font-black text-gray-900 focus:ring-0 pl-10 pr-2 placeholder-gray-300 transition-colors" id="price-midgrade" name="midgrade" placeholder="0.00" step="0.01" type="number" value="3.89"/>
+</div>
+</div>
+<!-- Input Row: Premium -->
+<div class="group relative flex items-center justify-between h-[88px] border-b border-gray-100 px-2 transition-colors focus-within:border-primary focus-within:bg-primary/5">
+<label class="flex flex-col justify-center h-full w-1/3 shrink-0 cursor-text" for="price-premium">
+<span class="text-lg font-bold text-gray-800">Premium</span>
+<span class="text-sm font-medium text-gray-400">Optional</span>
+</label>
+<div class="relative w-2/3 h-full flex items-center justify-end">
+<span class="text-3xl font-bold text-gray-400 absolute left-4 pointer-events-none">$</span>
+<input class="w-full h-full bg-transparent border-none text-right text-4xl font-black text-gray-900 focus:ring-0 pl-10 pr-2 placeholder-gray-300 transition-colors" id="price-premium" name="premium" placeholder="0.00" step="0.01" type="number" value=""/>
+</div>
+</div>
+<!-- Input Row: Diesel -->
+<div class="group relative flex items-center justify-between h-[88px] border-b border-transparent px-2 transition-colors focus-within:border-primary focus-within:bg-primary/5 rounded-b-lg">
+<label class="flex flex-col justify-center h-full w-1/3 shrink-0 cursor-text" for="price-diesel">
+<span class="text-lg font-bold text-gray-800">Diesel</span>
+<span class="text-sm font-medium text-green-600 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Detected
+              </span>
+</label>
+<div class="relative w-2/3 h-full flex items-center justify-end">
+<span class="text-3xl font-bold text-gray-400 absolute left-4 pointer-events-none">$</span>
+<input class="w-full h-full bg-transparent border-none text-right text-4xl font-black text-gray-900 focus:ring-0 pl-10 pr-2 placeholder-gray-300 transition-colors" id="price-diesel" name="diesel" placeholder="0.00" step="0.01" type="number" value="4.15"/>
+</div>
+</div>
+</form>
+</div>
+</div>
+<!-- Fixed Bottom Action Area -->
+<div class="absolute bottom-0 right-0 w-full md:w-1/2 p-6 bg-gradient-to-t from-white via-white to-white/80 backdrop-blur-sm z-20">
+<div class="max-w-md mx-auto w-full">
+<button class="w-full h-[64px] bg-primary text-white text-xl font-bold rounded-xl shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-transform active:scale-[0.98] hover:bg-[#e05605]" onclick="window.location.href='{{DATA:SCREEN:SCREEN_16}}'" type="button">
+<span>Confirm &amp; Upload</span>
+<span class="material-symbols-outlined text-2xl">cloud_upload</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<style>
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    50% { transform: translateY(100%); }
+    100% { transform: translateY(-100%); }
+  }
+</style>
+</body></html>

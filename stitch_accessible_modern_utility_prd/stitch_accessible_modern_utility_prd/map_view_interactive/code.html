@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gas Price Tracker - Map View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#f95f06",
+          "background-light": "#f8f6f5",
+          "background-dark": "#23160f",
+        },
+        fontFamily: {
+          "display": ["Manrope", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  body { font-family: 'Manrope', sans-serif; }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .marker-shadow {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light text-[#1A1A1A] h-screen w-screen overflow-hidden antialiased">
+<div class="relative w-full h-full">
+<!-- Map Background (Simulated) -->
+<div class="absolute inset-0 bg-cover bg-center w-full h-full" data-alt="Light colored stylized map background showing city streets and blocks in light grey and beige tones" data-location="Los Angeles" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDraqxWX4SoBf2ZaZxTi1KEt8PbC_iK06Kio_bdOOXLd9_eTOzRo-VztlqXv9He9ARtkxeOUqJHpydGeoyQX7fKwT-fW94MvC26dw7zUGG37j0470U_IZyISp3zynWwcV7opB-9Y6weYYXi11hfOtgizCW81bk5pogHHkD-KopIvysARQYxqpL1gmbLSFkvbzWrv8bepOJ5IipGVhdGGgEcvbdY1wTd3V50K_C9DN7NzGfZFKuq7v8pT1rozift9twNFzHMwsrompZ5');">
+<!-- Map Overlay for better contrast -->
+<div class="absolute inset-0 bg-white/20"></div>
+</div>
+<!-- Top Floating Search Bar -->
+<div class="absolute top-0 left-0 w-full px-4 pt-12 pb-4 z-10 pointer-events-none">
+<div class="max-w-md mx-auto pointer-events-auto">
+<div class="flex items-center bg-white/85 backdrop-blur-md rounded-xl h-16 px-4 shadow-sm border border-white/50">
+<span class="material-symbols-outlined text-[#8E8E8B] mr-3" style="font-size: 28px;">search</span>
+<input class="w-full bg-transparent border-none text-lg font-medium text-[#1A1A1A] placeholder-[#8E8E8B] focus:ring-0 p-0" placeholder="Search area" type="text"/>
+</div>
+</div>
+</div>
+<!-- Price Markers -->
+<div class="absolute inset-0 z-20 pointer-events-none">
+<!-- Cheap Marker (Green) -->
+<div class="absolute top-[35%] left-[25%] pointer-events-auto cursor-pointer transform hover:scale-110 transition-transform origin-bottom" onclick="window.location.href='{{DATA:SCREEN:SCREEN_12}}'">
+<div class="bg-[#00C853] text-white rounded-xl h-12 w-[88px] flex items-center justify-center marker-shadow font-bold text-[20px] tracking-tight relative">
+        $3.25
+        <!-- Pointer tail -->
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#00C853] transform rotate-45"></div>
+</div>
+</div>
+<!-- Average Marker (Charcoal) -->
+<div class="absolute top-[45%] right-[20%] pointer-events-auto cursor-pointer transform hover:scale-110 transition-transform origin-bottom" onclick="window.location.href='{{DATA:SCREEN:SCREEN_12}}'">
+<div class="bg-[#1A1A1A] text-white rounded-xl h-12 w-[88px] flex items-center justify-center marker-shadow font-bold text-[20px] tracking-tight relative">
+        $3.45
+        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#1A1A1A] transform rotate-45"></div>
+</div>
+</div>
+<!-- Expensive Marker (White) -->
+<div class="absolute top-[60%] left-[40%] pointer-events-auto cursor-pointer transform hover:scale-110 transition-transform origin-bottom" onclick="window.location.href='{{DATA:SCREEN:SCREEN_12}}'">
+<div class="bg-white text-[#1A1A1A] rounded-xl h-12 w-[88px] flex items-center justify-center marker-shadow font-bold text-[20px] tracking-tight border border-gray-200 relative">
+        $3.89
+        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-b border-r border-gray-200 transform rotate-45"></div>
+</div>
+</div>
+<!-- Cheap Marker (Green) -->
+<div class="absolute top-[20%] right-[35%] pointer-events-auto cursor-pointer transform hover:scale-110 transition-transform origin-bottom scale-90 opacity-80" onclick="window.location.href='{{DATA:SCREEN:SCREEN_12}}'">
+<div class="bg-[#00C853] text-white rounded-xl h-12 w-[88px] flex items-center justify-center marker-shadow font-bold text-[20px] tracking-tight relative">
+        $3.28
+        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#00C853] transform rotate-45"></div>
+</div>
+</div>
+</div>
+<!-- Contribute FAB -->
+<div class="absolute bottom-24 right-6 z-30">
+<button class="bg-primary hover:bg-orange-600 text-white rounded-2xl w-[64px] h-[64px] flex items-center justify-center shadow-lg active:scale-95 transition-transform" onclick="window.location.href='{{DATA:SCREEN:SCREEN_5}}'">
+<span class="material-symbols-outlined" style="font-size: 32px; font-variation-settings: 'FILL' 1;">photo_camera</span>
+</button>
+</div>
+<!-- User Location Indicator -->
+<div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center animate-pulse">
+<div class="w-5 h-5 rounded-full bg-blue-600 border-2 border-white shadow-sm"></div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 z-50 bg-white/80 backdrop-blur-md shadow-[0px_-24px_48px_rgba(26,28,27,0.06)]">
+<a class="flex flex-col items-center justify-center text-orange-600 after:content-[''] after:w-1 after:h-1 after:bg-orange-500 after:rounded-full after:mt-1 hover:bg-zinc-100 transition-colors scale-95 active:scale-90 transition-transform" href="{{DATA:SCREEN:SCREEN_16}}">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 hover:bg-zinc-100 transition-colors scale-95 active:scale-90 transition-transform" href="{{DATA:SCREEN:SCREEN_5}}">
+<span class="material-symbols-outlined">photo_camera</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Contribute</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 hover:bg-zinc-100 transition-colors scale-95 active:scale-90 transition-transform" href="{{DATA:SCREEN:SCREEN_7}}">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 hover:bg-zinc-100 transition-colors scale-95 active:scale-90 transition-transform" href="{{DATA:SCREEN:SCREEN_19}}">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Settings</span>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&amp;family=Manrope:wght@200..800&amp;family=Clash+Display:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f1f1ef",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#001d36",
+                    "surface-variant": "#e2e3e1",
+                    "primary": "#a63b00",
+                    "primary-container": "#ff5e00",
+                    "surface-tint": "#a63b00",
+                    "outline": "#8f7065",
+                    "surface-bright": "#f9f9f7",
+                    "secondary": "#5f5e5e",
+                    "primary-fixed": "#ffdbce",
+                    "on-tertiary-fixed-variant": "#00497d",
+                    "tertiary-container": "#0097fb",
+                    "inverse-surface": "#2f3130",
+                    "on-surface-variant": "#5b4137",
+                    "on-primary-fixed": "#370e00",
+                    "on-tertiary-container": "#002d51",
+                    "surface-container-highest": "#e2e3e1",
+                    "secondary-container": "#e2dfde",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "on-surface": "#1a1c1b",
+                    "tertiary-fixed": "#d1e4ff",
+                    "tertiary": "#0061a4",
+                    "on-secondary-container": "#636262",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#531900",
+                    "surface": "#f9f9f7",
+                    "background": "#f9f9f7",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#7f2b00",
+                    "surface-container": "#eeeeec",
+                    "surface-container-high": "#e8e8e6",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-dim": "#dadad8",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#ffb599",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#474746",
+                    "outline-variant": "#e4bfb1",
+                    "surface-container-low": "#f4f4f2",
+                    "secondary-fixed": "#e5e2e1",
+                    "tertiary-fixed-dim": "#9fcaff",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#ffb599",
+                    "on-background": "#1a1c1b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Clash Display", "sans-serif"],
+                    "body": ["Manrope", "sans-serif"],
+                    "label": ["Manrope", "sans-serif"],
+                    "brand": ["Clash Display", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #F9F9F7;
+            color: #1A1C1B;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-40 bg-[#F9F9F7] dark:bg-zinc-950 flex items-center justify-between px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<a class="hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-full p-2 transition-all active:opacity-70" href="{{DATA:SCREEN:SCREEN_16}}">
+<span class="material-symbols-outlined text-[#A63B00] dark:text-orange-500" data-icon="arrow_back">arrow_back</span>
+</a>
+<h1 class="font-['Clash_Display'] font-bold text-xl tracking-tight text-[#A63B00] dark:text-orange-500">Settings</h1>
+</div>
+<div class="flex items-center">
+<span class="font-['Clash_Display'] font-black text-[#A63B00]">GAS.UI</span>
+</div>
+</header>
+<main class="max-w-xl mx-auto px-6 py-8 space-y-10">
+<!-- Profile Header / Editorial Hero -->
+<section class="flex flex-col items-center text-center space-y-4">
+<div class="relative">
+<div class="w-24 h-24 rounded-full overflow-hidden border-4 border-surface-container-lowest shadow-sm">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Close-up studio portrait of a confident man with a short beard against a neutral soft gray background, natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI-qffPRVQEHjywm9etdW3Sim4BJOlwPrl6wUw4H8TocxrO9sXewv2vpyG83ngLvFDUGkjVnu4mSKO0sh2NdDXDCPvesNOPfwp84jnTolJNJbLlthIViq0Sm-4_SY39v_QpzRcSvPMG6QD7MSSZTIu3DW0STMpKe93iGWx-FVI-1EcQlK9vKO2bg7LLM262-q58ZE99QWKGQC-WWvpVixd1ogIDAzvte4ZSprrBG5lHKR1KMpOtrMzBWm74GFmBP-w0uaXQgkj5hFj"/>
+</div>
+<div class="absolute bottom-0 right-0 bg-primary-container p-1.5 rounded-full text-white shadow-lg">
+<span class="material-symbols-outlined text-sm" data-icon="edit" style="font-variation-settings: 'FILL' 1;">edit</span>
+</div>
+</div>
+<div>
+<h2 class="font-headline font-bold text-2xl tracking-tight">Alex Sterling</h2>
+<p class="text-on-surface-variant font-medium">alex.sterling@example.com</p>
+</div>
+</section>
+<!-- Account Section -->
+<section class="space-y-4">
+<h3 class="font-label text-xs font-black uppercase tracking-widest text-on-surface-variant px-2">Account</h3>
+<div class="bg-surface-container-low rounded-lg overflow-hidden">
+<!-- List Item -->
+<button class="w-full flex items-center justify-between p-5 hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+</div>
+<span class="font-bold text-on-surface">Personal Information</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- List Item -->
+<button class="w-full flex items-center justify-between p-5 hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+</div>
+<span class="font-bold text-on-surface">Login &amp; Security</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- List Item -->
+<button class="w-full flex items-center justify-between p-5 hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="payments">payments</span>
+</div>
+<span class="font-bold text-on-surface">Payment Methods</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Preferences Section -->
+<section class="space-y-4">
+<h3 class="font-label text-xs font-black uppercase tracking-widest text-on-surface-variant px-2">Preferences</h3>
+<div class="bg-surface-container-low rounded-lg overflow-hidden">
+<!-- List Item with Toggle -->
+<div class="w-full flex items-center justify-between p-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</div>
+<span class="font-bold text-on-surface">Push Notifications</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<!-- List Item with Toggle -->
+<div class="w-full flex items-center justify-between p-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full">
+<span class="material-symbols-outlined text-primary" data-icon="near_me">near_me</span>
+</div>
+<span class="font-bold text-on-surface">Location Services</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<!-- List Item -->
+<button class="w-full flex items-center justify-between p-5 hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="palette">palette</span>
+</div>
+<span class="font-bold text-on-surface">Appearance</span>
+</div>
+<span class="text-sm font-semibold text-on-surface-variant mr-1">System</span>
+</button>
+</div>
+</section>
+<!-- Support Section -->
+<section class="space-y-4">
+<h3 class="font-label text-xs font-black uppercase tracking-widest text-on-surface-variant px-2">Support</h3>
+<div class="bg-surface-container-low rounded-lg overflow-hidden">
+<!-- List Item -->
+<button class="w-full flex items-center justify-between p-5 hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="help">help</span>
+</div>
+<span class="font-bold text-on-surface">Help Center</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="open_in_new">open_in_new</span>
+</button>
+<!-- List Item -->
+<button class="w-full flex items-center justify-between p-5 hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="policy">policy</span>
+</div>
+<span class="font-bold text-on-surface">Privacy Policy</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Sign Out -->
+<div class="pt-4 pb-12">
+<button class="w-full py-4 px-6 rounded-lg font-headline font-bold text-primary flex items-center justify-center gap-2 hover:bg-primary/5 transition-all">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Sign Out
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md z-50 rounded-t-none shadow-[0px_-24px_48px_rgba(26,28,27,0.06)]">
+<!-- Map -->
+<a class="flex flex-col items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors scale-95 active:scale-90" href="{{DATA:SCREEN:SCREEN_16}}">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Map</span>
+</a>
+<!-- Contribute -->
+<a class="flex flex-col items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors scale-95 active:scale-90" href="{{DATA:SCREEN:SCREEN_5}}">
+<span class="material-symbols-outlined" data-icon="photo_camera">photo_camera</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Contribute</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors scale-95 active:scale-90" href="{{DATA:SCREEN:SCREEN_7}}">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Profile</span>
+</a>
+<!-- Settings (Active) -->
+<a class="flex flex-col items-center justify-center text-orange-600 dark:text-orange-500 after:content-[''] after:w-1 after:h-1 after:bg-orange-500 after:rounded-full after:mt-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors scale-95 active:scale-90" href="{{DATA:SCREEN:SCREEN_19}}">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-['Epilogue'] text-[10px] font-bold tracking-tight">Settings</span>
+</a>
+</nav>
+</body></html>

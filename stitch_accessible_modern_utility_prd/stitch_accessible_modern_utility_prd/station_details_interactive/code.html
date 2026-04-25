@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Station Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f95f06",
+                        "background-light": "#f8f6f5",
+                        "background-dark": "#23160f",
+                        "surface": "#ffffff",
+                        "text-main": "#1a1a1a",
+                        "text-muted": "#8e8e8b",
+                        "accent": "#00c853"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px", "md": "20px"},
+                    boxShadow: {
+                        'sheet': '0 -4px 20px rgba(0, 0, 0, 0.1)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>body {
+    font-family: "Manrope", sans-serif;
+    background-color: #f8f6f5;
+    /* Simulating map background */
+    /* Add a dummy map background image for context */
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDZk5o_L-hGxPn7v4Q7B-zkqfM94fDl842ui3PA_Zd-WVAwvXGmCzFJCTevOLSoOhqsL6FvdA650Tl5VnQdU0yDDKBdrHmKVYmwXoHX74cAyKz9Z45CHqHSPpVul8FCBzJwRxkRi9zrX9tB-YoeAotoUwtqQbbgc8p8RrpYcSX-Dj23XFdeb--ejxQtOyTwkhebamy5djPqsmuiLuMMNLM_UP4HSIluSfIGe7tgtisj61aRfZ4n41EtFvoEsVY-9LRYId1uxMo9YYQ-);
+    background-size: cover;
+    background-position: center
+    }
+/* Map context placeholder */
+.map-context {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(248, 246, 245, 0.4);
+    backdrop-filter: blur(2px)
+    }
+/* Material Symbols Setup */
+.material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="relative h-screen w-full overflow-hidden text-text-main font-body selection:bg-primary selection:text-white flex items-end md:items-center md:justify-start">
+<!-- Map Context Background (Simulated) -->
+<a aria-hidden="true" class="map-context block cursor-default" data-alt="blurred map background showing urban street layout in light colors" href="{{DATA:SCREEN:SCREEN_16}}"></a>
+<!-- Station Details Bottom Sheet / Side Panel -->
+<div class="relative z-10 w-full bg-surface rounded-t-[20px] md:rounded-[20px] shadow-sheet transform transition-transform duration-300 ease-in-out md:w-[400px] md:ml-6 md:mb-0 md:h-auto md:max-h-[707px] flex flex-col">
+<!-- Drag Handle (Mobile only) -->
+<a class="flex h-6 w-full items-center justify-center pt-3 pb-1 md:hidden touch-pan-y cursor-pointer active:cursor-grabbing" href="{{DATA:SCREEN:SCREEN_16}}">
+<div class="h-[5px] w-12 rounded-full bg-text-muted/30"></div>
+</a>
+<!-- Content Container -->
+<div class="flex-1 flex flex-col px-6 pb-6 pt-2 md:pt-6 overflow-y-auto">
+<!-- Header Section -->
+<div class="mb-6">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-display font-bold text-3xl tracking-tight leading-none mb-1 text-text-main">Chevron</h2>
+<p class="text-text-muted font-medium text-[16px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                            0.8 mi away
+                        </p>
+</div>
+<!-- Close button for tablet -->
+<button aria-label="Close details" class="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-background-light hover:bg-gray-100 transition-colors">
+<span class="material-symbols-outlined text-text-main">close</span>
+</button>
+</div>
+</div>
+<!-- Price List (Simplified to essential fuel grades) -->
+<div class="space-y-4 mb-8">
+<!-- Primary Fuel Grade (Regular) -->
+<div class="flex items-center justify-between bg-background-light p-4 rounded-[16px] border border-transparent hover:border-gray-200 transition-colors">
+<div class="flex flex-col">
+<span class="text-text-main font-semibold text-lg">Regular</span>
+<span class="text-text-muted text-sm font-medium">87 Octane</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="text-text-main font-display font-bold text-4xl tracking-tight">
+                            $3.45
+                        </div>
+<div class="flex items-center justify-center w-6 h-6 rounded-full bg-accent/10 text-accent" title="Below average price">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">trending_down</span>
+</div>
+</div>
+</div>
+<!-- Secondary Fuel Grade (Premium - less visual weight) -->
+<div class="flex items-center justify-between p-4 border-b border-gray-100 last:border-0 opacity-80">
+<span class="text-text-main font-medium text-base">Premium</span>
+<span class="text-text-main font-display font-semibold text-2xl tracking-tight">$3.89</span>
+</div>
+<div class="flex items-center justify-between p-4 border-b border-gray-100 last:border-0 opacity-80">
+<span class="text-text-main font-medium text-base">Diesel</span>
+<span class="text-text-main font-display font-semibold text-2xl tracking-tight">$4.15</span>
+</div>
+</div>
+<!-- Last Updated Info -->
+<div class="flex items-center justify-center gap-2 text-text-muted text-sm font-medium mb-6">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                Updated 2h ago by <span class="font-bold text-text-main">@FastDriver</span>
+</div>
+<!-- Navigation CTA -->
+<div class="mt-auto">
+<button class="w-full h-[64px] bg-primary text-white font-display font-bold text-[18px] rounded-[20px] flex items-center justify-center gap-3 active:scale-[0.98] transition-transform shadow-lg shadow-primary/20 hover:bg-primary/90">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">navigation</span>
+                    Navigate Now
+                </button>
+</div>
+</div>
+</div>
+</body></html>

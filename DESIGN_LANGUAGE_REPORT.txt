@@ -1,0 +1,706 @@
+================================================================================
+              OIL WATCHER — UI DESIGN LANGUAGE ANALYSIS REPORT
+================================================================================
+              Comprehensive Audit of All 8 Mockup Screens
+              Date: April 13, 2026
+================================================================================
+
+
+TABLE OF CONTENTS
+─────────────────
+  1. DESIGN LANGUAGE OVERVIEW
+  2. COLOR SYSTEM ANALYSIS
+  3. TYPOGRAPHY SYSTEM
+  4. SPACING & LAYOUT PATTERNS
+  5. COMPONENT INVENTORY
+  6. ANIMATION & MOTION LANGUAGE
+  7. SURFACE & ELEVATION SYSTEM
+  8. ICONOGRAPHY
+  9. SCREEN-BY-SCREEN VISUAL AUDIT
+  10. DESIGN CONSISTENCY ISSUES
+  11. ACCESSIBILITY AUDIT
+  12. DESIGN LANGUAGE SUMMARY MATRIX
+
+
+================================================================================
+1. DESIGN LANGUAGE OVERVIEW
+================================================================================
+
+NAME: "The Tactile Architect" (from DESIGN.md)
+PHILOSOPHY: High-end editorial print meets functional utility.
+AESTHETIC: Curated, warm, premium — NOT generic Material/SaaS.
+
+FIVE PILLARS OF THE DESIGN LANGUAGE:
+─────────────────────────────────────
+
+  1. TONAL LAYERING (No-Line Rule)
+     Boundaries are defined by background color shifts, not borders.
+     UI elements sit on layered "sheets of fine paper" with subtle tonal
+     differences creating depth without explicit dividers.
+
+  2. KINETIC ORANGE
+     The brand accent (#FF5E00) is treated as a "laser tool" — used
+     sparingly for CTAs, active states, and high-attention elements.
+     Never used as a filler. When orange appears, it demands action.
+
+  3. EDITORIAL TYPOGRAPHY
+     Clash Display / Epilogue for headlines creates a "magazine" authority.
+     Manrope / DM Sans for body provides clean utility readability.
+     Heavy use of uppercase tracking-widest labels gives an "archive" feel.
+
+  4. GLASSMORPHISM
+     Floating elements (bottom nav, headers) use semi-transparent backgrounds
+     (80% opacity) with backdrop-blur to create a "hovering glass" effect.
+
+  5. TACTILE SOFTNESS
+     Universal 20px (1.25rem) corner radius. Everything feels "rounded and
+     touchable." Combined with subtle shadows, the UI feels physical.
+
+
+================================================================================
+2. COLOR SYSTEM ANALYSIS
+================================================================================
+
+The app uses TWO DISTINCT but overlapping color configurations across screens:
+
+CONFIGURATION A (Map View, Analyze, Station Details):
+─────────────────────────────────────────────────────
+  Simpler token set focused on a warm palette.
+
+  Primary:           #f95f06  (Vivid Orange)
+  Background Light:  #f8f6f5  (Warm Paper)
+  Background Dark:   #23160f  (Deep Brown-Black)
+  Text:              #1A1A1A  (Almost-Black)
+  Muted:             #8E8E8B  (Warm Grey)
+  Accent:            #00C853  (Green — price indicators)
+
+CONFIGURATION B (Camera, History, Leaderboard, Settings):
+─────────────────────────────────────────────────────────
+  Full Material Design 3 token set (~35 tokens).
+
+  Primary:                   #A63B00  (Deeper, richer orange)
+  Primary Container:         #FF5E00  (Bright orange for CTAs)
+  Surface:                   #F9F9F7  (Near-white)
+  On-Surface:                #1A1C1B  (Charcoal)
+  Surface Container Lowest:  #FFFFFF
+  Surface Container Low:     #F4F4F2
+  Surface Container:         #EEEEEC
+  Surface Container High:    #E8E8E6
+  Surface Container Highest: #E2E3E1
+  Tertiary:                  #0061A4  (Blue — EV/electric accent)
+  Error:                     #BA1A1A  (Red)
+
+PROFILE SCREEN uses a THIRD simplified set:
+───────────────────────────────────────────
+  Primary:    #FF5E00
+  Background: #F7F7F5
+  Surface:    #FFFFFF
+  Text:       #1A1A1A
+  Muted:      #8E8E8B
+  Accent:     #00C853  (Green — verified badge)
+
+COLOR CODING SYSTEM (Map Markers):
+──────────────────────────────────
+  Green  (#00C853) = Below average (cheap gas)
+  Dark   (#1A1A1A) = Average price
+  White  (#FFFFFF) = Above average (expensive)
+
+  This three-tier color system is intuitive: green = go/good,
+  dark = neutral, white/light = caution/expensive.
+
+CONSISTENCY NOTE:
+  The primary orange shifts between #f95f06, #FF5E00, and #A63B00 across
+  screens. For the actual app, these should be unified:
+    - #FF5E00 as Primary Container (bright, for CTAs and active UI)
+    - #A63B00 as Primary (deeper, for text and subtle branding)
+
+
+================================================================================
+3. TYPOGRAPHY SYSTEM
+================================================================================
+
+FOUR FONT FAMILIES USED ACROSS SCREENS:
+────────────────────────────────────────
+
+  1. CLASH DISPLAY  (Settings header, Profile section headers)
+     - Weight: 600-700
+     - Used for: Brand mark ("GAS.UI"), section headers
+     - Feel: Brutalist, authoritative, "signature" weight
+     - Import: Google Fonts
+
+  2. EPILOGUE  (Headlines in History, Leaderboard, bottom nav labels)
+     - Weight: 400-900
+     - Used for: Large headlines, stat numbers, nav labels
+     - Feel: Geometric, bold, editorial
+     - Dominant in: Community screens
+
+  3. MANROPE  (Body text, Analyze, Map, Station Details)
+     - Weight: 400-800
+     - Used for: Body text, form labels, prices, descriptions
+     - Feel: Geometric sans, highly legible, modern
+     - Most used font overall
+
+  4. DM SANS  (Camera screen body, Profile body text)
+     - Weight: 400-700
+     - Used for: Functional text, captions
+     - Feel: Slightly softer than Manrope
+
+TYPOGRAPHY HIERARCHY:
+─────────────────────
+  Display/Hero:     32-48px, Epilogue 900/Black, tracking-tight (-2%)
+  Headline H1:      24-30px, Clash Display 700/Bold, tracking-tight
+  Headline H2:      20-24px, Epilogue 800/Bold
+  Title:            18-20px, Manrope 700/Bold
+  Body Large:       16px, Manrope/DM Sans 500/Medium
+  Body:             14px, Manrope 400/Regular
+  Label:            10-12px, Manrope/Epilogue 700-900, UPPERCASE,
+                    tracking-widest (0.2em), sometimes all-caps
+
+LABEL TREATMENT (Distinctive Pattern):
+──────────────────────────────────────
+  Throughout the app, category labels use a distinctive "archive" style:
+  - ALL UPPERCASE
+  - Extra-bold weight (700-900)
+  - Extremely wide letter-spacing (tracking-widest / 0.2em)
+  - Very small size (10px)
+  - Muted color (on-surface-variant)
+
+  Examples: "TOTAL CONTRIBUTIONS", "PRICE REPORTED", "POINTS EARNED",
+           "YOUR STANDING", "LIFETIME POINTS", "SESSION ID: FT-8829-PX"
+
+  This creates a "utility/archive" aesthetic — like a technical instrument
+  readout or high-end print magazine labeling.
+
+
+================================================================================
+4. SPACING & LAYOUT PATTERNS
+================================================================================
+
+SPACING SCALE:
+──────────────
+  xs:    4px   (icon gaps, subtle offsets)
+  sm:    8px   (tight element margins)
+  md:    12-16px (standard padding, row gaps)
+  lg:    24px  (section padding, card padding)
+  xl:    32px  (section separation)
+  2xl:   48px  (major section breaks)
+
+LAYOUT PATTERNS OBSERVED:
+─────────────────────────
+
+  1. FULL-BLEED SECTIONS
+     Map View and Camera are edge-to-edge, filling the entire viewport.
+     UI overlays float on top with absolute positioning.
+
+  2. CONTAINED CARDS
+     History, Leaderboard, Profile, Settings use max-width containers
+     (max-w-md or max-w-screen-xl) with horizontal padding (px-6).
+
+  3. BENTO GRID
+     History summary and Leaderboard podium use asymmetric grid layouts
+     (md:grid-cols-3) where items have different visual weights.
+
+  4. BOTTOM SHEET
+     Station Details uses a rounded-top sheet that slides up from bottom,
+     with a drag handle for mobile and a side panel for tablets.
+
+  5. SPLIT VIEW
+     Analyze & Preview uses a 40/60 vertical split (mobile) or
+     50/50 horizontal split (tablet) between image and form.
+
+CORNER RADIUS SYSTEM:
+─────────────────────
+  Small items (badges, tags):     4-8px (rounded)
+  Medium items (inputs, rows):    12-16px (rounded-[16px])
+  Large items (cards, sheets):    20px (rounded-[20px], rounded-2xl)
+  Pill shapes (buttons, toggles): 9999px (rounded-full)
+  Top sheet (bottom sheets):      20px top-only (rounded-t-[20px])
+
+  Rule: Everything uses 20px or pill. No sharp corners anywhere.
+
+RESPONSIVE BREAKPOINTS:
+───────────────────────
+  Mobile:  < 768px  (single column, bottom sheet, stacked layout)
+  Tablet:  >= 768px (side panels, split views, multi-column grids)
+
+  The mockups extensively use `md:` breakpoint for tablet adaptations:
+  - Map → Station Details becomes side panel instead of bottom sheet
+  - Analyze → image left 50%, form right 50%
+  - History/Leaderboard → 3-column bento grid
+
+
+================================================================================
+5. COMPONENT INVENTORY
+================================================================================
+
+COMPONENT                  SCREENS USED IN            COMPLEXITY
+───────────────────────    ────────────────────────    ──────────
+Bottom Navigation Bar      All 8 screens               Medium
+  4 items: Map,Contribute,Community/Profile,Settings
+  Glassmorphism background (80% opacity + backdrop-blur)
+  Active: filled icon + orange color + dot indicator
+  Inactive: outline icon + muted color
+
+Top App Bar                History, Leaderboard,       Low
+                           Settings
+  Back button, title, action buttons (filter, search)
+  Sticky with backdrop-blur
+
+Segmented Control          History, Leaderboard        Low
+  Pill background toggle between History/Leaderboard
+  Active state: white bg + shadow
+
+Price Marker (Map)         Map View                    Medium
+  Three color variants (green, dark, white)
+  Tooltip arrow pointer below
+  Hover scale-110 animation
+  Clickable → station details
+
+Search Bar (Map)           Map View                    Low
+  Floating, backdrop-blur, rounded-xl
+  Material icon + placeholder text
+
+Camera FAB                 Map View                    Low
+  64x64 orange circle, camera icon
+  Shadow, active:scale-95 feedback
+
+Shutter Button             Camera                      High
+  80x80 white circle + 96x96 outer ring
+  Active scale-95 + ring glow animation
+
+Viewfinder Overlay         Camera                      High
+  4 corner brackets (orange lines)
+  Horizontal level line
+  Animated scan line
+  "Align prices" helper text pill
+
+Price Input Row            Analyze                     Medium
+  Label left (fuel grade + status badge)
+  Dollar sign prefix + large number input right
+  Focus state: orange border + orange bg tint
+  "Detected" green badge or "Optional" grey label
+
+Station Detail Card        Station Details             Medium
+  Bottom sheet with drag handle
+  Station name + distance
+  Price rows (primary emphasized, secondary muted)
+  Updated-by attribution
+  "Navigate Now" CTA
+
+Contribution List Item     History                     Medium
+  Icon + station name/address + fuel badge + time
+  Price displayed + points earned
+  Hover state: background shift + title color change
+
+Leaderboard Podium         Leaderboard                 High
+  3-column bento grid
+  #1: Large (24x24 avatar, crown icon, gold border-b-4)
+  #2: Medium (silver border)
+  #3: Medium (bronze border)
+
+Rank Row                   Leaderboard                 Low
+  Rank number + avatar + name + points + trend arrow
+
+User Stats Grid            Profile                     Low
+  3-column grid of stat cards
+  Number + label
+
+Progress Bar               Profile                     Low
+  Background track + orange fill bar
+  Percentage label
+
+Settings Section           Settings                    Medium
+  Section header (uppercase label)
+  Grouped list items in surface-container-low container
+  Leading icon in circle + label + trailing action
+
+Toggle Switch              Settings                    Low
+  Track: surface-container-highest → primary-container
+  Thumb: white circle with slide animation
+
+CTA Banner (Dark)          History                     Medium
+  Dark background, white text
+  Headline + button + decorative image
+  Gradient decoration layers
+
+
+================================================================================
+6. ANIMATION & MOTION LANGUAGE
+================================================================================
+
+ANIMATION DENSITY PER SCREEN (lines containing animation/transition/hover):
+───────────────────────────────────────────────────────────────────────────
+  Settings:           24 lines  (toggles, hover states, scale feedback)
+  Map View:           23 lines  (marker hover, FAB press, nav interactions)
+  History:            23 lines  (list hover, nav, CTA hover)
+  Analyze:            22 lines  (scan animation, focus states, button press)
+  Leaderboard:        19 lines  (hover, trend arrows, nav)
+  Camera:             14 lines  (shutter press, close button, flash toggle)
+  Profile:            14 lines  (button press, nav, progress)
+  Station Details:     7 lines  (sheet transform, button press, hover)
+
+MOTION PATTERNS USED:
+─────────────────────
+
+  1. PRESS FEEDBACK (universal)
+     Every interactive element has `active:scale-95` or `active:scale-[0.98]`
+     This gives a "physical button press" feel across the entire app.
+     Duration: 100ms (fast, snappy feedback)
+
+  2. HOVER SCALE (map markers)
+     Map markers use `hover:scale-110` with `origin-bottom` for a
+     "popping up from the map" effect. Transition-transform driven.
+
+  3. SCAN LINE ANIMATION (camera, analyze)
+     @keyframes scan: translateY(-100%) → translateY(100%) → translateY(-100%)
+     Duration: 3s, ease-in-out, infinite
+     Creates the "AI is scanning" visual feedback.
+
+  4. PULSE (user location)
+     Blue location dot uses `animate-pulse` (Tailwind built-in)
+     to draw attention to user position on map.
+
+  5. BACKGROUND TRANSITIONS (list items, settings)
+     hover:bg-surface-container-high for list items
+     focus-within:bg-primary/5 for form inputs
+     Smooth transition-colors for state changes.
+
+  6. SHEET TRANSITION (station details)
+     transform: transition-transform, duration-300, ease-in-out
+     Bottom sheet slides up/down for expand/collapse.
+
+  7. GROUP HOVER (history items)
+     Using Tailwind `group` + `group-hover:text-primary` to change
+     title color when hovering over the parent card.
+
+  8. ICON SCALE (settings)
+     Settings list item icons use `group-hover:scale-110` for subtle
+     "breathing" feedback on hover.
+
+MOTION PRINCIPLES:
+──────────────────
+  • All animations < 300ms (fast, responsive feel)
+  • Active/press feedback is UNIVERSAL — every button, link, card
+  • Hover effects are subtle (color shift or small scale)
+  • Only ONE looping animation exists (scan line) — everything else is triggered
+  • No page transitions defined in CSS (navigation is instant)
+
+
+================================================================================
+7. SURFACE & ELEVATION SYSTEM
+================================================================================
+
+THE LAYERING STACK (bottom to top):
+────────────────────────────────────
+
+  Layer 0: MAP / CAMERA FEED (full-bleed background)
+  Layer 1: Surface (#F9F9F7) — main content area
+  Layer 2: Surface Container Low (#F4F4F2) — card backgrounds
+  Layer 3: Surface Container (#EEEEEC) — grouped sections
+  Layer 4: Surface Container Lowest (#FFFFFF) — elevated cards
+  Layer 5: Floating UI — bottom nav, headers (glassmorphism)
+  Layer 6: Overlays — modals, sheets (with backdrop dimming)
+
+SHADOW USAGE:
+─────────────
+  Whisper Shadow:   0px 24px 48px rgba(26,28,27,0.06)  — floating cards
+  Sheet Shadow:     0 -4px 20px rgba(0,0,0,0.1)         — bottom sheets
+  Nav Shadow:       0px -24px 48px rgba(26,28,27,0.06)  — bottom navigation
+  Marker Shadow:    0 4px 12px rgba(0,0,0,0.15)          — map markers
+  Button Shadow:    shadow-lg shadow-primary/20-30        — CTA buttons
+
+  KEY RULE: Only top-most floating elements get shadows.
+  Cards within the main content area do NOT use drop shadows — they
+  rely on tonal contrast (white card on off-white background).
+
+GLASSMORPHISM PATTERN:
+──────────────────────
+  Elements using glass effect:
+  - Bottom navigation:  bg-white/80 backdrop-blur-md
+  - Map search bar:     bg-white/85 backdrop-blur-md
+  - Camera header:      bg-black/40 backdrop-blur-md
+  - Camera buttons:     bg-surface/20 backdrop-blur-md
+  - History header:     bg-surface/80 backdrop-blur-md
+  - Helper text pill:   bg-on-surface/40 backdrop-blur-lg
+
+  Glass elements combine 3 properties:
+    1. Semi-transparent background (60-85% opacity)
+    2. backdrop-blur (blur-md = 12px, blur-lg = 16px)
+    3. Subtle border (border-white/50 or none)
+
+
+================================================================================
+8. ICONOGRAPHY
+================================================================================
+
+ICON SYSTEM: Google Material Symbols Outlined
+─────────────────────────────────────────────
+  Font: Material Symbols Outlined (variable font)
+  Default settings: FILL 0, wght 400, GRAD 0, opsz 24
+
+  FILLED vs OUTLINED:
+  - Active nav items:    FILL 1 (solid)
+  - Inactive nav items:  FILL 0 (outlined)
+  - Decorative icons:    FILL 1 (stars, workspace_premium)
+  - Functional icons:    FILL 0 (arrow_back, close, settings)
+
+ICONS USED ACROSS THE APP:
+──────────────────────────
+  Navigation:     map, photo_camera, person, settings, group
+  Camera:         close, switch_camera, flash_off, local_gas_station
+  Map:            search, navigation
+  Station:        location_on, schedule, trending_down
+  Community:      add_circle, stars, workspace_premium, trending_up
+  Profile:        check_circle, history, leaderboard, star
+  Settings:       arrow_back, person, security, payments, notifications,
+                  near_me, palette, help, policy, logout, edit,
+                  chevron_right, open_in_new
+
+
+================================================================================
+9. SCREEN-BY-SCREEN VISUAL AUDIT
+================================================================================
+
+SCREEN 1: MAP VIEW
+──────────────────
+
+  Visual Complexity: ████████░░ (8/10)
+  Layout: Full-bleed map + floating overlays
+  Unique Elements:
+    - Custom price markers with pointer tails
+    - Color-coded pricing system (green/dark/white)
+    - Pulsing blue location dot
+    - Floating search with glassmorphism
+    - Camera FAB with shadow-lg
+  Interaction Density: High (every marker clickable, search input,
+    FAB, nav bar, user location)
+  Notes:
+    - Map is the visual centerpiece — requires actual Google Maps SDK
+    - All UI sits as absolute-positioned overlays on the map
+    - Markers need custom rendering (not default pins)
+
+SCREEN 2: CAMERA CAPTURE
+─────────────────────────
+
+  Visual Complexity: █████████░ (9/10)
+  Layout: Full-screen camera feed + HUD overlays
+  Unique Elements:
+    - Camera viewfinder with corner bracket overlay
+    - Animated scan line (CSS keyframe)
+    - Shutter button with double-ring design
+    - Gallery preview thumbnail
+    - Status bar simulation (notch)
+    - "FuelTrack Capture" branding badge
+  Interaction Density: High (shutter, flash, switch camera, gallery,
+    close, session display)
+  Notes:
+    - Most technically demanding screen — real camera hardware
+    - Viewfinder overlay requires precise positioning
+    - Scan animation must sync with camera state
+
+SCREEN 3: ANALYZE & PREVIEW
+────────────────────────────
+
+  Visual Complexity: ██████░░░░ (6/10)
+  Layout: Vertical split (image + form)
+  Unique Elements:
+    - Captured image with scanning animation overlay
+    - Price input rows with focus states (orange tint)
+    - "Detected" badges (green) vs "Optional" labels
+    - Dollar sign prefix in input fields
+    - Tablet: horizontal 50/50 split
+  Interaction Density: Medium (4 inputs, 1 button, back button)
+  Notes:
+    - Form-heavy screen, works well in WebView
+    - CSS focus states (focus-within) add polish
+    - Image display is static (captured photo, not live)
+
+SCREEN 4: STATION DETAILS
+──────────────────────────
+
+  Visual Complexity: █████░░░░░ (5/10)
+  Layout: Bottom sheet over blurred map
+  Unique Elements:
+    - Drag handle for dismiss gesture
+    - Price emphasis hierarchy (primary large, secondary small)
+    - Green trending indicator
+    - Contributor attribution
+    - "Navigate Now" CTA
+  Interaction Density: Low-Medium (navigation button, drag, close)
+  Notes:
+    - Bottom sheet behavior is straightforward
+    - Blurred map background is decorative
+
+SCREEN 5: COMMUNITY HISTORY
+────────────────────────────
+
+  Visual Complexity: ███████░░░ (7/10)
+  Layout: Scrollable list with header cards
+  Unique Elements:
+    - Editorial summary cards (bento layout)
+    - Segmented control toggle
+    - Contribution list with icons, badges, prices, points
+    - Dark CTA banner with decorative gradients
+    - Points with add_circle icon
+  Interaction Density: Medium (list items clickable, filter, search,
+    segmented control, nav)
+  Notes:
+    - Complex card layouts but all static content
+    - Group-hover effects for list items
+    - CTA banner has layered gradient decorations
+
+SCREEN 6: COMMUNITY LEADERBOARD
+────────────────────────────────
+
+  Visual Complexity: ████████░░ (8/10)
+  Layout: Podium grid + ranked list
+  Unique Elements:
+    - Gradient hero card (user's own rank)
+    - Decorative white blur circle
+    - Top 3 podium with crown icon
+    - Gold/Silver/Bronze border-bottom colors
+    - Rank numbers (large, faded)
+    - Trend arrows (green up, red down, grey same)
+    - Current user highlighted row
+  Interaction Density: Medium (list items, filter buttons, nav)
+  Notes:
+    - Most visually complex content layout
+    - Multiple avatar images to load
+    - The podium layout is purely CSS (bento grid)
+
+SCREEN 7: PROFILE
+──────────────────
+
+  Visual Complexity: ██████░░░░ (6/10)
+  Layout: Centered card stack
+  Unique Elements:
+    - Large circular avatar with verified badge
+    - 3-column stats grid
+    - Action list with icon circles
+    - Progress bar with percentage
+    - Decorative faded star icon
+  Interaction Density: Medium (action items clickable, nav)
+  Notes:
+    - Clean, straightforward layout
+    - Stats grid is simple CSS grid
+    - Progress bar is static (no animation)
+
+SCREEN 8: SETTINGS
+──────────────────
+
+  Visual Complexity: █████░░░░░ (5/10)
+  Layout: Scrollable grouped list
+  Unique Elements:
+    - Avatar with edit overlay button
+    - Grouped settings in tonal containers
+    - Toggle switches with custom styling
+    - Icon-in-circle pattern for list items
+    - External link indicator
+  Interaction Density: Medium (toggles, list items, nav)
+  Notes:
+    - Standard settings pattern, well-organized
+    - Toggle switches need custom CSS (Tailwind peer pattern)
+    - Most "standard" screen — least custom design
+
+
+================================================================================
+10. DESIGN CONSISTENCY ISSUES
+================================================================================
+
+ISSUES FOUND ACROSS SCREENS:
+─────────────────────────────
+
+  1. PRIMARY COLOR MISMATCH:
+     - Map/Analyze/Station: #f95f06
+     - Camera/Settings (primary): #a63b00
+     - Camera/Settings (container): #ff5e00
+     - History/Leaderboard: #FF5E00
+     - Profile: #FF5E00
+     RECOMMENDATION: Standardize to #FF5E00 (container) + #A63B00 (primary)
+
+  2. FONT FAMILY INCONSISTENCY:
+     - History/Leaderboard headlines use Epilogue
+     - Settings headlines use Clash Display
+     - Map/Analyze/Station use Manrope for everything
+     - Profile uses a mix (Clash Display heads, DM Sans body)
+     RECOMMENDATION: Unify to Clash Display (headlines) + Manrope (body)
+
+  3. BOTTOM NAV VARIATIONS:
+     - Map/Analyze/Station: 4 items (Map, Contribute, Profile, Settings)
+     - History/Leaderboard: 4 items (Map, Contribute, Community, Settings)
+     - Item labels and icons differ slightly between screens
+     RECOMMENDATION: Standardize to Map | Contribute | Community | Settings
+
+  4. BORDER RADIUS DIFFERENCES:
+     - Map/Analyze/Station config: 0.25rem DEFAULT
+     - Camera/Settings config: 1rem DEFAULT
+     - History/Leaderboard config: 1.25rem DEFAULT
+     RECOMMENDATION: Use 1.25rem (20px) as universal DEFAULT
+
+  5. HEADER STYLE VARIATIONS:
+     - Map: No header (floating search bar)
+     - Camera: Floating overlay header with brand
+     - History/Leaderboard: Sticky blur header + segmented control
+     - Settings: Sticky simple header with brand mark
+     - Profile: Sticky header with centered title
+     RECOMMENDATION: Acceptable — context-specific headers make sense
+
+
+================================================================================
+11. ACCESSIBILITY AUDIT (FROM PRD REQUIREMENTS)
+================================================================================
+
+The PRD mandates WCAG 2.1 AA compliance. Current mockup status:
+
+  ✅ GOOD:
+  - Touch targets are generally 48dp+ (compliant)
+  - High contrast on primary CTAs (white on orange)
+  - Semantic HTML structure (h1, h2, section, nav, header)
+  - aria-labels on key buttons ("Go back", "Capture Photo", "Close details")
+  - Font sizes mostly ≥ 14px for body text
+
+  ⚠️ NEEDS ATTENTION:
+  - 10px label text (tracking-widest labels) — may be too small (< 12px)
+  - Low contrast: text at 60% opacity (e.g., white/60) fails AA
+  - Some decorative images lack descriptive alt text
+  - Toggle switches rely solely on color (no text label for state)
+  - No visible focus indicators defined (keyboard navigation)
+
+  ❌ MISSING:
+  - No high-contrast mode toggle
+  - No text-size adjustment option
+  - No focus-visible styles for keyboard users
+  - Screen reader: some interactive elements lack ARIA roles
+  - Color-coded map markers need non-color differentiation
+    (colorblind users can't distinguish green/dark/white)
+
+
+================================================================================
+12. DESIGN LANGUAGE SUMMARY MATRIX
+================================================================================
+
+  Attribute              Value                           Source
+  ─────────────────────  ──────────────────────────────  ──────────
+  Brand Identity         Warm Editorial Utility          DESIGN.md
+  Primary Brand Color    #FF5E00 (Vivid Kinetic Orange)  All screens
+  Surface Color          #F9F9F7 (Off-White Paper)       All screens
+  Text Color             #1A1C1B (Charcoal)              All screens
+  Headline Font          Clash Display / Epilogue         Varies
+  Body Font              Manrope / DM Sans                Varies
+  Corner Radius          20px universal                   DESIGN.md
+  Border Rule            NO BORDERS (tonal layering)      DESIGN.md
+  Shadow Rule            Top-layer only (Whisper Shadow)  DESIGN.md
+  Glass Effect           80% bg + backdrop-blur-md         5 screens
+  Press Feedback         active:scale-95 universal         All screens
+  Scan Animation         translateY keyframe 3s loop       Camera/Analyze
+  Icon System            Material Symbols Outlined         All screens
+  Icons (active)         FILL 1 (solid)                    All screens
+  Icons (inactive)       FILL 0 (outlined)                 All screens
+  Label Style            10px, UPPERCASE, tracking-widest  All screens
+  Touch Target           48dp minimum                      All screens
+  Responsive Breakpoint  md: (768px)                       All screens
+
+
+================================================================================
+                         END OF DESIGN LANGUAGE REPORT
+================================================================================

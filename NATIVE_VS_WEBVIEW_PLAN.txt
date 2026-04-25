@@ -1,0 +1,701 @@
+================================================================================
+     OIL WATCHER — NATIVE vs WEBVIEW HYBRID ARCHITECTURE PLAN
+================================================================================
+     Which Screens to Build Native, Which to Keep in WebView,
+     and How to Make the Whole Thing Efficient
+     Date: April 13, 2026
+================================================================================
+
+
+TABLE OF CONTENTS
+─────────────────
+  1. HYBRID APPROACH RATIONALE
+  2. DECISION CRITERIA
+  3. SCREEN-BY-SCREEN VERDICT
+  4. ARCHITECTURE OVERVIEW
+  5. WEBVIEW IMPLEMENTATION DETAILS
+  6. NATIVE IMPLEMENTATION DETAILS
+  7. THE BRIDGE: NATIVE ↔ WEBVIEW COMMUNICATION
+  8. EFFICIENCY OPTIMIZATIONS
+  9. PERFORMANCE BUDGET
+  10. MIGRATION PATH (WEBVIEW → NATIVE OVER TIME)
+
+
+================================================================================
+1. HYBRID APPROACH RATIONALE
+================================================================================
+
+WHY HYBRID?
+───────────
+Building every screen natively in Jetpack Compose is ideal for performance
+but costs significant development time. The HTML mockups you already have are
+polished, production-quality UI. We can REUSE them directly as WebViews for
+content-heavy screens that don't need hardware access.
+
+THE RULE:
+─────────
+  NATIVE when the screen needs:
+    → Hardware access (camera, GPS, sensors)
+    → Real-time rendering (maps, live feeds)
+    → Sub-100ms interaction (gesture-heavy UI)
+    → Background processing (ML pipeline)
+
+  WEBVIEW when the screen is:
+    → Content-heavy (lists, cards, text)
+    → Mostly "read and tap" interaction
+    → Already beautifully styled in HTML/CSS
+    → No hardware dependency
+    → Easy to update without app store releases
+
+BENEFITS OF THIS APPROACH:
+──────────────────────────
+  ✓ Ship faster — reuse existing HTML for 4-5 screens
+  ✓ Hot-update UI — change community/settings screens without Play Store update
+  ✓ Native performance where it matters — camera, map, ML
+  ✓ Consistent design — your HTML already looks exactly how you want it
+  ✓ Reduce native code surface — less Compose code to maintain
+
+
+================================================================================
+2. DECISION CRITERIA
+================================================================================
+
+Each screen is scored on 5 factors (0-3 scale):
+
+  FACTOR                    WEIGHT   WHAT IT MEASURES
+  ─────────────────────     ──────   ──────────────────────────────────
+  Hardware Dependency        3x      Needs camera, GPS, sensors, etc.
+  Interaction Speed          2x      Gestures, real-time feedback needed
+  Visual Complexity          1x      Complex CSS animations, layouts
+  Data Freshness             2x      Real-time data vs static content
+  Update Frequency           1x      Will this UI change often?
+
+  SCORING:
+    0 = No requirement  (e.g., no hardware needed)
+    1 = Low             (e.g., simple tap interactions)
+    2 = Medium          (e.g., scroll + tap + some state)
+    3 = High            (e.g., real-time camera feed)
+
+  THRESHOLD:
+    Weighted score ≥ 15 → NATIVE (hardware-dependent, performance-critical)
+    Weighted score < 15 → WEBVIEW (content-focused, the HTML works fine)
+
+
+================================================================================
+3. SCREEN-BY-SCREEN VERDICT
+================================================================================
+
+┌──────────────────────┬──────┬───────┬────────┬────────┬────────┬───────┬──────────┐
+│ Screen               │ HW   │ Speed │ Visual │ Data   │ Update │ TOTAL │ VERDICT  │
+│                      │ (3x) │ (2x)  │ (1x)   │ (2x)  │ (1x)  │       │          │
+├──────────────────────┼──────┼───────┼────────┼────────┼────────┼───────┼──────────┤
+│ Camera Capture       │  3   │  3    │  3     │  3     │  0     │  27   │ ★ NATIVE │
+│ Map View             │  3   │  3    │  2     │  3     │  0     │  26   │ ★ NATIVE │
+│ Analyze & Preview    │  2   │  2    │  2     │  2     │  1     │  19   │ ★ NATIVE │
+│ Station Details      │  1   │  2    │  1     │  2     │  1     │  14   │   WEBVIEW│
+│ Community History    │  0   │  1    │  2     │  1     │  2     │  8    │   WEBVIEW│
+│ Leaderboard          │  0   │  1    │  3     │  1     │  2     │  8    │   WEBVIEW│
+│ Profile              │  0   │  1    │  2     │  1     │  2     │  8    │   WEBVIEW│
+│ Settings             │  1   │  1    │  1     │  0     │  2     │  8    │   WEBVIEW│
+└──────────────────────┴──────┴───────┴────────┴────────┴────────┴───────┴──────────┘
+
+SUMMARY:
+────────
+  ★ BUILD NATIVE (3 screens):
+    1. Camera Capture      — needs CameraX, real-time preview, ML Kit
+    2. Map View            — needs Google Maps SDK, GPS, real-time markers
+    3. Analyze & Preview   — receives ML Kit output, needs smooth form UX
+
+  ▣ KEEP AS WEBVIEW (5 screens):
+    4. Station Details     — mostly display, minimal interaction
+    5. Community History   — scrollable list, no hardware needs
+    6. Leaderboard         — visual content, data from API
+    7. Profile             — display + navigation, light interaction
+    8. Settings            — toggles + lists, standard patterns
+
+  RATIO: 3 Native / 5 WebView = 37.5% native, 62.5% webview
+
+
+================================================================================
+4. ARCHITECTURE OVERVIEW
+================================================================================
+
+  ┌──────────────────────────────────────────────────────────────┐
+  │                    ANDROID APPLICATION                       │
+  │                                                              │
+  │  ┌─────────────────────────┐  ┌───────────────────────────┐ │
+  │  │    NATIVE LAYER         │  │    WEBVIEW LAYER          │ │
+  │  │    (Jetpack Compose)    │  │    (Enhanced WebView)     │ │
+  │  │                         │  │                           │ │
+  │  │  ┌───────────────────┐  │  │  ┌─────────────────────┐ │ │
+  │  │  │  Camera Screen    │  │  │  │  Station Details    │ │ │
+  │  │  │  (CameraX+ML Kit) │  │  │  │  (code.html)       │ │ │
+  │  │  └───────────────────┘  │  │  └─────────────────────┘ │ │
+  │  │  ┌───────────────────┐  │  │  ┌─────────────────────┐ │ │
+  │  │  │  Map Screen       │  │  │  │  History Screen     │ │ │
+  │  │  │  (Google Maps SDK)│  │  │  │  (code.html)       │ │ │
+  │  │  └───────────────────┘  │  │  └─────────────────────┘ │ │
+  │  │  ┌───────────────────┐  │  │  ┌─────────────────────┐ │ │
+  │  │  │  Analyze Screen   │  │  │  │  Leaderboard       │ │ │
+  │  │  │  (OCR Results)    │  │  │  │  (code.html)       │ │ │
+  │  │  └───────────────────┘  │  │  └─────────────────────┘ │ │
+  │  │                         │  │  ┌─────────────────────┐ │ │
+  │  │                         │  │  │  Profile Screen     │ │ │
+  │  │                         │  │  │  (code.html)       │ │ │
+  │  │                         │  │  └─────────────────────┘ │ │
+  │  │                         │  │  ┌─────────────────────┐ │ │
+  │  │                         │  │  │  Settings Screen    │ │ │
+  │  │                         │  │  │  (code.html)       │ │ │
+  │  │                         │  │  └─────────────────────┘ │ │
+  │  └─────────────────────────┘  └───────────────────────────┘ │
+  │                                                              │
+  │  ┌──────────────────────────────────────────────────────┐   │
+  │  │              NATIVE BOTTOM NAV BAR                    │   │
+  │  │         (Always native Compose — shared)              │   │
+  │  └──────────────────────────────────────────────────────┘   │
+  │                                                              │
+  │  ┌──────────────────────────────────────────────────────┐   │
+  │  │            JAVASCRIPT BRIDGE (JSInterface)            │   │
+  │  │    WebView ←→ Native communication layer              │   │
+  │  └──────────────────────────────────────────────────────┘   │
+  │                                                              │
+  │  ┌──────────────────────────────────────────────────────┐   │
+  │  │                SHARED DATA LAYER                      │   │
+  │  │    Firebase + Room + Repository + ViewModels          │   │
+  │  └──────────────────────────────────────────────────────┘   │
+  └──────────────────────────────────────────────────────────────┘
+
+
+KEY ARCHITECTURAL DECISIONS:
+────────────────────────────
+
+  1. BOTTOM NAV IS ALWAYS NATIVE
+     The bottom navigation bar is a native Compose component that wraps
+     all content (both native screens and WebViews). This ensures:
+     - Consistent appearance across all screens
+     - Smooth navigation without WebView flash
+     - Hardware back button works correctly
+     - No need to duplicate nav in HTML
+
+  2. WEBVIEW HTML IS BUNDLED IN APK
+     HTML files go into /assets/webview/ — NOT loaded from a server.
+     This means:
+     - Instant rendering (no network dependency)
+     - Works offline
+     - No CORS issues
+     - CSS/fonts cached locally
+
+  3. DATA FLOWS THROUGH THE BRIDGE
+     WebView screens don't fetch data directly. The native layer fetches
+     from Firebase/Room, then injects it into WebView via JavaScript.
+     This prevents duplicate network calls and ensures offline support.
+
+
+================================================================================
+5. WEBVIEW IMPLEMENTATION DETAILS
+================================================================================
+
+5.1 HTML FILE PREPARATION
+─────────────────────────
+
+The existing HTML files need minor modifications for WebView use:
+
+  BEFORE (current):  onclick="window.location.href='{{DATA:SCREEN:SCREEN_16}}'"
+  AFTER (webview):   onclick="AndroidBridge.navigate('map')"
+
+  BEFORE (current):  href="{{DATA:SCREEN:SCREEN_5}}"
+  AFTER (webview):   href="javascript:AndroidBridge.navigate('camera')"
+
+  BEFORE (current):  Static data in HTML
+  AFTER (webview):   Data injected via JS: document.getElementById('price').textContent = data.price
+
+MODIFICATIONS NEEDED PER HTML FILE:
+────────────────────────────────────
+
+  Station Details (station_details_interactive/code.html):
+    □ Replace {{DATA:SCREEN:*}} placeholders with AndroidBridge.navigate() calls
+    □ Add data injection points for station name, prices, distance, attribution
+    □ Remove bottom navigation (handled natively)
+    □ Add AndroidBridge.navigateExternal(lat,lng) for "Navigate Now" button
+
+  Community History (community_history_final/code.html):
+    □ Replace placeholders with bridge calls
+    □ Add data template for dynamic contribution list
+    □ Remove bottom navigation
+    □ Make segmented control trigger AndroidBridge.switchTab('leaderboard')
+    □ Add pull-to-refresh via AndroidBridge.refresh()
+
+  Leaderboard (community_leaderboard_final/code.html):
+    □ Replace placeholders with bridge calls
+    □ Add data template for dynamic leaderboard entries
+    □ Remove bottom navigation
+    □ Make "Load More" trigger AndroidBridge.loadMore()
+    □ Add filter toggle AndroidBridge.filterPeriod('monthly'/'alltime')
+
+  Profile (profile_interactive/code.html):
+    □ Replace placeholders with bridge calls
+    □ Add data injection for user stats, avatar URL, progress
+    □ Remove bottom navigation
+    □ Action items trigger bridge navigation
+
+  Settings (settings_interactive/code.html):
+    □ Replace placeholders with bridge calls
+    □ Add toggle state binding via bridge
+    □ AndroidBridge.toggleSetting('notifications', true/false)
+    □ AndroidBridge.signOut() for sign out button
+    □ Remove bottom navigation
+
+5.2 ENHANCED WEBVIEW COMPONENT
+──────────────────────────────
+
+  class AppWebView : WebView {
+      // Enable JavaScript
+      // Enable DOM storage
+      // Set custom WebViewClient (no external browser redirects)
+      // Add JavaScriptInterface (AndroidBridge)
+      // Enable hardware acceleration
+      // Set transparent background (match native bg)
+      // Disable over-scroll (removes bouncy edge glow)
+      // Enable pinch-to-zoom: false
+      // Cache mode: LOAD_NO_CACHE (local files, no caching needed)
+  }
+
+5.3 WEBVIEW OPTIMIZATION
+────────────────────────
+
+  PRE-WARMING:
+    Create WebView instances in advance during splash/loading.
+    Pre-load HTML into WebView pool on app start.
+    When user navigates to a WebView screen, swap in the pre-warmed instance.
+
+  FONT CACHING:
+    Bundle Google Fonts (Manrope, Epilogue, Clash Display, Material Symbols)
+    as local assets instead of CDN. Eliminates font-loading delay.
+    Replace CDN URLs in HTML with file:///android_asset/fonts/
+
+  TAILWIND REPLACEMENT:
+    Bundle Tailwind CSS locally instead of loading from CDN.
+    Or better: pre-compile Tailwind into a single CSS file containing
+    only the used classes (purged). Drops from ~300KB to ~15KB.
+
+
+================================================================================
+6. NATIVE IMPLEMENTATION DETAILS
+================================================================================
+
+6.1 CAMERA SCREEN (CameraX + ML Kit)
+─────────────────────────────────────
+
+  WHY NATIVE: CameraX requires native Android lifecycle integration.
+  ML Kit needs direct ImageProxy access. Frame rates must be >30fps.
+  WebView cannot access the camera hardware efficiently.
+
+  COMPOSE COMPONENTS:
+    CameraPreview          — CameraX PreviewView wrapped in AndroidView
+    ViewfinderOverlay      — Canvas-drawn corner brackets + animated scan line
+    ShutterButton          — Circular button with outer ring, scale animation
+    FlashToggle            — Icon button with state (on/off/auto)
+    CameraSwitchButton     — Flip front/rear camera
+    GalleryThumbnail       — Small image preview (last photo from gallery)
+    HelperTextPill         — "Align prices in the frame" floating text
+    SessionIdBadge         — Bottom session ID display
+
+  PERFORMANCE TARGETS:
+    Camera preview: 30fps minimum, 60fps target
+    Shutter to image capture: <200ms
+    Image to ML Kit input: <50ms
+
+6.2 MAP SCREEN (Google Maps SDK)
+────────────────────────────────
+
+  WHY NATIVE: Google Maps SDK for Android provides 60fps map rendering,
+  marker clustering, gesture handling, and location services that WebView
+  Google Maps JavaScript API cannot match on mobile.
+
+  COMPOSE COMPONENTS:
+    GoogleMap              — Maps Compose library (@GoogleMap composable)
+    PriceMarker            — Custom BitmapDescriptor for colored price markers
+    MarkerCluster          — Group nearby markers at low zoom
+    SearchBar              — Floating search input with Places autocomplete
+    CameraFAB              — Floating action button (navigate to camera)
+    UserLocationDot        — Animated pulsing blue dot
+    BottomNavBar           — Shared native navigation component
+
+  PERFORMANCE TARGETS:
+    Map rendering: 60fps smooth pan/zoom
+    Marker rendering: <100ms for 100+ markers
+    Location updates: every 10 seconds (balanced accuracy)
+
+6.3 ANALYZE & PREVIEW SCREEN (ML Kit Results)
+──────────────────────────────────────────────
+
+  WHY NATIVE: This screen receives data directly from ML Kit (extracted
+  prices, confidence scores, bounding boxes). It also handles photo upload
+  to Firebase Storage. Native integration avoids serialization overhead of
+  passing large data objects through a JS bridge.
+
+  COULD THIS BE WEBVIEW? Technically yes — the UI is a form. But:
+    - It receives complex ML Kit output (PriceCandidate objects with Rect data)
+    - It needs to display the captured image (camera URI)
+    - It uploads to Firebase Storage (native SDK is more reliable)
+    - Form interactions should be buttery smooth (large number inputs)
+    - It's the most critical UX moment (user confirming their contribution)
+
+  COMPOSE COMPONENTS:
+    CapturedImagePreview   — Image display with scan animation overlay
+    PriceInputRow          — Fuel grade label + detected badge + number input
+    ConfirmUploadButton    — Full-width CTA with loading state
+    DetectedBadge          — Green "Detected" or grey "Optional" indicator
+
+  PERFORMANCE TARGETS:
+    Image display: immediate (already in memory from camera)
+    Price field focus: <16ms response (60fps input)
+    Upload: <3 seconds (image + data to Firebase)
+
+
+================================================================================
+7. THE BRIDGE: NATIVE ↔ WEBVIEW COMMUNICATION
+================================================================================
+
+7.1 JAVASCRIPT INTERFACE (KOTLIN → JS)
+───────────────────────────────────────
+
+  // Kotlin class exposed to WebView JavaScript
+  class AndroidBridge(
+      private val viewModel: SharedViewModel,
+      private val navController: NavController
+  ) {
+
+      @JavascriptInterface
+      fun navigate(screen: String) {
+          // "map", "camera", "analyze", "station", "history",
+          // "leaderboard", "profile", "settings"
+          navController.navigate(screen)
+      }
+
+      @JavascriptInterface
+      fun navigateExternal(lat: Double, lng: Double, stationName: String) {
+          // Open Google Maps for navigation
+          val uri = Uri.parse("google.navigation:q=$lat,$lng")
+          context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+      }
+
+      @JavascriptInterface
+      fun toggleSetting(key: String, value: Boolean) {
+          viewModel.updateSetting(key, value)
+      }
+
+      @JavascriptInterface
+      fun signOut() {
+          viewModel.signOut()
+      }
+
+      @JavascriptInterface
+      fun loadMore(type: String, offset: Int) {
+          viewModel.loadMore(type, offset)
+      }
+
+      @JavascriptInterface
+      fun filterPeriod(period: String) {
+          viewModel.setFilter(period) // "monthly" or "alltime"
+      }
+
+      @JavascriptInterface
+      fun refresh() {
+          viewModel.refresh()
+      }
+  }
+
+7.2 DATA INJECTION (KOTLIN → WEBVIEW)
+─────────────────────────────────────
+
+  // Push data from native into WebView via evaluateJavascript
+  fun injectData(webView: WebView, data: ScreenData) {
+      val json = gson.toJson(data)
+      webView.evaluateJavascript(
+          "window.receiveData($json)",
+          null
+      )
+  }
+
+  // HTML side receives it:
+  // <script>
+  //   function receiveData(data) {
+  //     document.getElementById('station-name').textContent = data.name;
+  //     document.getElementById('price-regular').textContent = data.prices.regular;
+  //     // ... etc
+  //   }
+  // </script>
+
+7.3 DATA FLOW FOR WEBVIEW SCREENS
+─────────────────────────────────
+
+  User taps "Station Details" marker on native map
+    → Native MapViewModel fetches station data from Firestore
+    → NavController navigates to WebViewScreen(route="station", data=stationData)
+    → WebViewScreen loads station_details.html from assets
+    → Once loaded, calls injectData(webView, stationData)
+    → HTML renders with real data
+
+  User taps "Community History" in bottom nav
+    → Native CommunityViewModel fetches contributions from Firestore
+    → NavController navigates to WebViewScreen(route="history", data=historyData)
+    → WebViewScreen loads community_history.html from assets
+    → Once loaded, calls injectData(webView, historyData)
+    → When user pulls to refresh → AndroidBridge.refresh()
+    → ViewModel re-fetches → re-injects data
+
+
+================================================================================
+8. EFFICIENCY OPTIMIZATIONS
+================================================================================
+
+8.1 WEBVIEW PERFORMANCE
+───────────────────────
+
+  OPTIMIZATION                          IMPACT          EFFORT
+  ────────────────────────────────────  ──────────────  ──────
+  Bundle fonts locally (not CDN)        -300ms startup  Low
+  Purge Tailwind CSS (300KB → 15KB)     -200ms parse    Medium
+  Pre-warm WebView during splash        -400ms navigate Low
+  Pool WebView instances (reuse)        -200ms navigate Medium
+  Disable JavaScript console logging    -10% CPU        Low
+  Hardware-accelerated rendering         +20% fps       Low
+  Inline critical CSS                    -100ms render   Medium
+
+  TOTAL POTENTIAL SAVINGS: ~1.2s faster WebView load
+
+  DETAILED TECHNIQUES:
+
+  a) TAILWIND PURGE
+     Use Tailwind CLI to generate a minimal CSS file:
+       npx tailwindcss -i input.css -o output.css --minify
+     Scan all HTML files, keep only used classes.
+     Replace <script src="cdn.tailwindcss.com"> with local <link> tag.
+
+  b) WEBVIEW POOL
+     Create a WebViewPool manager that pre-creates 2-3 WebView instances
+     on app launch. When navigating to a WebView screen, grab one from
+     the pool instead of creating fresh. Recycle when navigating away.
+
+  c) LOCAL FONT BUNDLES
+     Download these fonts into /assets/fonts/:
+       - Manrope (400, 500, 600, 700, 800)
+       - Epilogue (400, 700, 800, 900)
+       - Clash Display (600, 700)
+       - Material Symbols Outlined (variable)
+     Replace Google Fonts CSS imports with local @font-face declarations.
+     Saves ~500ms on first load (eliminates network font request).
+
+  d) PRE-RENDERING
+     After WebView loads HTML + CSS, inject a "skeleton" state immediately.
+     Then fetch real data in background. When data arrives, swap skeleton
+     with real content. User sees instant UI, data fills in ~200ms later.
+
+8.2 NATIVE PERFORMANCE
+──────────────────────
+
+  OPTIMIZATION                          IMPACT          EFFORT
+  ────────────────────────────────────  ──────────────  ──────
+  CameraX: Use PERFORMANCE mode         +15% fps       Low
+  ML Kit: Downscale to 720p             -40% OCR time  Low
+  ML Kit: Process on IO dispatcher      No UI jank     Low
+  Maps: Marker clustering (50+ markers) -60% draw time Medium
+  Maps: Viewport-based loading          -70% data      Medium
+  Room: Cache Firestore data locally    Offline + fast Low
+  Coil: Memory cache for avatars        -80% loads     Low
+  Compose: LazyColumn for lists         No recompose   Low
+
+  CRITICAL NATIVE OPTIMIZATIONS:
+
+  a) CAMERA PIPELINE EFFICIENCY
+     CameraX ImageAnalysis → downscale → ML Kit → background thread
+     Never run OCR on the main thread.
+     Use AnalysisStrategy.STRATEGY_KEEP_ONLY_LATEST (skip frames if busy).
+
+  b) MAP VIEWPORT LOADING
+     Only fetch station data within the visible map bounds.
+     Query Firestore with GeoHash-based queries.
+     When user pans, debounce 500ms before re-querying.
+     Cache previously loaded stations in Room.
+
+  c) LAZY FIRESTORE LISTENERS
+     Don't listen to all collections at once.
+     Attach Firestore snapshot listeners only when the screen is visible.
+     Detach when navigating away (Compose DisposableEffect).
+
+8.3 MEMORY EFFICIENCY
+─────────────────────
+
+  TECHNIQUE                             SAVES
+  ────────────────────────────────────  ─────────────
+  Release WebView when not visible      ~30MB per WV
+  Limit WebView pool to 2 instances     ~60MB cap
+  Compress captured photos (JPEG 80%)   ~2MB per photo
+  Clear image cache on low memory       Variable
+  Use WeakReference for callbacks       Prevents leaks
+
+  MEMORY BUDGET:
+    Native screens:    ~50MB
+    WebView pool (2):  ~60MB
+    Camera preview:    ~30MB
+    ML Kit model:      ~15MB
+    Maps tiles cache:  ~20MB
+    Room database:     ~5MB
+    ────────────────────────
+    TOTAL TARGET:      ~180MB peak
+
+8.4 BATTERY EFFICIENCY
+──────────────────────
+
+  TECHNIQUE                             SAVES
+  ────────────────────────────────────  ─────────────
+  Camera: Release when not in use       Major
+  GPS: Use BALANCED_POWER_ACCURACY      -40% drain
+  GPS: 10s interval (not continuous)    -60% drain
+  Map tiles: Aggressive caching         -30% network
+  Background sync: 15min intervals      -70% drain
+  ML Kit: Don't scan until shutter      -90% CPU
+
+  RULE: Camera and GPS are the biggest battery drains.
+  Neither should be active except on their specific screens.
+
+8.5 STARTUP OPTIMIZATION
+─────────────────────────
+
+  APP COLD START TARGET: < 2 seconds to interactive map
+
+  STARTUP SEQUENCE:
+    1. Splash screen (0ms) — Android 12+ splash screen API
+    2. Initialize Hilt DI (100ms)
+    3. Start pre-warming 2 WebViews in background (async)
+    4. Initialize Firebase Auth (200ms)
+    5. Load cached map data from Room (100ms)
+    6. Display Map screen with cached data (500ms)
+    7. Fetch fresh data from Firestore in background
+    8. Update map markers when fresh data arrives (~1s later)
+
+  Total to interactive: ~900ms (cached) / ~1.5s (fresh)
+
+
+================================================================================
+9. PERFORMANCE BUDGET
+================================================================================
+
+  METRIC                          TARGET         ACCEPTABLE
+  ─────────────────────────────   ──────────     ──────────
+  Cold start to interactive       < 2s           < 3s
+  Screen transition (native)      < 100ms        < 200ms
+  Screen transition (webview)     < 300ms        < 500ms
+  Camera preview startup          < 500ms        < 1s
+  ML Kit OCR processing           < 300ms        < 500ms
+  Map marker rendering (100+)     < 200ms        < 400ms
+  WebView data injection          < 100ms        < 200ms
+  Scroll performance              60fps          30fps
+  Touch response                  < 16ms         < 32ms
+  Photo upload                    < 3s           < 5s
+  Memory peak usage               < 180MB        < 250MB
+  APK size                        < 25MB         < 35MB
+  Battery drain (active use)      < 5%/hr        < 8%/hr
+
+
+================================================================================
+10. MIGRATION PATH (WEBVIEW → NATIVE OVER TIME)
+================================================================================
+
+The hybrid approach is NOT permanent. It's a "ship fast, migrate smart"
+strategy. Over time, high-traffic WebView screens should be rebuilt natively.
+
+PHASE 1 (LAUNCH): 3 Native + 5 WebView
+───────────────────────────────────────
+  Native:  Camera, Map, Analyze
+  WebView: Station Details, History, Leaderboard, Profile, Settings
+  Ship to Play Store. Gather user data on which screens get most traffic.
+
+PHASE 2 (MONTH 2-3): Migrate Station Details to Native
+───────────────────────────────────────────────────────
+  Station Details is the #1 candidate for native migration because:
+  - Users access it frequently (every map marker tap)
+  - It's a simple layout (quick to build in Compose)
+  - Bottom sheet gesture handling is smoother natively
+  - It's the gateway to "Navigate Now" (intent handling)
+  Result: 4 Native + 4 WebView
+
+PHASE 3 (MONTH 4-5): Migrate Profile to Native
+───────────────────────────────────────────────
+  Profile is accessed from bottom nav — high frequency.
+  Stats, progress bars, and action navigation are simple in Compose.
+  Result: 5 Native + 3 WebView
+
+PHASE 4 (MONTH 6+): Evaluate Remaining WebViews
+────────────────────────────────────────────────
+  History, Leaderboard, Settings may stay as WebView indefinitely
+  if performance is acceptable. They're content-heavy screens that
+  benefit from hot-update capability.
+
+  If user growth justifies it, migrate Leaderboard next (complex
+  layout, but high engagement from gamification users).
+
+  Settings is lowest priority — users rarely access it, and the
+  toggle/list pattern works fine in WebView.
+
+FINAL STATE (ESTIMATED):
+  Eventually: 5-6 Native + 2-3 WebView
+  Permanent WebView candidates: Settings, Help, Privacy Policy
+
+
+================================================================================
+                    APPENDIX: FILE STRUCTURE FOR HYBRID APP
+================================================================================
+
+  app/
+  ├── src/main/
+  │   ├── assets/
+  │   │   ├── webview/
+  │   │   │   ├── css/
+  │   │   │   │   └── tailwind-purged.min.css     (purged Tailwind)
+  │   │   │   ├── fonts/
+  │   │   │   │   ├── Manrope-Variable.woff2
+  │   │   │   │   ├── Epilogue-Variable.woff2
+  │   │   │   │   ├── ClashDisplay-Variable.woff2
+  │   │   │   │   └── MaterialSymbolsOutlined.woff2
+  │   │   │   ├── js/
+  │   │   │   │   └── bridge.js                    (shared bridge code)
+  │   │   │   ├── station_details.html
+  │   │   │   ├── community_history.html
+  │   │   │   ├── community_leaderboard.html
+  │   │   │   ├── profile.html
+  │   │   │   └── settings.html
+  │   │   └── images/
+  │   │       └── (any local image assets)
+  │   │
+  │   ├── java/com/fueltrack/monitor/
+  │   │   ├── presentation/
+  │   │   │   ├── native/
+  │   │   │   │   ├── map/         MapScreen.kt, MapViewModel.kt
+  │   │   │   │   ├── camera/      CameraScreen.kt, CameraViewModel.kt
+  │   │   │   │   └── analyze/     AnalyzeScreen.kt, AnalyzeViewModel.kt
+  │   │   │   ├── webview/
+  │   │   │   │   ├── WebViewScreen.kt       (reusable Compose WebView wrapper)
+  │   │   │   │   ├── WebViewPool.kt         (pre-warm + pool manager)
+  │   │   │   │   └── AndroidBridge.kt       (JavascriptInterface)
+  │   │   │   ├── navigation/
+  │   │   │   │   ├── NavHost.kt             (routes for all 8 screens)
+  │   │   │   │   └── BottomNavBar.kt        (shared native bottom nav)
+  │   │   │   └── theme/
+  │   │   │       ├── Theme.kt, Color.kt, Typography.kt
+  │   │   │       └── (M3 design tokens from DESIGN.md)
+  │   │   ├── data/
+  │   │   │   ├── ml/              ML Kit wrapper
+  │   │   │   ├── remote/          Firebase services
+  │   │   │   └── local/           Room database
+  │   │   └── domain/
+  │   │       ├── model/           Data classes
+  │   │       └── usecase/         Business logic
+  │   └── res/
+  └── build.gradle
+
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================

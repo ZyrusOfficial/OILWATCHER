@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FuelWatch | Leaderboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&amp;family=Manrope:wght@400;500;600;700;800&amp;family=Clash+Display:wght@400;700;900&amp;family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#0061a4",
+                        "primary-fixed": "#ffdbce",
+                        "on-primary-fixed-variant": "#7f2b00",
+                        "tertiary-fixed": "#d1e4ff",
+                        "surface-tint": "#a63b00",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-surface": "#1a1c1b",
+                        "background": "#f9f9f7",
+                        "surface-container": "#eeeeec",
+                        "on-primary-fixed": "#370e00",
+                        "on-primary-container": "#531900",
+                        "on-background": "#1a1c1b",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#0097fb",
+                        "surface-container-high": "#e8e8e6",
+                        "error-container": "#ffdad6",
+                        "primary": "#FF5E00",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e2e3e1",
+                        "secondary-container": "#e2dfde",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2f3130",
+                        "on-secondary-container": "#636262",
+                        "on-error-container": "#93000a",
+                        "secondary": "#5f5e5e",
+                        "surface-container-low": "#f4f4f2",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f1f1ef",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-variant": "#e2e3e1",
+                        "primary-fixed-dim": "#ffb599",
+                        "tertiary-fixed-dim": "#9fcaff",
+                        "on-surface-variant": "#5b4137",
+                        "primary-container": "#FF5E00",
+                        "on-secondary-fixed-variant": "#474746",
+                        "surface-dim": "#dadad8",
+                        "outline": "#8f7065",
+                        "on-tertiary-container": "#002d51",
+                        "on-tertiary-fixed-variant": "#00497d",
+                        "surface-bright": "#f9f9f7",
+                        "inverse-primary": "#ffb599",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "outline-variant": "#e4bfb1",
+                        "error": "#ba1a1a",
+                        "surface": "#f9f9f7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1.25rem",
+                        "lg": "1.25rem",
+                        "xl": "1.25rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Epilogue", "sans-serif"],
+                        "body": ["Epilogue", "sans-serif"],
+                        "label": ["Epilogue", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Epilogue', sans-serif;
+            background-color: #f9f9f7;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 border-b border-surface-variant">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline font-bold tracking-tight text-xl text-on-surface">Leaderboard</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-on-surface">search</span>
+</button>
+</div>
+</div>
+<!-- Segmented Control Toggle (Matching SCREEN_28 Layout) -->
+<div class="px-6 pb-4 max-w-screen-xl mx-auto">
+<div class="bg-surface-container-high p-1 rounded-full flex w-full">
+<button class="flex-1 py-2 text-sm font-bold rounded-full text-on-surface-variant hover:text-on-surface transition-all">History</button>
+<button class="flex-1 py-2 text-sm font-bold rounded-full bg-white text-on-surface shadow-sm transition-all">Leaderboard</button>
+</div>
+</div>
+</header>
+<main class="pt-40 pb-32 px-6 max-w-screen-xl mx-auto space-y-8">
+<!-- User Current Rank Highlight (Rounding updated to 20px / rounded-2xl) -->
+<section class="relative overflow-hidden bg-gradient-to-br from-primary to-primary-container rounded-2xl p-8 text-on-primary shadow-xl">
+<div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+<div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex items-center gap-6">
+<div class="relative">
+<div class="w-20 h-20 rounded-full border-4 border-white/20 overflow-hidden bg-surface-container-low">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLVbkzTTMVLgJBNMcj2QqVE9eIYEgDMoI3Zk2RG0ASurH8Sa1teOLlDjJEnO0s99kKX_pANXDV2hWcHZj5RsQOM5CE6oPWKbJT9T9n6vtmOAzSYgQ6_XKTXwxeMy9D2TbrqSEIk8Ewk1tZjcsYeEh8eybDE2Uxwe0rk4ROYghyrDSW6Ss5Q6TbAX_e1Im63kxrW0hQuPILpn7f9dzME1oFLttFGLnW407SnQ3smGjPWbIBIdPkGPyXDeeLbI12NWm68dDyHxHkPtVF"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-white text-primary font-black px-3 py-1 rounded-full text-sm shadow-md">
+                        #12
+                    </div>
+</div>
+<div>
+<p class="font-label text-sm uppercase tracking-widest text-white/80 font-bold mb-1">Your Standing</p>
+<h2 class="font-headline text-3xl font-bold tracking-tight">Alex Rivera</h2>
+</div>
+</div>
+<div class="flex gap-8 border-t border-white/20 pt-6 md:border-t-0 md:pt-0">
+<div>
+<p class="font-label text-[10px] uppercase tracking-widest text-white/60 font-bold">Total Points</p>
+<p class="text-2xl font-black font-headline">12,450</p>
+</div>
+<div>
+<p class="font-label text-[10px] uppercase tracking-widest text-white/60 font-bold">Weekly Rank</p>
+<div class="flex items-center gap-1">
+<span class="text-2xl font-black font-headline text-white">+4</span>
+<span class="material-symbols-outlined text-[#4ADE80]" data-icon="trending_up">trending_up</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Top 3 Podium (Asymmetric Bento Style, rounding updated to 20px / rounded-2xl) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Rank 2 -->
+<div class="bg-surface-container-low rounded-2xl p-6 flex flex-col items-center justify-center order-2 md:order-1 border-b-4 border-slate-300">
+<div class="w-16 h-16 rounded-full bg-surface-container-high mb-4 overflow-hidden">
+<img alt="Rank 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBawpYSi16vFcbCoQEYGFNpQ_CuHvR04sS2zIQmd7rddt7Pp1MkJXu-fdXmYjJ0RsNQcq0wEQNG-ZD2epeRc5E4C-eKlqEtp7wDY6my8jjtLZF-w7K3dTq5WoSOm8X1DhEkna_2HXTmR2KKsl8zJIGUE8cgVSLW5KhjTSt9lTjdm63bAdLt47xYv-tIfqjlv6f7YDqBVAmWwXqyCKPI36o1upwe0LLm2Twe5LGT3UbcBpY7Bnnde2yEu580_47GcmIUpjxbF9jfOwWq"/>
+</div>
+<p class="font-headline font-bold text-lg">Sarah J.</p>
+<p class="text-secondary font-bold text-sm mb-4">24,102 pts</p>
+<div class="bg-slate-200 text-slate-700 font-black px-4 py-1 rounded-full text-xs uppercase tracking-tighter">Silver</div>
+</div>
+<!-- Rank 1 -->
+<div class="bg-surface-container-lowest rounded-2xl p-8 flex flex-col items-center justify-center order-1 md:order-2 shadow-[0px_24px_48px_rgba(26,28,27,0.06)] border-b-4 border-yellow-400">
+<div class="relative mb-6">
+<div class="w-24 h-24 rounded-full ring-4 ring-yellow-400/30 p-1 overflow-hidden">
+<img alt="Rank 1" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzkQVD2B0YsTjrFEUnXk6KctFqHIg4gyKSSnrHBAOyDcVBZLWsVdN0DqCvxL4sO_672vK4DaeIsbLRHU6l7D9krogFQfn59waHkEe9cJvunyTh5jk3frzVVbBTbsLAAsPvemkEVdNqw1bAbBXO6RSf3vthZN4cevRz59bNGtRU-7G-DG4Kj_SoaPdS2EokgyADwlUzXZ2hOl7TZn09E0HaV7fi7tlkb-ptpGkevrIZ7Zqp1nLyHP1AvjcO1S5qnaj4L59Wru1SJK_P"/>
+</div>
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 text-yellow-500">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+</div>
+<h3 class="font-headline font-black text-2xl">Marcus Volt</h3>
+<p class="text-primary font-black text-lg mb-4">28,940 pts</p>
+<div class="bg-yellow-100 text-yellow-700 font-black px-6 py-2 rounded-full text-sm uppercase tracking-widest">Grand Contributor</div>
+</div>
+<!-- Rank 3 -->
+<div class="bg-surface-container-low rounded-2xl p-6 flex flex-col items-center justify-center order-3 md:order-3 border-b-4 border-amber-600">
+<div class="w-16 h-16 rounded-full bg-surface-container-high mb-4 overflow-hidden">
+<img alt="Rank 3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMVAq8kGuTfJ28C4xYYYHj1IbqXSyYw9PMa2Y_4z7ow0aY-JJ8BjoBnnb7T8ROUYwsNU1rii1FEGB-kg8TGcUObcwCbUy7LqO8zaCY5Q-QUPpTV_W2UDJAF22ulm43CwuFStQ9UB0nLjYBywF3naQ5pL0fJrt6GIHLRWoDWymKhypcfpbViX6dQ11z-cj2swrIFHcU108w1_8owxCYxo-f9eDvGmwEihbqCMm2-T67Nltp8tOIzq9Fpv8x-1CCxLCziYtgO5G6sCGg"/>
+</div>
+<p class="font-headline font-bold text-lg">Leo Chen</p>
+<p class="text-secondary font-bold text-sm mb-4">22,890 pts</p>
+<div class="bg-amber-100 text-amber-800 font-black px-4 py-1 rounded-full text-xs uppercase tracking-tighter">Bronze</div>
+</div>
+</section>
+<!-- Contributors List (Rounding updated to 20px / rounded-2xl) -->
+<section class="bg-surface-container-low rounded-2xl overflow-hidden">
+<div class="px-6 py-6 flex justify-between items-center border-b border-surface-variant/30">
+<h4 class="font-headline font-bold text-lg">Top Contributors</h4>
+<div class="flex gap-2">
+<button class="px-4 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-bold text-xs">Monthly</button>
+<button class="px-4 py-1.5 rounded-full text-on-surface/40 font-bold text-xs hover:bg-surface-container-high transition-colors">All Time</button>
+</div>
+</div>
+<div class="divide-y divide-surface-variant/20">
+<!-- Rank 4 -->
+<div class="flex items-center justify-between px-6 py-5 hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-headline font-black text-xl text-on-surface/30 w-8">04</span>
+<div class="w-12 h-12 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="Rank 4" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLL1XktzTgrWGFjbkuMIFxgZ5NCy2Boxbg9mr_j4ZS95KLKRpX4RjwIFzGM8eT-4MNd7MKJ4i11acKQcDMIMxGTxCPuYtpZVxj8J6cn76hOpCMSdjdn_XkSsADH3oGhw8qYmfU37M4cqOOT9C01dn_x6Y6_oBxw51pmybqjLkEKnXqUNsaxyyXFJ5cg0BmNcy06Ye-OtZLpib7WaHnnA1Ox8WC6MhaVjs4sljHnrJXr6NPYgMIWHrMrZgzqI5hoxzlbbVPHmUuwtJd"/>
+</div>
+<div>
+<p class="font-bold">Elena Vance</p>
+<p class="text-xs text-secondary font-bold">18,200 pts</p>
+</div>
+</div>
+<div class="flex items-center gap-1 text-[#4ADE80]">
+<span class="material-symbols-outlined text-sm">expand_less</span>
+<span class="font-black text-xs">2</span>
+</div>
+</div>
+<!-- Rank 5 -->
+<div class="flex items-center justify-between px-6 py-5 bg-primary/5 hover:bg-primary/10 transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-headline font-black text-xl text-primary w-8">05</span>
+<div class="w-12 h-12 rounded-full border-2 border-primary-container p-0.5 overflow-hidden">
+<img alt="Rank 5" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFIURhkGFVcw0hPZUbD2c_fY16QqU45Tfi2Y6SGJWG_FcKwezh-SnG812XDtKHTFdONdOm5w3tV1ORerRazozxTKnIN632oq7J4r4haZ-255PUHTkMmtr7CweoAwYtYM0oQlxcq--qUsfvuKqVOQNqTRV2ngTBBiYlLzsPCHYh5qf9WbJWqkCq-Q_zCm7SYa9GsqSVY6BR_REptSCoFbGvikkfxr1JUt1EK_RhnX_gB2Dfs1NXoUDkwRNhc9406PLLMd3vTpYSJ5bs"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">James T.</p>
+<div class="flex items-center gap-2">
+<p class="text-xs text-primary font-black uppercase tracking-tight">Active Scout</p>
+<span class="w-1 h-1 rounded-full bg-on-surface/20"></span>
+<p class="text-xs text-secondary font-bold">17,450 pts</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1 text-[#4ADE80]">
+<span class="material-symbols-outlined text-sm">expand_less</span>
+<span class="font-black text-xs">1</span>
+</div>
+</div>
+<!-- Rank 6 -->
+<div class="flex items-center justify-between px-6 py-5 hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-headline font-black text-xl text-on-surface/30 w-8">06</span>
+<div class="w-12 h-12 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="Rank 6" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjSG7e8TaJM3CvHGtOwh9bhVUapaoPgRp_pcaXJ34J0Syx6IcUIpEDOJtxyn3w3s8XaY13kskI7SMqNwyaBJtJ4gyWr9H6MiV5Dq1qekwhc9KDU61HDI3UiCKtFNmFLxULlNV7ZhLxfabpbzzQ4EOePpfhAGXT5QcZyEXKUg1X6LWRvjZTjaeqTeS3p2KizAUi8ujP1mEWc-RELLzXG8n1235WWBOSwl43Q4InTUKmiP2PzpGlZhQppHG1ABqeJ3x57w8IXJi9Hwsh"/>
+</div>
+<div>
+<p class="font-bold">Sofia G.</p>
+<p class="text-xs text-secondary font-bold">16,100 pts</p>
+</div>
+</div>
+<div class="flex items-center gap-1 text-secondary/40">
+<span class="material-symbols-outlined text-sm">remove</span>
+<span class="font-black text-xs">0</span>
+</div>
+</div>
+<!-- Rank 7 -->
+<div class="flex items-center justify-between px-6 py-5 hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-headline font-black text-xl text-on-surface/30 w-8">07</span>
+<div class="w-12 h-12 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="Rank 7" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgs5QhfEGenYL9wvlOSetz3dCfgr5gRbbDTg9eHTQGY9U-_DeizJ1T4GYmXAagC3-B4ADB3g6s39qqm00Ci96mfL4k4TJghYupyt7OLmgNaLMBmFlkjSctyt0KgrHDXegLthaGhcJSYAKprQ4Wg4qcCJqhVjPLZLazoKp4bMI_Vy1t6TLK-xJsdMkocmIAArQPFJrxzUW7A5Ulb1Su37Se6ItLR79FB2-afzP8He89u5pvWh1XdRQvecI54sPWw9gqM1egL74R6GO3"/>
+</div>
+<div>
+<p class="font-bold">David Wu</p>
+<p class="text-xs text-secondary font-bold">15,800 pts</p>
+</div>
+</div>
+<div class="flex items-center gap-1 text-red-400">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+<span class="font-black text-xs">3</span>
+</div>
+</div>
+<!-- Rank 8 -->
+<div class="flex items-center justify-between px-6 py-5 hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-headline font-black text-xl text-on-surface/30 w-8">08</span>
+<div class="w-12 h-12 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="Rank 8" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7FMdby4Y92OVInWxsx8KRRq-_EWqOuQiY6vPMlUqR3GQDu2TNWurqtZZd_Ypg-9Sj6aLXEFJ0BPxydMg5NOeywRCZ3--IA8tpA0d_gNvYuf_qkgqVaRZ2AcmDTuVhSNF86UrPUmrst4fYnDU0MJlzW6rkcNZRjYJlCDi_hlwF4frKgRfwcKfId4y7aqwjMWLQW1qArpdzctmmxgFz3xa3-oaomzQNf6U3whvB8Sr8TQ9fn5ME7AZycvLu6uV3KTiestjmMdh3cM1W"/>
+</div>
+<div>
+<p class="font-bold">Taylor R.</p>
+<p class="text-xs text-secondary font-bold">14,920 pts</p>
+</div>
+</div>
+<div class="flex items-center gap-1 text-[#4ADE80]">
+<span class="material-symbols-outlined text-sm">expand_less</span>
+<span class="font-black text-xs">5</span>
+</div>
+</div>
+</div>
+<button class="w-full py-4 bg-surface-container-high text-on-surface font-black text-sm uppercase tracking-widest hover:bg-surface-variant transition-colors">
+            Load More Contributor Rankings
+        </button>
+</section>
+</main>
+<!-- Docked BottomNavBar (Matching SCREEN_28 with 4 items, Community active) -->
+<nav class="fixed bottom-0 w-full z-50 bg-white border-t border-surface-variant flex justify-around items-center px-4 py-3">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-150 group" href="#">
+<span class="material-symbols-outlined text-2xl">map</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-150 group" href="#">
+<span class="material-symbols-outlined text-2xl">add_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Contribute</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary relative transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Community</span>
+<div class="absolute -bottom-3 w-1.5 h-1.5 bg-primary rounded-full"></div>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-150 group" href="#">
+<span class="material-symbols-outlined text-2xl">settings</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

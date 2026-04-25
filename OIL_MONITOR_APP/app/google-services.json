@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "725547521528",
+    "project_id": "oil-monitor-cbc55",
+    "storage_bucket": "oil-monitor-cbc55.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725547521528:android:d1b27f9bef5ea0a5a7f20d",
+        "android_client_info": {
+          "package_name": "com.oilwatcher.monitor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNFTDxEJyWZ3vI8GvyMYRp4CIs_KiD6Zk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
