@@ -4,6 +4,7 @@ import android.Manifest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -65,6 +66,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MapScreen(
+    innerPadding: PaddingValues,
     onOpenCamera: () -> Unit,
     onOpenStation: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -270,7 +272,7 @@ fun MapScreen(
             shape = CircleShape,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(end = 24.dp, bottom = 104.dp) // Above camera FAB
+                .padding(end = 24.dp, bottom = innerPadding.calculateBottomPadding() + 88.dp) // Above camera FAB
                 .size(56.dp),
         ) {
             Icon(
@@ -287,7 +289,7 @@ fun MapScreen(
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(end = 24.dp, bottom = 24.dp)
+                .padding(end = 24.dp, bottom = innerPadding.calculateBottomPadding() + 16.dp)
                 .size(64.dp),
         ) {
             Icon(

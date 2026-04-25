@@ -7,16 +7,29 @@ import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Reusable WebView screen composable.
@@ -43,6 +56,14 @@ fun WebViewScreen(
 ) {
     val context = LocalContext.current
     val gson = remember { Gson() }
+    
+    var isLoading by remember { mutableStateOf(true) }
+    val coroutineScope = rememberCoroutineScope()
+    val alpha by animateFloatAsState(
+        targetValue = if (isLoading) 0f else 1f,
+        animationSpec = tween(durationMillis = 300),
+        label = "webViewAlpha"
+    )
 
     val webView = remember {
         WebView(context).apply {
@@ -62,8 +83,8 @@ fun WebViewScreen(
                 builtInZoomControls = false
                 displayZoomControls = false
 
-                // Performance: cache mode for local assets
-                cacheMode = android.webkit.WebSettings.LOAD_NO_CACHE
+                // Performance: cache mode for local assets and remote fonts
+                cacheMode = android.webkit.WebSettings.LOAD_DEFAULT
             }
 
             // Transparent background to blend with native
@@ -98,6 +119,12 @@ fun WebViewScreen(
                             null
                         )
                     }
+                    
+                    // Delay slightly to allow DOM painting and fonts to render fully
+                    coroutineScope.launch {
+                        delay(150)
+                        isLoading = false
+                    }
                 }
             }
 
@@ -130,10 +157,16 @@ fun WebViewScreen(
         }
     }
 
-    AndroidView(
-        factory = { webView },
-        modifier = modifier.fillMaxSize(),
-    )
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        if (isLoading) {
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+        }
+        
+        AndroidView(
+            factory = { webView },
+            modifier = Modifier.fillMaxSize().alpha(alpha),
+        )
+    }
 }
 
 /**

@@ -8,6 +8,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.oilwatcher.monitor.presentation.navigation.AppNavHost
 import com.oilwatcher.monitor.presentation.theme.OilWatcherTheme
 import dagger.hilt.android.AndroidEntryPoint
+import android.graphics.Color
+import androidx.activity.SystemBarStyle
 
 /**
  * Main Activity — single-activity architecture.
@@ -27,7 +29,10 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT)
+        )
 
         setContent {
             OilWatcherTheme {

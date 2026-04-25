@@ -73,9 +73,7 @@ fun AppNavHost(
         NavHost(
             navController = navController,
             startDestination = Routes.MAP,
-            modifier = modifier
-                .fillMaxSize()
-                .padding(innerPadding),
+            modifier = modifier.fillMaxSize(),
         ) {
             // ══════════════════════════════════════
             //  NATIVE SCREENS (Jetpack Compose)
@@ -83,6 +81,7 @@ fun AppNavHost(
 
             composable(Routes.MAP) {
                 MapScreen(
+                    innerPadding = innerPadding,
                     onOpenCamera = { navController.navigate(Routes.CAMERA) },
                     onOpenStation = { stationId ->
                         navController.navigate(Routes.stationDetails(stationId))
@@ -128,6 +127,7 @@ fun AppNavHost(
             ) { backStackEntry ->
                 val stationId = backStackEntry.arguments?.getString("stationId") ?: ""
                 WebViewScreen(
+                    modifier = Modifier.padding(innerPadding),
                     assetPath = "webview/station_details.html",
                     screenId = "station_details",
                     navController = navController,
@@ -139,6 +139,7 @@ fun AppNavHost(
             composable(Routes.HISTORY) {
                 LaunchedEffect(Unit) { webViewModel.loadScreenData("history") }
                 WebViewScreen(
+                    modifier = Modifier.padding(innerPadding),
                     assetPath = "webview/community_history.html",
                     screenId = "history",
                     navController = navController,
@@ -150,6 +151,7 @@ fun AppNavHost(
             composable(Routes.LEADERBOARD) {
                 LaunchedEffect(Unit) { webViewModel.loadScreenData("leaderboard") }
                 WebViewScreen(
+                    modifier = Modifier.padding(innerPadding),
                     assetPath = "webview/community_leaderboard.html",
                     screenId = "leaderboard",
                     navController = navController,
@@ -161,6 +163,7 @@ fun AppNavHost(
             composable(Routes.PROFILE) {
                 LaunchedEffect(Unit) { webViewModel.loadScreenData("profile") }
                 WebViewScreen(
+                    modifier = Modifier.padding(innerPadding),
                     assetPath = "webview/profile.html",
                     screenId = "profile",
                     navController = navController,
@@ -172,6 +175,7 @@ fun AppNavHost(
             composable(Routes.SETTINGS) {
                 LaunchedEffect(Unit) { webViewModel.loadScreenData("settings") }
                 WebViewScreen(
+                    modifier = Modifier.padding(innerPadding),
                     assetPath = "webview/settings.html",
                     screenId = "settings",
                     navController = navController,
