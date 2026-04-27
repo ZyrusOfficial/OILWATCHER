@@ -6,6 +6,11 @@ package com.oilwatcher.monitor.presentation.navigation
  * WebView screens load HTML from assets.
  */
 object Routes {
+    // ── Auth Screens (WebView) ──
+    const val LOGIN = "login"
+    const val SIGNUP = "signup"
+    const val FORGOT_PASSWORD = "forgot_password"
+
     // ── Native Screens (Jetpack Compose) ──
     const val MAP = "map"
     const val CAMERA = "camera"

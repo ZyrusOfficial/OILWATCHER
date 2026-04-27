@@ -3,6 +3,8 @@ package com.oilwatcher.monitor.di
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.oilwatcher.monitor.data.repository.AuthRepository
+import com.oilwatcher.monitor.data.repository.AuthRepositoryImpl
 import com.oilwatcher.monitor.data.repository.FirestoreStationRepository
 import com.oilwatcher.monitor.domain.repository.StationRepository
 import dagger.Binds
@@ -44,4 +46,10 @@ abstract class RepositoryModule {
     abstract fun bindContributionRepository(
         contributionRepositoryImpl: com.oilwatcher.monitor.data.repository.ContributionRepositoryImpl
     ): com.oilwatcher.monitor.domain.repository.ContributionRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthRepository(
+        authRepositoryImpl: AuthRepositoryImpl
+    ): AuthRepository
 }

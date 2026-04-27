@@ -2,108 +2,131 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"/>
     <title>Station Details</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1&display=swap" rel="stylesheet"/>
     <script src="js/bridge.js"></script>
     <style>
+        :root {
+            --primary: #a63b00; --primary-container: #ff5e00; --on-primary: #fff;
+            --surface: #f9f9f7; --surface-container-lowest: #fff; --surface-container-low: #f4f4f2;
+            --surface-container-high: #e8e8e6; --on-surface: #1a1c1b;
+            --on-surface-variant: #5b4137; --outline: #8f7065;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Manrope', sans-serif;
-            background: transparent;
-            color: #1a1a1a;
-            -webkit-user-select: none;
-            user-select: none;
-            overflow-x: hidden;
+            font-family: 'Roboto', system-ui, sans-serif;
+            background: transparent; /* Leaves backing transparent for BottomSheet feel */
+            color: var(--on-surface);
+            -webkit-user-select: none; user-select: none;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
         }
         .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-family:'Material Symbols Outlined'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             display: inline-block; line-height: 1;
         }
         .sheet {
-            background: #ffffff;
-            border-radius: 20px 20px 0 0;
-            padding: 0 24px 24px;
-            min-height: 100vh;
+            background: var(--surface-container-lowest);
+            border-radius: 24px 24px 0 0;
+            padding: 0 20px 24px;
+            height: 100dvh; display: flex; flex-direction: column;
         }
-        .drag-handle { display: flex; justify-content: center; padding: 12px 0 8px; }
-        .drag-handle div { width: 48px; height: 5px; background: #d0d0d0; border-radius: 10px; }
-        .header { margin-bottom: 24px; }
-        .header h2 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
-        .header .distance { color: #8e8e8b; font-weight: 500; font-size: 15px; display: flex; align-items: center; gap: 4px; margin-top: 4px; }
+        .drag-handle { display: flex; justify-content: center; padding: 12px 0 16px; cursor: pointer; }
+        .drag-handle div { width: 40px; height: 4px; background: var(--surface-container-high); border-radius: 10px; }
+        
+        .header { margin-bottom: 20px; }
+        .header h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; }
+        .header .distance { color: var(--on-surface-variant); font-weight: 500; font-size: 14px; display: flex; align-items: center; gap: 4px; margin-top: 6px; }
+        
         .price-primary {
             display: flex; align-items: center; justify-content: space-between;
-            background: #f8f6f5; padding: 16px; border-radius: 16px; margin-bottom: 16px;
+            background: var(--surface-container-low); padding: 16px 20px; border-radius: 16px; margin-bottom: 12px;
         }
-        .price-primary .grade { font-size: 18px; font-weight: 600; }
-        .price-primary .octane { color: #8e8e8b; font-size: 14px; font-weight: 500; }
-        .price-primary .value { font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+        .price-primary .grade { font-size: 16px; font-weight: 700; }
+        .price-primary .octane { color: var(--on-surface-variant); font-size: 13px; font-weight: 500; }
+        .price-primary .value { font-size: 32px; font-weight: 800; letter-spacing: -1px; }
         .price-primary .trend {
-            width: 24px; height: 24px; border-radius: 50%; background: rgba(0,200,83,0.1);
+            width: 24px; height: 24px; border-radius: 50%; background: #dcfce7;
             display: flex; align-items: center; justify-content: center;
         }
-        .price-primary .trend .material-symbols-outlined { font-size: 16px; color: #00c853; font-variation-settings: 'FILL' 1; }
+        .price-primary .trend .material-symbols-outlined { font-size: 16px; color: #16a34a; font-variation-settings: 'FILL' 1; }
+        
+        .prices-grid { background: var(--surface-container-lowest); border: 1px solid var(--surface-container-high); border-radius: 16px; overflow: hidden; margin-bottom: 16px;}
         .price-row {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 16px; border-bottom: 1px solid #f0f0f0; opacity: 0.8;
+            padding: 14px 20px; border-bottom: 1px solid var(--surface-container-high);
         }
         .price-row:last-child { border-bottom: none; }
-        .price-row .label { font-weight: 500; font-size: 16px; }
-        .price-row .value { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
-        .updated { text-align: center; color: #8e8e8b; font-size: 14px; font-weight: 500; padding: 16px 0; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .updated strong { color: #1a1a1a; font-weight: 700; }
+        .price-row .label { font-weight: 600; font-size: 15px; }
+        .price-row .value { font-size: 18px; font-weight: 700; letter-spacing: -0.5px; }
+        
+        .updated { text-align: center; color: var(--on-surface-variant); font-size: 13px; font-weight: 500; padding: 12px 0; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .updated strong { color: var(--on-surface); font-weight: 700; }
+        
+        .spacer { flex: 1; }
+        
         .nav-btn {
-            width: 100%; height: 64px; background: #ff5e00; color: #fff;
-            font-family: 'Manrope', sans-serif; font-size: 18px; font-weight: 700;
-            border: none; border-radius: 20px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 12px;
+            width: 100%; height: 56px; background: var(--primary-container); color: #fff;
+            font-family: inherit; font-size: 16px; font-weight: 700;
+            border: none; border-radius: 16px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
             box-shadow: 0 8px 24px rgba(255,94,0,0.2);
-            transition: transform 0.1s;
+            transition: transform 0.1s; margin-top: 8px;
         }
         .nav-btn:active { transform: scale(0.98); }
-        .nav-btn .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
+        .nav-btn .material-symbols-outlined { font-variation-settings: 'FILL' 1; font-size:20px; }
     </style>
 </head>
 <body>
 <div class="sheet">
-    <a class="drag-handle" onclick="goBack()"><div></div></a>
+    <div class="drag-handle" onclick="goBack()"><div></div></div>
     <div class="header">
         <h2 id="station-name">Loading...</h2>
         <p class="distance">
-            <span class="material-symbols-outlined" style="font-size:18px;">location_on</span>
+            <span class="material-symbols-outlined" style="font-size:16px;">location_on</span>
             <span id="station-distance">—</span>
         </p>
     </div>
+    
     <div class="price-primary">
         <div>
             <div class="grade">Regular</div>
             <div class="octane">87 Octane</div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;">
+        <div style="display:flex;align-items:center;gap:12px;">
             <div class="value" id="price-regular">—</div>
             <div class="trend"><span class="material-symbols-outlined">trending_down</span></div>
         </div>
     </div>
-    <div class="price-row">
-        <span class="label">Premium</span>
-        <span class="value" id="price-premium">—</span>
+    
+    <div class="prices-grid">
+        <div class="price-row">
+            <span class="label">Premium</span>
+            <span class="value" id="price-premium">—</span>
+        </div>
+        <div class="price-row">
+            <span class="label">Diesel</span>
+            <span class="value" id="price-diesel">—</span>
+        </div>
     </div>
-    <div class="price-row">
-        <span class="label">Diesel</span>
-        <span class="value" id="price-diesel">—</span>
-    </div>
+    
     <div class="updated">
         <span class="material-symbols-outlined" style="font-size:16px;">schedule</span>
         <span>Updated <span id="updated-time">—</span> by <strong id="updated-by">—</strong></span>
     </div>
+    
+    <div class="spacer"></div>
+    
     <button class="nav-btn" id="navigate-btn" onclick="handleNavigate()">
         <span class="material-symbols-outlined">navigation</span>
         Navigate Now
     </button>
 </div>
 <script>
-    // Station data injected by native Android
     var stationData = {};
     function onDataReceived(data) {
         stationData = data;

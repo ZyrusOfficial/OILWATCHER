@@ -2,88 +2,105 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"/>
     <title>History</title>
-    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1&display=swap" rel="stylesheet"/>
     <script src="js/bridge.js"></script>
     <style>
+        :root {
+            --primary: #a63b00; --primary-container: #ff5e00; --on-primary: #fff;
+            --surface: #f9f9f7; --surface-container-lowest: #fff; --surface-container-low: #f4f4f2;
+            --surface-container-high: #e8e8e6; --on-surface: #1a1c1b;
+            --on-surface-variant: #5b4137; --outline: #8f7065;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Epilogue', sans-serif; background: #f9f9f7; color: #1a1c1b; -webkit-user-select: none; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; line-height: 1; }
+        body { 
+            font-family: 'Roboto', system-ui, sans-serif; 
+            background: var(--surface); color: var(--on-surface); 
+            -webkit-user-select: none;
+            min-height: 100dvh; overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined { font-family:'Material Symbols Outlined'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; line-height: 1; }
 
         /* Header */
-        .header { position: sticky; top: 0; background: rgba(249,249,247,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 50; border-bottom: 1px solid #e2e3e1; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; }
-        .header-top h1 { font-weight: 700; font-size: 20px; }
-        .back-btn { width: 40px; height: 40px; border-radius: 50%; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .back-btn .material-symbols-outlined { color: #ff5e00; }
-        .segment { display: flex; background: #e8e8e6; border-radius: 999px; padding: 4px; margin: 0 24px 16px; }
-        .segment button { flex: 1; padding: 8px; font-size: 14px; font-weight: 700; border: none; border-radius: 999px; cursor: pointer; font-family: 'Epilogue'; background: transparent; color: #5b4137; }
-        .segment button.active { background: #fff; color: #1a1c1b; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .header { position: fixed; top: 0; left: 0; right: 0; background: rgba(249,249,247,0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 50; border-bottom: 1px solid rgba(226,227,225,0.6); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; height: 56px;}
+        .header-top h1 { font-weight: 700; font-size: 18px; margin-left:4px; }
+        .icon-btn { width: 40px; height: 40px; border-radius: 50%; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .icon-btn .material-symbols-outlined { color: var(--primary-container); }
+        .segment { display: flex; background: var(--surface-container-high); border-radius: 999px; padding: 4px; margin: 0 16px 12px; }
+        .segment button { flex: 1; padding: 6px; font-size: 13px; font-weight: 700; border: none; border-radius: 999px; cursor: pointer; font-family: inherit; background: transparent; color: var(--on-surface-variant); }
+        .segment button.active { background: #fff; color: var(--on-surface); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+        .page { padding: 120px 16px 32px; display: flex; flex-direction: column; gap: 24px; }
 
         /* Summary cards */
-        .summary { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; padding: 0 24px; margin-bottom: 32px; }
-        .summary-main { background: #f4f4f2; border-radius: 20px; padding: 32px; }
-        .summary-main .label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; color: #ff5e00; margin-bottom: 8px; }
-        .summary-main .number { font-size: 48px; font-weight: 900; }
-        .summary-main p { color: #5b4137; font-weight: 500; margin-top: 16px; font-size: 14px; }
-        .summary-points { background: #ff5e00; color: #fff; border-radius: 20px; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; }
-        .summary-points .icon { width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
-        .summary-points .number { font-size: 28px; font-weight: 700; }
-        .summary-points .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; opacity: 0.8; }
+        .summary { display: grid; grid-template-columns: 3fr 2fr; gap: 12px; }
+        .summary-main { background: var(--surface-container-low); border-radius: 18px; padding: 20px; }
+        .summary-main .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--primary-container); margin-bottom: 4px; }
+        .summary-main .number { font-size: 36px; font-weight: 800; }
+        .summary-main p { color: var(--on-surface-variant); font-weight: 500; margin-top: 12px; font-size: 12px; }
+        .summary-points { background: linear-gradient(135deg, var(--primary-container), var(--primary)); color: #fff; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+        .summary-points .icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+        .summary-points .icon .material-symbols-outlined { font-size: 24px; color:#fff; font-variation-settings: 'FILL' 1; }
+        .summary-points .number { font-size: 22px; font-weight: 700; }
+        .summary-points .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; opacity: 0.9; }
 
         /* List */
-        .list-header { display: flex; justify-content: space-between; align-items: center; padding: 0 24px; margin-bottom: 24px; }
-        .list-header h3 { font-size: 22px; font-weight: 700; }
-        .list-header .badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #5b4137; background: #e8e8e6; padding: 6px 16px; border-radius: 999px; }
+        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .list-header h3 { font-size: 18px; font-weight: 700; }
+        .list-header .badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--on-surface-variant); background: var(--surface-container-high); padding: 4px 12px; border-radius: 999px; }
+        
         .item {
-            background: #fff; border-radius: 20px; padding: 24px; margin: 0 24px 12px;
-            border: 1px solid rgba(226,227,225,0.3); box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-            cursor: pointer; transition: background 0.15s;
+            background: var(--surface-container-lowest); border-radius: 18px; padding: 16px; margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(26,28,27,0.03); cursor: pointer; transition: transform 0.1s;
+            border: none; text-align: left; font-family: inherit; width: 100%; display: block;
         }
-        .item:active { background: #f4f4f2; }
-        .item-top { display: flex; align-items: flex-start; gap: 16px; }
-        .item-icon { width: 56px; height: 56px; border-radius: 50%; background: #e8e8e6; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .item-icon .material-symbols-outlined { color: #ff5e00; font-size: 28px; }
-        .item-name { font-size: 18px; font-weight: 700; }
-        .item-addr { color: #5b4137; font-size: 14px; font-weight: 500; }
-        .item-tags { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
-        .tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 2px 8px; border-radius: 4px; }
-        .tag-fuel { color: #636262; background: #e2dfde; }
+        .item:active { transform: scale(0.98); background: var(--surface-container-low); }
+        .item-top { display: flex; align-items: flex-start; gap: 12px; }
+        .item-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--surface-container-low); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .item-icon .material-symbols-outlined { color: var(--primary-container); font-size: 24px; }
+        .item-name { font-size: 15px; font-weight: 700; }
+        .item-addr { color: var(--on-surface-variant); font-size: 12px; font-weight: 500; margin-top:2px; }
+        .item-tags { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+        .tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 2px 6px; border-radius: 4px; }
+        .tag-fuel { color: var(--on-surface-variant); background: var(--surface-container-high); }
         .tag-ev { color: #0061a4; background: #d1e4ff; }
-        .item-time { font-size: 12px; color: #5b4137; font-weight: 500; }
-        .item-bottom { display: flex; justify-content: flex-end; gap: 32px; margin-top: 16px; }
+        .item-time { font-size: 11px; color: var(--on-surface-variant); font-weight: 500; margin-left: auto;}
+        
+        .item-bottom { display: flex; justify-content: flex-end; gap: 24px; margin-top: 12px; padding-top:12px; border-top:1px solid var(--surface-container-high); }
         .item-stat { text-align: right; }
-        .item-stat .value { font-size: 22px; font-weight: 900; }
-        .item-stat .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #5b4137; }
-        .item-points { color: #ff5e00; font-weight: 700; display: flex; align-items: center; gap: 4px; }
-        .item-points .material-symbols-outlined { font-size: 18px; font-variation-settings: 'FILL' 1; }
+        .item-stat .value { font-size: 16px; font-weight: 800; }
+        .item-stat .label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--on-surface-variant); }
+        .item-points { color: var(--primary-container); font-weight: 700; display: flex; align-items: center; gap: 2px; }
+        .item-points .material-symbols-outlined { font-size: 16px; font-variation-settings: 'FILL' 1; }
 
         /* CTA */
-        .cta { background: #1a1c1b; border-radius: 20px; padding: 40px; margin: 40px 24px; color: #f9f9f7; }
-        .cta h3 { font-size: 24px; font-weight: 900; margin-bottom: 24px; line-height: 1.3; }
+        .cta { background: var(--on-surface); border-radius: 20px; padding: 24px; margin-top: 16px; color: var(--surface); text-align: center; }
+        .cta h3 { font-size: 18px; font-weight: 800; margin-bottom: 16px; line-height: 1.3; }
         .cta-btn {
-            background: #ff5e00; color: #fff; border: none; padding: 16px 32px; border-radius: 999px;
-            font-family: 'Epilogue'; font-weight: 700; font-size: 14px; cursor: pointer;
-            display: flex; align-items: center; gap: 8px; transition: transform 0.1s;
+            background: var(--primary-container); color: #fff; border: none; padding: 14px 24px; border-radius: 999px;
+            font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.1s; width: 100%;
         }
-        .cta-btn:active { transform: scale(0.95); }
-
-        /* Content padding for scroll */
-        .content { padding-top: 130px; padding-bottom: 24px; }
+        .cta-btn:active { transform: scale(0.96); }
     </style>
 </head>
 <body>
 <div class="header">
     <div class="header-top">
-        <div style="display:flex;align-items:center;gap:16px;">
-            <button class="back-btn" onclick="goBack()"><span class="material-symbols-outlined">arrow_back</span></button>
+        <div style="display:flex;align-items:center;">
+            <button class="icon-btn" onclick="goBack()"><span class="material-symbols-outlined">arrow_back</span></button>
             <h1>History</h1>
         </div>
-        <div style="display:flex;gap:8px;">
-            <button class="back-btn"><span class="material-symbols-outlined">filter_list</span></button>
-            <button class="back-btn"><span class="material-symbols-outlined">search</span></button>
+        <div style="display:flex;gap:4px;">
+            <button class="icon-btn" style="color:var(--on-surface-variant);"><span class="material-symbols-outlined">filter_list</span></button>
+            <button class="icon-btn" style="color:var(--on-surface-variant);"><span class="material-symbols-outlined">search</span></button>
         </div>
     </div>
     <div class="segment">
@@ -91,7 +108,7 @@
         <button onclick="switchTab('leaderboard')">Leaderboard</button>
     </div>
 </div>
-<div class="content">
+<div class="page">
     <div class="summary">
         <div class="summary-main">
             <div class="label">Total Contributions</div>
@@ -99,25 +116,28 @@
             <p id="savings-text">Loading your contribution data...</p>
         </div>
         <div class="summary-points">
-            <div class="icon"><span class="material-symbols-outlined" style="color:#fff;font-variation-settings:'FILL' 1;">stars</span></div>
+            <div class="icon"><span class="material-symbols-outlined">stars</span></div>
             <div>
                 <div class="number" id="lifetime-points">—</div>
                 <div class="label">Lifetime Points</div>
             </div>
         </div>
     </div>
-    <div class="list-header">
-        <h3>Recent Activity</h3>
-        <span class="badge" id="period-badge">This Month</span>
+    
+    <div>
+        <div class="list-header">
+            <h3>Recent Activity</h3>
+            <span class="badge" id="period-badge">This Month</span>
+        </div>
+        <div id="contribution-list">
+            <div style="text-align:center;padding:32px;color:var(--on-surface-variant);font-size:14px;">Loading contributions...</div>
+        </div>
     </div>
-    <div id="contribution-list">
-        <!-- Items injected dynamically -->
-        <div style="text-align:center;padding:40px;color:#8e8e8b;">Loading contributions...</div>
-    </div>
+    
     <div class="cta">
         <h3>Your contributions keep the community fueling efficiently.</h3>
         <button class="cta-btn" onclick="navigateTo('camera')">
-            <span class="material-symbols-outlined">add_location</span>
+            <span class="material-symbols-outlined" style="font-size:20px;">add_location</span>
             REPORT NEW PRICE
         </button>
     </div>
@@ -146,16 +166,16 @@
             var icon = isEv ? 'ev_station' : 'local_gas_station';
             var tagClass = isEv ? 'tag-ev' : 'tag-fuel';
             var unit = isEv ? '/kWh' : '';
-            list.innerHTML += '<div class="item" onclick="openStation(\'' + c.stationId + '\')">' +
+            list.innerHTML += '<button class="item" onclick="openStation(\'' + c.stationId + '\')">' +
                 '<div class="item-top"><div class="item-icon"><span class="material-symbols-outlined">' + icon + '</span></div>' +
-                '<div><div class="item-name">' + c.stationName + '</div>' +
+                '<div style="flex:1;"><div class="item-name">' + c.stationName + '</div>' +
                 '<div class="item-addr">' + c.stationAddress + '</div>' +
                 '<div class="item-tags"><span class="tag ' + tagClass + '">' + c.fuelType + '</span>' +
                 '<span class="item-time">' + c.timeAgo + '</span></div></div></div>' +
                 '<div class="item-bottom"><div class="item-stat"><div class="value">' + formatPrice(c.price) + unit + '</div>' +
                 '<div class="label">Price Reported</div></div>' +
                 '<div class="item-stat"><div class="item-points"><span class="material-symbols-outlined">add_circle</span>+' + c.points + ' pts</div>' +
-                '<div class="label">Points Earned</div></div></div></div>';
+                '<div class="label">Points Earned</div></div></div></button>';
         });
     }
 </script>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fuel Tracker - Sign Up</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;900&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#474746",
+                        "surface-variant": "#e2e3e1",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "surface-container-highest": "#e2e3e1",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f1f1ef",
+                        "surface": "#f9f9f7",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "primary-container": "#ff5e00",
+                        "surface-tint": "#a63b00",
+                        "tertiary-fixed": "#d1e4ff",
+                        "tertiary": "#0061a4",
+                        "outline-variant": "#e4bfb1",
+                        "tertiary-container": "#0097fb",
+                        "secondary": "#5f5e5e",
+                        "on-secondary-container": "#636262",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#ffb599",
+                        "tertiary-fixed-dim": "#9fcaff",
+                        "surface-container": "#eeeeec",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#dadad8",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-tertiary-container": "#002d51",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1a1c1b",
+                        "on-surface-variant": "#5b4137",
+                        "secondary-container": "#e2dfde",
+                        "primary": "#a63b00",
+                        "surface-bright": "#f9f9f7",
+                        "surface-container-low": "#f4f4f2",
+                        "on-background": "#1a1c1b",
+                        "on-primary-fixed": "#370e00",
+                        "inverse-surface": "#2f3130",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#531900",
+                        "background": "#f9f9f7",
+                        "on-tertiary-fixed-variant": "#00497d",
+                        "on-primary-fixed-variant": "#7f2b00",
+                        "surface-container-high": "#e8e8e6",
+                        "primary-fixed": "#ffdbce",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#ffb599",
+                        "error": "#ba1a1a",
+                        "outline": "#8f7065",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "1.25rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Epilogue", "sans-serif"],
+                        "display": ["Epilogue", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    },
+                    "fontSize": {}
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-headline, .font-display { font-family: 'Epilogue', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col pt-20">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-[#F9F9F7]/80 dark:bg-[#1A1C1B]/80 backdrop-blur-md flex items-center justify-between px-8 h-20 bg-surface-container-low transition-colors duration-300">
+<button class="text-on-surface hover:bg-surface-container-high rounded-full p-2 transition-colors active:scale-95 duration-200 ease-out flex items-center justify-center">
+<span class="material-symbols-outlined text-[#A63B00] dark:text-[#FF5E00]">arrow_back</span>
+</button>
+<div class="text-center flex-1">
+<h1 class="text-lg font-black tracking-[0.2em] text-[#1A1C1B] dark:text-[#F9F9F7] font-['Clash_Display']">FUEL TRACKER</h1>
+</div>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col justify-center px-6 py-12 max-w-md mx-auto w-full">
+<!-- Header Section -->
+<div class="mb-10 text-center">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-fixed mb-6">
+<span class="material-symbols-outlined text-3xl text-primary" style="font-variation-settings: 'FILL' 1;">local_gas_station</span>
+</div>
+<h2 class="font-headline text-3xl font-bold tracking-tight text-on-surface mb-2">Create Account</h2>
+<p class="font-body text-on-surface-variant text-base">Start tracking your fuel efficiency today.</p>
+</div>
+<!-- Form Section -->
+<form class="space-y-6">
+<div class="space-y-4">
+<!-- Name Field -->
+<div>
+<label class="block font-label text-sm font-semibold text-on-surface mb-2 tracking-wide uppercase" for="name">Full Name</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">person</span>
+</div>
+<input class="w-full bg-surface-container-lowest text-on-surface placeholder:text-outline border-none focus:ring-2 focus:ring-primary py-4 pl-12 pr-4 font-body text-base shadow-[0px_4px_12px_rgba(26,28,27,0.02)] rounded-2xl" id="name" name="name" placeholder="John Doe" type="text"/>
+</div>
+</div>
+<!-- Email Field -->
+<div>
+<label class="block font-label text-sm font-semibold text-on-surface mb-2 tracking-wide uppercase" for="email">Email Address</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">mail</span>
+</div>
+<input class="w-full bg-surface-container-lowest text-on-surface placeholder:text-outline border-none focus:ring-2 focus:ring-primary py-4 pl-12 pr-4 font-body text-base shadow-[0px_4px_12px_rgba(26,28,27,0.02)] rounded-2xl" id="email" name="email" placeholder="john@example.com" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div>
+<label class="block font-label text-sm font-semibold text-on-surface mb-2 tracking-wide uppercase" for="password">Password</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">lock</span>
+</div>
+<input class="w-full bg-surface-container-lowest text-on-surface placeholder:text-outline border-none focus:ring-2 focus:ring-primary py-4 pl-12 pr-4 font-body text-base shadow-[0px_4px_12px_rgba(26,28,27,0.02)] rounded-2xl" id="password" name="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-body font-bold text-lg py-4 shadow-[0px_12px_24px_rgba(255,94,0,0.2)] hover:shadow-[0px_16px_32px_rgba(255,94,0,0.3)] transition-all active:scale-95 rounded-2xl" type="submit">
+                Create Account
+            </button>
+</form>
+<!-- Divider -->
+<div class="mt-8 mb-6 flex items-center">
+<div class="flex-grow h-px bg-surface-container-high"></div>
+<span class="px-4 font-label text-sm text-outline uppercase tracking-wider">Or</span>
+<div class="flex-grow h-px bg-surface-container-high"></div>
+</div>
+<!-- Secondary Action -->
+<button class="w-full bg-surface-container-lowest text-on-surface font-body font-bold text-base py-4 flex items-center justify-center gap-3 shadow-[0px_4px_12px_rgba(26,28,27,0.04)] hover:bg-surface-container-low transition-colors rounded-2xl" type="button">
+<svg class="w-5 h-5" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+            Continue with Google
+        </button><button class="w-full bg-surface-container-lowest text-on-surface font-body font-bold text-base py-4 flex items-center justify-center gap-3 shadow-[0px_4px_12px_rgba(26,28,27,0.04)] hover:bg-surface-container-low transition-colors mt-3 rounded-2xl" type="button">
+<svg class="w-6 h-6" fill="#1877F2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 12.0735C24 5.40509 18.6274 0 12 0C5.37258 0 0 5.40509 0 12.0735C0 18.1004 4.38823 23.0943 10.125 24V15.5631H7.07812V12.0735H10.125V9.41323C10.125 6.38711 11.9161 4.71638 14.6576 4.71638C15.9705 4.71638 17.3438 4.95188 17.3438 4.95188V7.91794H15.8306C14.34 7.91794 13.875 8.8488 13.875 9.80371V12.0735H17.2031L16.6711 15.5631H13.875V24C19.6118 23.0943 24 18.1004 24 12.0735Z"></path>
+</svg>
+            Continue with Facebook
+        </button>
+<!-- Footer Link -->
+<div class="mt-10 text-center">
+<p class="font-body text-base text-on-surface-variant">
+                Already have an account? 
+                <a class="font-bold text-primary border-b-2 border-transparent hover:border-primary-container transition-colors pb-0.5 ml-1" href="#">Sign In</a>
+</p>
+</div>
+</main>
+</body></html>

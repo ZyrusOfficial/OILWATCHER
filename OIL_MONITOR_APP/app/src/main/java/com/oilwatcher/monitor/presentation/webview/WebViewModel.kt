@@ -17,7 +17,7 @@ data class WebUiState(
 
 @HiltViewModel
 class WebViewModel @Inject constructor(
-    // private val userRepository: UserRepository // TODO: Inject repos here
+    private val authRepository: com.oilwatcher.monitor.data.repository.AuthRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(WebUiState())
@@ -29,7 +29,10 @@ class WebViewModel @Inject constructor(
             is BridgeAction.LoadMore -> { /* Handle pagination */ }
             is BridgeAction.ToggleSetting -> { /* Save settings to DataStore */ }
             is BridgeAction.FilterPeriod -> { /* Reload leaderboard for period */ }
-            is BridgeAction.SignOut -> { /* Trigger Firebase SignOut */ }
+            is BridgeAction.SignOut -> {
+                authRepository.signOut()
+                // Navigation to login is handled by the caller observing auth state
+            }
         }
     }
 

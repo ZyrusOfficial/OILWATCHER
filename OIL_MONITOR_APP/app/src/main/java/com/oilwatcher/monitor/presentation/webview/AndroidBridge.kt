@@ -42,6 +42,16 @@ class AndroidBridge(
                 "leaderboard" -> navController.navigate(Routes.LEADERBOARD)
                 "profile" -> navController.navigate(Routes.PROFILE)
                 "settings" -> navController.navigate(Routes.SETTINGS)
+                "login" -> navController.navigate(Routes.LOGIN) {
+                    popUpTo(0) { inclusive = true }
+                    launchSingleTop = true
+                }
+                "signup" -> navController.navigate(Routes.SIGNUP) {
+                    launchSingleTop = true
+                }
+                "forgot_password" -> navController.navigate(Routes.FORGOT_PASSWORD) {
+                    launchSingleTop = true
+                }
                 "back" -> navController.popBackStack()
             }
         }

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Device Auth</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#0097fb",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "outline": "#8f7065",
+                        "inverse-surface": "#2f3130",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-background": "#1a1c1b",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "surface-container": "#eeeeec",
+                        "on-primary-container": "#531900",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#9fcaff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f1f1ef",
+                        "on-primary-fixed": "#370e00",
+                        "surface": "#f9f9f7",
+                        "primary-fixed": "#ffdbce",
+                        "on-secondary-container": "#636262",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-dim": "#dadad8",
+                        "secondary": "#5f5e5e",
+                        "on-tertiary-container": "#002d51",
+                        "outline-variant": "#e4bfb1",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#ffb599",
+                        "tertiary": "#0061a4",
+                        "background": "#f9f9f7",
+                        "secondary-container": "#e2dfde",
+                        "on-primary-fixed-variant": "#7f2b00",
+                        "surface-container-high": "#e8e8e6",
+                        "primary-container": "#ff5e00",
+                        "surface-container-highest": "#e2e3e1",
+                        "surface-variant": "#e2e3e1",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#474746",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f4f4f2",
+                        "on-surface-variant": "#5b4137",
+                        "inverse-primary": "#ffb599",
+                        "surface-bright": "#f9f9f7",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#00497d",
+                        "on-surface": "#1a1c1b",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#a63b00",
+                        "primary": "#a63b00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Epilogue", "sans-serif"],
+                        "display": ["Epilogue", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    },
+                    "fontSize": {}
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline {
+            font-family: 'Epilogue', sans-serif;
+        }
+        /* Whisper shadow utility */
+        .shadow-whisper {
+            box-shadow: 0px 24px 48px rgba(26, 28, 27, 0.06);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col relative overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-[#F9F9F7]/80 dark:bg-[#1A1C1B]/80 backdrop-blur-md shadow-[0px_24px_48px_rgba(26,28,27,0.06)] fixed top-0 w-full z-50">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-7xl mx-auto">
+<button class="text-[#A63B00] dark:text-[#FF5E00] hover:bg-[#E8E8E6] dark:hover:bg-[#373938] transition-colors scale-95 active:opacity-80 transition-all p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-['Epilogue'] font-bold tracking-tight text-on-surface text-lg">Security</h1>
+<button class="text-[#A63B00] dark:text-[#FF5E00] hover:bg-[#E8E8E6] dark:hover:bg-[#373938] transition-colors scale-95 active:opacity-80 transition-all p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col items-center justify-center px-6 pt-24 pb-12 z-10">
+<!-- Subtle Brand/Context Icon -->
+<div class="mb-12 bg-surface-container-low w-16 h-16 rounded-full flex items-center justify-center shadow-whisper">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">local_gas_station</span>
+</div>
+<!-- Central Identity Visual (Static Pulse Rings) -->
+<div class="relative flex items-center justify-center mb-10 w-48 h-48">
+<!-- Outer Ring -->
+<div class="absolute inset-0 bg-primary-container/5 rounded-full scale-110"></div>
+<!-- Middle Ring -->
+<div class="absolute inset-4 bg-primary-container/10 rounded-full scale-105"></div>
+<!-- Core Visual Container -->
+<div class="relative bg-surface-container-lowest w-32 h-32 rounded-full flex items-center justify-center shadow-whisper z-10">
+<span class="material-symbols-outlined text-primary-container text-6xl" style="font-variation-settings: 'FILL' 1;">fingerprint</span>
+</div>
+</div>
+<!-- Typography -->
+<h2 class="font-headline font-bold text-3xl text-on-surface mb-4 text-center tracking-tight">Use your screen lock</h2>
+<p class="font-body text-lg text-on-surface-variant text-center max-w-[320px] mb-12 leading-relaxed">
+            Your device will ask for your fingerprint, face, or PIN to confirm it's you.
+        </p>
+<!-- Actions -->
+<div class="w-full max-w-sm flex flex-col gap-4">
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary py-4 px-6 rounded-[20px] font-body font-bold text-lg shadow-[0px_12px_24px_rgba(166,59,0,0.15)] hover:opacity-95 transition-opacity flex items-center justify-center gap-2"><span class="material-symbols-outlined text-xl">lock_open</span>Continue</button>
+<button class="w-full bg-surface-container-high text-on-surface py-4 px-6 rounded-[20px] font-body font-bold text-lg hover:bg-surface-container-highest transition-colors">Skip</button>
+</div>
+</main>
+<!-- Decorative Background Elements for Depth -->
+<div class="fixed top-[-20%] left-[-10%] w-96 h-96 bg-primary-fixed/20 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="fixed bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-tertiary-fixed/20 rounded-full blur-3xl pointer-events-none -z-10"></div>
+</body></html>

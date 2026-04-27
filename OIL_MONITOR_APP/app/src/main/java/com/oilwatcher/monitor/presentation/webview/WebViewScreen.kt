@@ -83,12 +83,16 @@ fun WebViewScreen(
                 builtInZoomControls = false
                 displayZoomControls = false
 
-                // Performance: cache mode for local assets and remote fonts
-                cacheMode = android.webkit.WebSettings.LOAD_DEFAULT
+                // Performance: aggressive caching — Google Fonts & icons
+                // are cached after first load, making subsequent pages instant
+                cacheMode = android.webkit.WebSettings.LOAD_CACHE_ELSE_NETWORK
+
+                // Prioritize rendering speed
+                setRenderPriority(android.webkit.WebSettings.RenderPriority.HIGH)
             }
 
-            // Transparent background to blend with native
-            setBackgroundColor(Color.TRANSPARENT)
+            // Surface-colored background prevents white flash during load
+            setBackgroundColor(android.graphics.Color.parseColor("#F9F9F7"))
 
             // Disable overscroll glow
             overScrollMode = WebView.OVER_SCROLL_NEVER
@@ -120,9 +124,9 @@ fun WebViewScreen(
                         )
                     }
                     
-                    // Delay slightly to allow DOM painting and fonts to render fully
+                    // Brief delay for DOM paint — reduced from 150ms for faster feel
                     coroutineScope.launch {
-                        delay(150)
+                        delay(50)
                         isLoading = false
                     }
                 }
