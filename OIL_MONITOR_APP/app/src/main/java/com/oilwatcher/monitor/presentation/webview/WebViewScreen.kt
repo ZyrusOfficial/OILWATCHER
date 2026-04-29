@@ -9,10 +9,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -61,45 +60,12 @@ fun WebViewScreen(
     val coroutineScope = rememberCoroutineScope()
     val alpha by animateFloatAsState(
         targetValue = if (isLoading) 0f else 1f,
-        animationSpec = tween(durationMillis = 300),
+        animationSpec = tween(durationMillis = 150),
         label = "webViewAlpha"
     )
 
     val webView = remember {
-        WebView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-            )
-
-            // ── WebView Configuration ──
-            settings.apply {
-                javaScriptEnabled = true
-                domStorageEnabled = true
-                allowFileAccess = true
-                loadWithOverviewMode = true
-                useWideViewPort = true
-                setSupportZoom(false)
-                builtInZoomControls = false
-                displayZoomControls = false
-
-                // Performance: aggressive caching — Google Fonts & icons
-                // are cached after first load, making subsequent pages instant
-                cacheMode = android.webkit.WebSettings.LOAD_CACHE_ELSE_NETWORK
-
-                // Prioritize rendering speed
-                setRenderPriority(android.webkit.WebSettings.RenderPriority.HIGH)
-            }
-
-            // Surface-colored background prevents white flash during load
-            setBackgroundColor(android.graphics.Color.parseColor("#F9F9F7"))
-
-            // Disable overscroll glow
-            overScrollMode = WebView.OVER_SCROLL_NEVER
-
-            // Enable hardware acceleration
-            setLayerType(WebView.LAYER_TYPE_HARDWARE, null)
-
+        WebViewPool.obtain(context).apply {
             // Prevent WebView from opening links in external browser
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
@@ -154,18 +120,16 @@ fun WebViewScreen(
     // Clean up WebView when leaving the composition
     DisposableEffect(Unit) {
         onDispose {
-            webView.removeJavascriptInterface("AndroidBridge")
-            webView.stopLoading()
-            webView.clearHistory()
-            webView.destroy() // Fix memory leak since we are not pooling
+            WebViewPool.recycle(webView)
         }
     }
 
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        if (isLoading) {
-            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-        }
-        
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(androidx.compose.ui.graphics.Color(0xFFF9F9F7)),
+        contentAlignment = Alignment.Center,
+    ) {
         AndroidView(
             factory = { webView },
             modifier = Modifier.fillMaxSize().alpha(alpha),

@@ -51,6 +51,9 @@
     <string name="error_camera">Camera is not available.</string>
     <string name="error_location">Location is not available.</string>
 
+    <!-- Google Auth (Replace with your actual Web Client ID) -->
+    <string name="default_web_client_id">YOUR_WEB_CLIENT_ID_HERE.apps.googleusercontent.com</string>
+
     <!-- Content Descriptions -->
     <string name="cd_back_button">Navigate back</string>
     <string name="cd_camera_fab">Open camera to contribute a price</string>

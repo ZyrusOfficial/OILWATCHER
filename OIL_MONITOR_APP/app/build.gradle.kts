@@ -98,6 +98,11 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-analytics")
 
+    // ── Google Sign-In (Credential Manager) ──
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
     // ── Room (Local Database) ──
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")

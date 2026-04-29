@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -19,6 +20,9 @@ interface AuthRepository {
 
     /** Create a new account with email, password, and display name. */
     suspend fun signUp(name: String, email: String, password: String): Result<FirebaseUser>
+
+    /** Sign in with a Google ID token obtained from Credential Manager. */
+    suspend fun loginWithGoogle(idToken: String): Result<FirebaseUser>
 
     /** Send a password reset email. */
     suspend fun resetPassword(email: String): Result<Unit>
@@ -106,6 +110,43 @@ class AuthRepositoryImpl @Inject constructor(
             Result.success(user)
         } catch (e: Exception) {
             Log.e(TAG, "signUp: failed — ${e.javaClass.simpleName}: ${e.message}", e)
+            Result.failure(mapAuthException(e))
+        }
+    }
+
+    override suspend fun loginWithGoogle(idToken: String): Result<FirebaseUser> {
+        return try {
+            Log.d(TAG, "loginWithGoogle: signing in with Google ID token")
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            val result = firebaseAuth.signInWithCredential(credential).await()
+            val user = result.user
+                ?: return Result.failure(Exception("Google sign-in succeeded but user is null."))
+            Log.d(TAG, "loginWithGoogle: success, uid=${user.uid}")
+
+            // Create Firestore profile on first Google sign-in
+            val isNewUser = result.additionalUserInfo?.isNewUser == true
+            if (isNewUser) {
+                val userDoc = hashMapOf(
+                    "uid" to user.uid,
+                    "name" to (user.displayName ?: "Google User"),
+                    "email" to (user.email ?: ""),
+                    "contributions" to 0,
+                    "points" to 0,
+                    "rank" to 0,
+                    "createdAt" to com.google.firebase.Timestamp.now()
+                )
+                firestore.collection("users").document(user.uid).set(userDoc)
+                    .addOnSuccessListener {
+                        Log.d(TAG, "loginWithGoogle: Firestore user document created for new user")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "loginWithGoogle: Firestore user document creation failed", e)
+                    }
+            }
+
+            Result.success(user)
+        } catch (e: Exception) {
+            Log.e(TAG, "loginWithGoogle: failed — ${e.javaClass.simpleName}: ${e.message}", e)
             Result.failure(mapAuthException(e))
         }
     }

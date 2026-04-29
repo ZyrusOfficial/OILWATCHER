@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.oilwatcher.monitor.domain.repository.ContributionRepository
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 data class AnalyzeUiState(
     val imageUri: Uri? = null,
@@ -51,7 +53,9 @@ class AnalyzeViewModel @Inject constructor(
         
         viewModelScope.launch {
             try {
-                val candidates = priceExtractor.extractPrices(context, uri)
+                val candidates = withContext(Dispatchers.IO) {
+                    priceExtractor.extractPrices(context, uri)
+                }
                 
                 var reg = ""
                 var mid = ""

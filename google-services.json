@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "725547521528-icbdeg0jqagevissmmgq1580odoqgdcc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.oilwatcher.monitor",
+            "certificate_hash": "97f6ee43048de8a37bbb5a2dea37ed74968d8085"
+          }
+        },
+        {
           "client_id": "725547521528-u115n307prhi81hd51ridd149fvd5f7v.apps.googleusercontent.com",
           "client_type": 3
         }

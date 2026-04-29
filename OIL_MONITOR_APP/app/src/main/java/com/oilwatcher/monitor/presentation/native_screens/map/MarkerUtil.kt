@@ -11,11 +11,14 @@ import androidx.core.content.ContextCompat
 import com.oilwatcher.monitor.domain.model.FuelType
 import com.oilwatcher.monitor.presentation.theme.OilWatcherColors
 import androidx.compose.ui.graphics.toArgb
+import android.util.LruCache
 
 /**
  * Utility to generate custom bitmap descriptors for Map Markers.
  */
 object MarkerUtil {
+
+    private val markerCache = LruCache<String, BitmapDrawable>(50)
 
     /**
      * Creates a rounded rectangle bitmap with the price text and a small tail pointing down.
@@ -26,6 +29,8 @@ object MarkerUtil {
         fuelType: FuelType? = FuelType.REGULAR,
         isSelected: Boolean = false
     ): BitmapDrawable {
+        val cacheKey = "${price}_${fuelType?.name}_$isSelected"
+        markerCache.get(cacheKey)?.let { return it }
         val density = context.resources.displayMetrics.density
         val width = (60 * density).toInt()
         val height = (40 * density).toInt()
@@ -112,6 +117,8 @@ object MarkerUtil {
             )
         }
 
-        return BitmapDrawable(context.resources, bitmap)
+        val drawable = BitmapDrawable(context.resources, bitmap)
+        markerCache.put(cacheKey, drawable)
+        return drawable
     }
 }

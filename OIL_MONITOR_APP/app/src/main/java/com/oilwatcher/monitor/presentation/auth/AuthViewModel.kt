@@ -1,9 +1,16 @@
 package com.oilwatcher.monitor.presentation.auth
 
+import android.content.Context
 import android.util.Log
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseUser
+import com.oilwatcher.monitor.R
 import com.oilwatcher.monitor.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -247,4 +254,64 @@ class AuthViewModel @Inject constructor(
      * Whether the user is currently logged in.
      */
     fun isLoggedIn(): Boolean = authRepository.isLoggedIn()
+
+    // ══════════════════════════════════════
+    //  Google Sign-In via Credential Manager
+    // ══════════════════════════════════════
+
+    /**
+     * Launch the native Google Account picker via Credential Manager,
+     * then authenticate with Firebase using the resulting ID token.
+     *
+     * @param context Activity context required by CredentialManager.
+     */
+    fun loginWithGoogle(context: Context) {
+        Log.d(TAG, "loginWithGoogle: starting")
+
+        viewModelScope.launch {
+            try {
+                val credentialManager = CredentialManager.create(context)
+
+                // Build the Google ID option using the Web client ID from google-services.json
+                val googleIdOption = GetGoogleIdOption.Builder()
+                    .setFilterByAuthorizedAccounts(false)
+                    .setServerClientId(context.getString(R.string.default_web_client_id))
+                    .build()
+
+                val request = GetCredentialRequest.Builder()
+                    .addCredentialOption(googleIdOption)
+                    .build()
+
+                val result = credentialManager.getCredential(context, request)
+                val credential = result.credential
+
+                val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                val idToken = googleIdTokenCredential.idToken
+
+                Log.d(TAG, "loginWithGoogle: got ID token, authenticating with Firebase...")
+
+                val authResult = authRepository.loginWithGoogle(idToken)
+                authResult.fold(
+                    onSuccess = { user ->
+                        Log.d(TAG, "loginWithGoogle: SUCCESS for ${user.email}")
+                        _authState.value = AuthState.Authenticated(user)
+                        _authResultCallback?.invoke(true, "Welcome, ${user.displayName ?: "there"}!")
+                    },
+                    onFailure = { error ->
+                        Log.e(TAG, "loginWithGoogle: Firebase auth failed", error)
+                        _authResultCallback?.invoke(false, error.message ?: "Google sign-in failed.")
+                    }
+                )
+            } catch (e: GetCredentialCancellationException) {
+                Log.d(TAG, "loginWithGoogle: user cancelled")
+                _authResultCallback?.invoke(false, "Google sign-in was cancelled.")
+            } catch (e: Exception) {
+                Log.e(TAG, "loginWithGoogle: unexpected error", e)
+                _authResultCallback?.invoke(
+                    false,
+                    "Google sign-in failed: ${e.message?.take(100) ?: "Unknown error"}"
+                )
+            }
+        }
+    }
 }

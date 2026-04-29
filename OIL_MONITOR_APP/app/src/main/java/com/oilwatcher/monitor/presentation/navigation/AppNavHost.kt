@@ -9,10 +9,12 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -125,6 +127,10 @@ fun AppNavHost(
             navController = navController,
             startDestination = startDestination,
             modifier = modifier.fillMaxSize(),
+            enterTransition = { fadeIn(animationSpec = tween(150)) },
+            exitTransition = { fadeOut(animationSpec = tween(150)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(150)) },
+            popExitTransition = { fadeOut(animationSpec = tween(150)) }
         ) {
             // ══════════════════════════════════════
             //  AUTH SCREENS (WebView)
@@ -292,39 +298,12 @@ fun AuthWebViewScreen(
     val coroutineScope = rememberCoroutineScope()
     val alpha by animateFloatAsState(
         targetValue = if (isLoading) 0f else 1f,
-        animationSpec = tween(durationMillis = 300),
+        animationSpec = tween(durationMillis = 150),
         label = "authWebViewAlpha"
     )
 
     val webView = remember {
-        WebView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-            )
-
-            settings.apply {
-                javaScriptEnabled = true
-                domStorageEnabled = true
-                allowFileAccess = true
-                loadWithOverviewMode = true
-                useWideViewPort = true
-                setSupportZoom(false)
-                builtInZoomControls = false
-                displayZoomControls = false
-
-                // Aggressive caching — Material Symbols font cached after first load
-                cacheMode = android.webkit.WebSettings.LOAD_CACHE_ELSE_NETWORK
-
-                // Prioritize rendering speed
-                setRenderPriority(android.webkit.WebSettings.RenderPriority.HIGH)
-            }
-
-            // Surface-colored background prevents white flash
-            setBackgroundColor(android.graphics.Color.parseColor("#F9F9F7"))
-            overScrollMode = WebView.OVER_SCROLL_NEVER
-            setLayerType(WebView.LAYER_TYPE_HARDWARE, null)
-
+        com.oilwatcher.monitor.presentation.webview.WebViewPool.obtain(context).apply {
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
                     view: WebView?,
@@ -387,18 +366,16 @@ fun AuthWebViewScreen(
     DisposableEffect(Unit) {
         onDispose {
             authBridge.cleanup()
-            webView.removeJavascriptInterface("AndroidBridge")
-            webView.stopLoading()
-            webView.clearHistory()
-            webView.destroy()
+            com.oilwatcher.monitor.presentation.webview.WebViewPool.recycle(webView)
         }
     }
 
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        if (isLoading) {
-            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-        }
-
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(androidx.compose.ui.graphics.Color(0xFFF9F9F7)),
+        contentAlignment = Alignment.Center
+    ) {
         AndroidView(
             factory = { webView },
             modifier = Modifier.fillMaxSize().alpha(alpha),

@@ -96,13 +96,8 @@ class AuthBridge(
 
     @JavascriptInterface
     fun loginWithGoogle() {
-        webView.post {
-            Toast.makeText(
-                webView.context,
-                "Google Sign-In coming soon! Please use email/password.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+        Log.d(TAG, "loginWithGoogle called from JS")
+        authViewModel.loginWithGoogle(webView.context)
     }
 
     @JavascriptInterface
